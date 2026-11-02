@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* cmdk — remove default outline */
+[cmdk-input]:focus {
+  outline: none;
+}
+
+/* Map container fills its parent */
+.flood-map {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Suppress Google Maps' own auth-failure overlay — FloodMap.tsx handles it via mapError state */
+.flood-map .gm-err-container {
+  display: none !important;
+}
+
+/* Hero search pill — strip cmdk CommandInput default border + icon */
+.hero-search [cmdk-input-wrapper] {
+  border-bottom: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+.hero-search [cmdk-input-wrapper] > svg {
+  display: none;
+}

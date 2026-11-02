@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIR-16 Mockup — Admin Crawl Management</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            border: 'hsl(214.3 31.8% 91.4%)',
+            ring:   'hsl(222.2 84% 4.9%)',
+            background: 'hsl(0 0% 100%)',
+            foreground: 'hsl(222.2 84% 4.9%)',
+            primary: { DEFAULT: 'hsl(221.2 83.2% 53.3%)', foreground: 'hsl(210 40% 98%)' },
+            muted:   { DEFAULT: 'hsl(210 40% 96.1%)', foreground: 'hsl(215.4 16.3% 46.9%)' },
+            destructive: { DEFAULT: 'hsl(0 84.2% 60.2%)', foreground: 'hsl(210 40% 98%)' },
+            accent:  { DEFAULT: 'hsl(210 40% 96.1%)', foreground: 'hsl(222.2 47.4% 11.2%)' },
+          },
+          boxShadow: {
+            'search': '0 2px 12px 0 rgba(0,0,0,0.12)',
+            'sheet':  '0 -4px 24px 0 rgba(0,0,0,0.10)',
+          },
+          keyframes: {
+            'sheet-up': { from: { transform: 'translateY(100%)' }, to: { transform: 'translateY(0)' } },
+            'fade-in':  { from: { opacity: '0', transform: 'translateY(-4px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+            'spin':     { to: { transform: 'rotate(360deg)' } },
+            'pulse':    { '0%,100%': { opacity: '1' }, '50%': { opacity: '.4' } },
+          },
+          animation: {
+            'sheet-up': 'sheet-up 0.28s cubic-bezier(0.32,0.72,0,1)',
+            'fade-in':  'fade-in 0.15s ease-out',
+            'spin':     'spin 0.8s linear infinite',
+            'pulse':    'pulse 2s ease-in-out infinite',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: #f1f5f9; }
+
+    /* ── State machine ───────────────────────────────── */
+    /* states: default | running | add-form | delete-confirm */
+
+    .state-default  .show-on-running,
+    .state-default  .show-on-add-form,
+    .state-default  .show-on-delete     { display: none !important; }
+
+    .state-running  .show-on-add-form,
+    .state-running  .show-on-delete,
+    .state-running  .hide-on-running    { display: none !important; }
+
+    .state-add-form .show-on-running,
+    .state-add-form .show-on-delete     { display: none !important; }
+
+    .state-delete   .show-on-running,
+    .state-delete   .show-on-add-form   { display: none !important; }
+
+    /* modal/sheet animation */
+    .modal-sheet { animation: sheet-up 0.28s cubic-bezier(0.32,0.72,0,1); }
+
+    /* toggle switch */
+    .toggle-track { transition: background 0.2s; }
+    .toggle-thumb { transition: transform 0.2s; }
+
+    /* desktop layout ≥ 1024px */
+    @media (min-width: 1024px) {
+      #page-content { max-width: 680px; margin: 0 auto; }
+      #app-frame { border-radius: 12px !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     STATE SWITCHER (dev tool — remove in production)
+════════════════════════════════════════════════════════ -->
+<div class="fixed top-2 right-2 z-[9999] flex flex-col gap-1 bg-white/90 backdrop-blur border border-slate-200 rounded-xl p-2 shadow-lg text-xs font-medium">
+  <span class="text-slate-400 px-1 mb-0.5 uppercase tracking-wide text-[10px]">State</span>
+  <button onclick="setState('default')"  class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-default">Default</button>
+  <button onclick="setState('running')"  class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-running">Running (fb_offb)</button>
+  <button onclick="setState('add-form')" class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-add-form">Add Source</button>
+  <button onclick="setState('delete')"   class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-delete">Delete Confirm</button>
+  <hr class="border-slate-200 my-0.5" />
+  <span class="text-slate-400 px-1 uppercase tracking-wide text-[10px]">Viewport</span>
+  <button onclick="setViewport('mobile')"  class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-mobile">Mobile 375px</button>
+  <button onclick="setViewport('desktop')" class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-desktop">Desktop 1280px</button>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     APP FRAME
+════════════════════════════════════════════════════════ -->
+<div id="app-frame" class="mx-auto bg-slate-50 shadow-2xl overflow-hidden flex flex-col relative"
+     style="width:375px; height:812px; border-radius:24px; margin:24px auto;">
+
+  <!-- ── HEADER ────────────────────────────────────────── -->
+  <header class="flex items-center gap-2 px-4 h-12 bg-white border-b border-slate-100 shrink-0 z-20">
+    <!-- back arrow -->
+    <button class="w-8 h-8 -ml-1 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-500 shrink-0">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+      </svg>
+    </button>
+    <span class="text-xl leading-none">🌊</span>
+    <div class="flex items-center gap-1 text-xs text-slate-400">
+      <span class="text-slate-500 font-medium">Flood Risk HN</span>
+      <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+      <span class="text-slate-700 font-medium">Quản lý crawl</span>
+    </div>
+  </header>
+
+  <!-- ── PAGE CONTENT (scrollable) ─────────────────────── -->
+  <div class="flex-1 overflow-y-auto" id="page-scroll">
+    <div id="page-content">
+
+      <!-- Page title + actions -->
+      <div class="px-4 pt-4 pb-3 bg-white border-b border-slate-100">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h1 class="text-base font-semibold text-slate-900">Quản lý Crawl Dữ Liệu</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Kích hoạt thủ công sau mưa lớn</p>
+          </div>
+          <button onclick="setState('add-form')"
+                  class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded-xl shadow-sm transition-colors shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+            </svg>
+            Thêm nguồn
+          </button>
+        </div>
+
+        <!-- Stats row -->
+        <div class="mt-3 grid grid-cols-3 gap-2">
+          <div class="bg-slate-50 border border-slate-100 rounded-xl p-2.5">
+            <p class="text-[10px] text-slate-400 uppercase tracking-wide mb-0.5">Tổng nguồn</p>
+            <p class="text-sm font-semibold text-slate-800">7</p>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-2.5">
+            <p class="text-[10px] text-emerald-600 uppercase tracking-wide mb-0.5">Đang bật</p>
+            <p class="text-sm font-semibold text-emerald-700">6</p>
+          </div>
+          <div class="bg-red-50 border border-red-100 rounded-xl p-2.5">
+            <p class="text-[10px] text-red-400 uppercase tracking-wide mb-0.5">Lỗi liên tiếp</p>
+            <p class="text-sm font-semibold text-red-600">1 nguồn</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SECTION: CHÍNH PHỦ ──────────────────────── -->
+      <div class="px-4 pt-4 pb-1">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-base leading-none">🏛️</span>
+          <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Chính phủ</span>
+          <div class="flex-1 h-px bg-slate-200 ml-1"></div>
+          <span class="text-[10px] text-slate-400">1 nguồn</span>
+        </div>
+
+        <!-- SOURCE ROW: thoatnuochanoi -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-3 mb-3 shadow-sm">
+          <!-- Row header -->
+          <div class="flex items-start justify-between gap-2 mb-2.5">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-sm font-semibold text-slate-900">thoatnuochanoi</span>
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-blue-50 text-blue-600">governance</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5 font-mono">ThoatNuocHanoiCrawler</p>
+              <p class="text-[10px] text-slate-400 mt-0.5 truncate">🔗 thoatnuochanoi.com.vn/tin-tuc</p>
+            </div>
+            <!-- Toggle: enabled -->
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] text-slate-500">Bật</span>
+              <button class="toggle-track w-9 h-5 rounded-full bg-emerald-500 flex items-center px-0.5">
+                <div class="toggle-thumb w-4 h-4 rounded-full bg-white shadow" style="transform:translateX(16px)"></div>
+              </button>
+            </div>
+          </div>
+          <div class="h-px bg-slate-100 mb-2.5"></div>
+          <!-- Row footer -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium bg-emerald-50 text-emerald-700 shrink-0">
+                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                Thành công
+              </span>
+              <span class="text-[10px] text-slate-400 truncate">3 ngày trước · 48 bản ghi</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="setState('delete')" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+              </button>
+              <button class="text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1 whitespace-nowrap">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/></svg>
+                Chạy ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SECTION: TIN TỨC ────────────────────────── -->
+      <div class="px-4 pt-1 pb-1">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-base leading-none">📰</span>
+          <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Tin tức</span>
+          <div class="flex-1 h-px bg-slate-200 ml-1"></div>
+          <span class="text-[10px] text-slate-400">3 nguồn</span>
+        </div>
+
+        <!-- SOURCE ROW: vnexpress — success -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-3 mb-3 shadow-sm">
+          <div class="flex items-start justify-between gap-2 mb-2.5">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-sm font-semibold text-slate-900">vnexpress</span>
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-50 text-amber-700">news</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5 font-mono">VnExpressCrawler</p>
+              <p class="text-[10px] text-slate-400 mt-0.5 truncate">🔗 vnexpress.net/tag/ngap-lut</p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] text-slate-500">Bật</span>
+              <button class="toggle-track w-9 h-5 rounded-full bg-emerald-500 flex items-center px-0.5">
+                <div class="toggle-thumb w-4 h-4 rounded-full bg-white shadow" style="transform:translateX(16px)"></div>
+              </button>
+            </div>
+          </div>
+          <div class="h-px bg-slate-100 mb-2.5"></div>
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium bg-emerald-50 text-emerald-700 shrink-0">
+                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                Thành công
+              </span>
+              <span class="text-[10px] text-slate-400 truncate">7 ngày trước · 23 bản ghi</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="setState('delete')" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+              </button>
+              <button class="text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1 whitespace-nowrap">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/></svg>
+                Chạy ngay
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOURCE ROW: tuoitre — 3× consecutive failure + alert banner -->
+        <div class="bg-white border border-red-200 rounded-2xl p-3 mb-3 shadow-sm">
+          <div class="flex items-start justify-between gap-2 mb-2.5">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-sm font-semibold text-slate-900">tuoitre</span>
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-50 text-amber-700">news</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5 font-mono">TuoiTreCrawler</p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] text-slate-500">Bật</span>
+              <button class="toggle-track w-9 h-5 rounded-full bg-emerald-500 flex items-center px-0.5">
+                <div class="toggle-thumb w-4 h-4 rounded-full bg-white shadow" style="transform:translateX(16px)"></div>
+              </button>
+            </div>
+          </div>
+          <!-- Consecutive failure alert -->
+          <div class="bg-red-50 border border-red-100 rounded-xl px-3 py-2 mb-2.5 flex items-start gap-2">
+            <svg class="w-3.5 h-3.5 text-red-500 shrink-0 mt-px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+            </svg>
+            <p class="text-[10px] text-red-700 leading-relaxed">Thất bại 3 lần liên tiếp · Email cảnh báo đã gửi</p>
+          </div>
+          <div class="h-px bg-red-100 mb-2.5"></div>
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium bg-red-50 text-red-600 shrink-0">
+                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/></svg>
+                Thất bại
+              </span>
+              <span class="text-[10px] text-slate-400 truncate">2 ngày trước · Timeout</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="setState('delete')" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+              </button>
+              <button class="text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1 whitespace-nowrap">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/></svg>
+                Thử lại
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOURCE ROW: dantri — disabled -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-3 mb-3 shadow-sm">
+          <div class="flex items-start justify-between gap-2 mb-2.5">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-sm font-semibold text-slate-600">dantri</span>
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-50 text-amber-600">news</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5 font-mono">DanTriCrawler</p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] text-slate-400">Tắt</span>
+              <button class="toggle-track w-9 h-5 rounded-full bg-slate-200 flex items-center px-0.5">
+                <div class="toggle-thumb w-4 h-4 rounded-full bg-white shadow"></div>
+              </button>
+            </div>
+          </div>
+          <div class="h-px bg-slate-100 mb-2.5"></div>
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] text-slate-400">— Chưa crawl lần nào</span>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="setState('delete')" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+              </button>
+              <button disabled class="text-xs font-medium text-slate-300 bg-slate-50 px-3 py-1.5 rounded-xl cursor-not-allowed flex items-center gap-1 whitespace-nowrap">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/></svg>
+                Chạy ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SECTION: MẠNG XÃ HỘI ───────────────────── -->
+      <div class="px-4 pt-1 pb-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="text-base leading-none">📱</span>
+          <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Mạng xã hội</span>
+          <div class="flex-1 h-px bg-slate-200 ml-1"></div>
+          <span class="text-[10px] text-slate-400">3 nguồn</span>
+        </div>
+
+        <!-- SOURCE ROW: facebook_offb — shows RUNNING state when active -->
+        <div class="bg-white border border-blue-100 rounded-2xl p-3 mb-3 shadow-sm" id="row-fb-offb">
+          <!-- running state top indicator -->
+          <div class="show-on-running bg-blue-50 border border-blue-100 rounded-xl px-3 py-2 mb-2.5 flex items-center gap-2">
+            <div class="h-3.5 w-3.5 rounded-full border-2 border-blue-500 border-t-transparent animate-spin shrink-0"></div>
+            <p class="text-[10px] text-blue-700 font-medium">Đang crawl... 0:42 đã trôi qua</p>
+          </div>
+          <div class="flex items-start justify-between gap-2 mb-2.5">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-sm font-semibold text-slate-900">facebook_offb</span>
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-purple-50 text-purple-600">social</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5 font-mono">FacebookOFFBCrawler</p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] text-slate-500">Bật</span>
+              <button class="toggle-track w-9 h-5 rounded-full bg-emerald-500 flex items-center px-0.5">
+                <div class="toggle-thumb w-4 h-4 rounded-full bg-white shadow" style="transform:translateX(16px)"></div>
+              </button>
+            </div>
+          </div>
+          <div class="h-px bg-slate-100 mb-2.5"></div>
+          <div class="flex items-center justify-between gap-2">
+            <!-- default footer -->
+            <div class="hide-on-running flex items-center gap-1.5 min-w-0">
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium bg-emerald-50 text-emerald-700 shrink-0">
+                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                Thành công
+              </span>
+              <span class="text-[10px] text-slate-400 truncate">Hôm nay 08:30 · 142 bản ghi</span>
+            </div>
+            <!-- running footer -->
+            <div class="show-on-running flex items-center gap-1.5 min-w-0">
+              <span class="text-[10px] text-slate-400">Đã lấy 89 bản ghi...</span>
+            </div>
+            <!-- action buttons -->
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="setState('delete')" class="hide-on-running w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+              </button>
+              <!-- default: run button -->
+              <button onclick="setState('running')" class="hide-on-running text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1 whitespace-nowrap">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/></svg>
+                Chạy ngay
+              </button>
+              <!-- running: disabled button (409 guard) -->
+              <button disabled class="show-on-running text-xs font-medium text-blue-300 bg-blue-50 px-3 py-1.5 rounded-xl cursor-not-allowed flex items-center gap-1.5 whitespace-nowrap">
+                <div class="h-3 w-3 rounded-full border-2 border-blue-300 border-t-transparent animate-spin shrink-0"></div>
+                Đang chạy...
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOURCE ROW: facebook_local -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-3 mb-3 shadow-sm">
+          <div class="flex items-start justify-between gap-2 mb-2.5">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-sm font-semibold text-slate-900">facebook_local</span>
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-purple-50 text-purple-600">social</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5 font-mono">FacebookLocalGroupCrawler</p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] text-slate-500">Bật</span>
+              <button class="toggle-track w-9 h-5 rounded-full bg-emerald-500 flex items-center px-0.5">
+                <div class="toggle-thumb w-4 h-4 rounded-full bg-white shadow" style="transform:translateX(16px)"></div>
+              </button>
+            </div>
+          </div>
+          <div class="h-px bg-slate-100 mb-2.5"></div>
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium bg-emerald-50 text-emerald-700 shrink-0">
+                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+                Thành công
+              </span>
+              <span class="text-[10px] text-slate-400 truncate">Hôm nay 08:35 · 67 bản ghi</span>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="setState('delete')" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+              </button>
+              <button class="text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1 whitespace-nowrap">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/></svg>
+                Chạy ngay
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SOURCE ROW: instagram_hashtag — never crawled -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-3 mb-3 shadow-sm">
+          <div class="flex items-start justify-between gap-2 mb-2.5">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-sm font-semibold text-slate-900">instagram_hashtag</span>
+                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-purple-50 text-purple-600">social</span>
+              </div>
+              <p class="text-[10px] text-slate-400 mt-0.5 font-mono">InstagramHashtagCrawler</p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <span class="text-[10px] text-slate-500">Bật</span>
+              <button class="toggle-track w-9 h-5 rounded-full bg-emerald-500 flex items-center px-0.5">
+                <div class="toggle-thumb w-4 h-4 rounded-full bg-white shadow" style="transform:translateX(16px)"></div>
+              </button>
+            </div>
+          </div>
+          <div class="h-px bg-slate-100 mb-2.5"></div>
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-[10px] text-slate-400">— Chưa crawl lần nào</span>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="setState('delete')" class="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+              </button>
+              <button class="text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1 whitespace-nowrap">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/></svg>
+                Chạy ngay
+              </button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /social section -->
+
+    </div><!-- /page-content -->
+  </div><!-- /page-scroll -->
+
+  <!-- ── ADD SOURCE SHEET ───────────────────────────── -->
+  <div class="show-on-add-form absolute inset-0 z-50 flex items-end bg-black/40">
+    <div class="modal-sheet w-full bg-white rounded-t-2xl pb-8 shadow-sheet">
+      <!-- drag handle -->
+      <div class="flex justify-center pt-3 pb-1">
+        <div class="w-10 h-1 rounded-full bg-slate-200"></div>
+      </div>
+      <div class="px-4 pt-2 pb-4">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-base font-semibold text-slate-900">Thêm nguồn crawl</h2>
+          <button onclick="setState('default')" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="space-y-3">
+          <!-- source_name -->
+          <div>
+            <label class="text-xs font-medium text-slate-700 mb-1.5 block">Tên nguồn <span class="text-red-500">*</span></label>
+            <input type="text" placeholder="vd: baomoi" value="baomoi"
+                   class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+          </div>
+          <!-- source_type -->
+          <div>
+            <label class="text-xs font-medium text-slate-700 mb-1.5 block">Loại nguồn <span class="text-red-500">*</span></label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white appearance-none">
+              <option value="">Chọn loại...</option>
+              <option value="governance">🏛️ Chính phủ</option>
+              <option value="news" selected>📰 Tin tức</option>
+              <option value="social">📱 Mạng xã hội</option>
+            </select>
+          </div>
+          <!-- source_url -->
+          <div>
+            <label class="text-xs font-medium text-slate-700 mb-1.5 block">URL nguồn <span class="text-red-500">*</span></label>
+            <input type="url" placeholder="vd: https://baomoi.com/lu-lut" value="https://baomoi.com/lu-lut"
+                   class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+            <p class="text-[10px] text-slate-400 mt-1">URL gốc truyền vào crawler khi chạy</p>
+          </div>
+          <!-- crawler_class -->
+          <div>
+            <label class="text-xs font-medium text-slate-700 mb-1.5 block">Crawler class <span class="text-red-500">*</span></label>
+            <select class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-900 font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white appearance-none">
+              <option value="">Chọn crawler...</option>
+              <optgroup label="🏛️ Chính phủ">
+                <option value="ThoatNuocHanoiCrawler">ThoatNuocHanoiCrawler</option>
+              </optgroup>
+              <optgroup label="📰 Tin tức">
+                <option value="VnExpressCrawler">VnExpressCrawler</option>
+                <option value="TuoiTreCrawler">TuoiTreCrawler</option>
+                <option value="DanTriCrawler">DanTriCrawler</option>
+                <option value="BaoMoiCrawler" selected>BaoMoiCrawler</option>
+              </optgroup>
+              <optgroup label="📱 Mạng xã hội">
+                <option value="FacebookOFFBCrawler">FacebookOFFBCrawler</option>
+                <option value="FacebookLocalGroupCrawler">FacebookLocalGroupCrawler</option>
+                <option value="InstagramHashtagCrawler">InstagramHashtagCrawler</option>
+              </optgroup>
+            </select>
+            <p class="text-[10px] text-slate-400 mt-1">Danh sách crawler đã đăng ký trong hệ thống</p>
+          </div>
+          <!-- is_enabled toggle -->
+          <div class="flex items-center gap-3 py-1">
+            <button class="toggle-track w-9 h-5 rounded-full bg-emerald-500 flex items-center px-0.5 shrink-0">
+              <div class="toggle-thumb w-4 h-4 rounded-full bg-white shadow" style="transform:translateX(16px)"></div>
+            </button>
+            <label class="text-xs font-medium text-slate-700">Bật ngay sau khi thêm</label>
+          </div>
+        </div>
+        <!-- action buttons -->
+        <div class="flex gap-2 mt-5">
+          <button onclick="setState('default')"
+                  class="flex-1 border border-slate-200 text-slate-600 text-sm font-medium py-2.5 rounded-xl hover:bg-slate-50 transition-colors">
+            Hủy
+          </button>
+          <button onclick="setState('default')"
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2.5 rounded-xl shadow-sm transition-colors">
+            Thêm nguồn
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DELETE CONFIRM DIALOG ─────────────────────── -->
+  <div class="show-on-delete absolute inset-0 z-50 flex items-center justify-center bg-black/40 px-6">
+    <div class="w-full bg-white rounded-2xl p-5 shadow-xl">
+      <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-3">
+        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+        </svg>
+      </div>
+      <h3 class="text-sm font-semibold text-slate-900 text-center mb-1">Xóa nguồn này?</h3>
+      <p class="text-xs text-slate-500 text-center mb-4 leading-relaxed">Hành động này không thể hoàn tác.<br/>Lịch sử crawl sẽ được giữ lại trong <span class="font-mono">crawl_runs</span>.</p>
+      <div class="flex gap-2">
+        <button onclick="setState('default')"
+                class="flex-1 border border-slate-200 text-slate-600 text-sm font-medium py-2.5 rounded-xl hover:bg-slate-50 transition-colors">
+          Hủy
+        </button>
+        <button onclick="setState('default')"
+                class="flex-1 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold py-2.5 rounded-xl transition-colors">
+          Xóa nguồn
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app-frame -->
+
+<!-- ── LEGEND ─────────────────────────────────────────── -->
+<div class="mx-auto mt-4 mb-8 flex flex-wrap gap-3 justify-center text-xs text-slate-500" style="max-width:375px">
+  <span class="flex items-center gap-1.5">
+    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span> Thành công
+  </span>
+  <span class="flex items-center gap-1.5">
+    <span class="w-2 h-2 rounded-full bg-red-500 inline-block"></span> Thất bại
+  </span>
+  <span class="flex items-center gap-1.5">
+    <span class="w-2 h-2 rounded-full bg-blue-500 inline-block"></span> Đang chạy
+  </span>
+  <span class="flex items-center gap-1.5">
+    <span class="w-2 h-2 rounded-full bg-slate-300 inline-block"></span> Chưa crawl
+  </span>
+</div>
+
+<script>
+  const STATES = ['default', 'running', 'add-form', 'delete'];
+
+  function setState(s) {
+    const frame = document.getElementById('app-frame');
+    STATES.forEach(x => frame.classList.remove('state-' + x));
+    frame.classList.add('state-' + s);
+    STATES.forEach(x => {
+      const btn = document.getElementById('btn-' + x);
+      if (!btn) return;
+      btn.classList.toggle('bg-blue-50',    x === s);
+      btn.classList.toggle('text-blue-700', x === s);
+      btn.classList.toggle('font-semibold', x === s);
+    });
+    // re-trigger modal animation
+    if (s === 'add-form') {
+      const sheet = document.querySelector('.show-on-add-form > div');
+      if (sheet) {
+        sheet.classList.remove('modal-sheet');
+        void sheet.offsetWidth;
+        sheet.classList.add('modal-sheet');
+      }
+    }
+  }
+
+  function setViewport(v) {
+    const frame = document.getElementById('app-frame');
+    const btnM  = document.getElementById('btn-mobile');
+    const btnD  = document.getElementById('btn-desktop');
+    if (v === 'mobile') {
+      frame.style.width        = '375px';
+      frame.style.height       = '812px';
+      frame.style.borderRadius = '24px';
+      frame.style.margin       = '24px auto';
+      btnM.classList.add('bg-blue-50','text-blue-700','font-semibold');
+      btnD.classList.remove('bg-blue-50','text-blue-700','font-semibold');
+    } else {
+      frame.style.width        = '1280px';
+      frame.style.height       = '780px';
+      frame.style.borderRadius = '12px';
+      frame.style.margin       = '24px auto';
+      btnD.classList.add('bg-blue-50','text-blue-700','font-semibold');
+      btnM.classList.remove('bg-blue-50','text-blue-700','font-semibold');
+    }
+  }
+
+  // init
+  setState('default');
+  document.getElementById('btn-mobile').classList.add('bg-blue-50','text-blue-700','font-semibold');
+</script>
+</body>
+</html>
