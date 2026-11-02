@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage Hero — 3 Variants</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: #0f172a; color: #fff; }
+
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; height: 3rem; width: 100%; position: absolute; top: 0; left: 0; z-index: 10; }
+  .nav-logo { font-size: 0.9rem; font-weight: 700; color: #fff; opacity: 0.9; letter-spacing: -0.01em; display: flex; align-items: center; gap: 0.4rem; }
+  .nav-badge { font-size: 0.7rem; background: rgba(255,255,255,0.15); padding: 0.2rem 0.6rem; border-radius: 99px; }
+
+  .variant-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.5); padding: 0.5rem 1rem; text-align: center; background: #1e293b; }
+
+  /* ── VARIANT A: Dark Overlay — Hanoi Map bg + deep navy overlay ── */
+  .variant-a {
+    height: 100vh; position: relative; overflow: hidden;
+    background: url('https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/105.8342,21.0278,11,0/1200x800?access_token=PLACEHOLDER') center/cover no-repeat,
+                linear-gradient(135deg, #0c1524 0%, #0d2137 40%, #0a1e2e 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+
+  /* Hanoi street grid simulation — CSS-drawn map */
+  .map-bg-a {
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(100,180,200,0.08) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(100,180,200,0.06) 80px),
+      repeating-linear-gradient(45deg, transparent, transparent 119px, rgba(100,180,200,0.04) 120px),
+      linear-gradient(160deg, #071520 0%, #0d2233 30%, #091c2b 60%, #071520 100%);
+    z-index: 0;
+  }
+  .map-overlay-a {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(7,21,32,0.4) 0%, rgba(7,21,32,0.55) 40%, rgba(7,21,32,0.7) 100%);
+    z-index: 1;
+  }
+
+  .hero-a { position: relative; z-index: 2; text-align: center; max-width: 640px; padding: 2rem 1.5rem; }
+  .pill-a { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.3); color: #7dd3fc; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; padding: 0.3rem 0.8rem; border-radius: 99px; margin-bottom: 1.4rem; }
+  .pill-dot { width: 6px; height: 6px; background: #38bdf8; border-radius: 50%; }
+  .h1-a { font-size: 2.5rem; font-weight: 800; line-height: 1.2; color: #fff; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .sub-a { font-size: 1.05rem; color: rgba(255,255,255,0.72); line-height: 1.6; margin-bottom: 2rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .search-a {
+    display: flex; align-items: center; gap: 0; background: #fff; border-radius: 99px;
+    padding: 0.5rem 0.5rem 0.5rem 1.2rem; max-width: 520px; width: 100%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
+    margin: 0 auto;
+  }
+  .search-icon-a { color: #64748b; margin-right: 0.6rem; flex-shrink: 0; }
+  .search-a input { flex: 1; border: none; outline: none; font-size: 0.95rem; color: #0f172a; background: transparent; }
+  .search-a input::placeholder { color: #94a3b8; }
+  .search-btn-a { background: #0284c7; color: #fff; border: none; border-radius: 99px; padding: 0.55rem 1.3rem; font-size: 0.85rem; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+  .hint-a { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.8rem; }
+
+  /* Water ripple decorative dots */
+  .marker { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: rgba(56,189,248,0.8); box-shadow: 0 0 0 6px rgba(56,189,248,0.15), 0 0 0 12px rgba(56,189,248,0.06); }
+
+  /* ── VARIANT B: Warm Amber — Flood alert tone ── */
+  .variant-b {
+    height: 100vh; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .map-bg-b {
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(180,120,50,0.1) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(180,120,50,0.07) 80px),
+      linear-gradient(160deg, #1a0e04 0%, #2d1a06 40%, #1e1005 100%);
+    z-index: 0;
+  }
+  .map-overlay-b {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(26,14,4,0.3) 0%, rgba(26,14,4,0.6) 100%);
+    z-index: 1;
+  }
+  .hero-b { position: relative; z-index: 2; text-align: center; max-width: 620px; padding: 2rem 1.5rem; }
+  .pill-b { display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(251,146,60,0.15); border: 1px solid rgba(251,146,60,0.4); color: #fdba74; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; padding: 0.3rem 0.8rem; border-radius: 99px; margin-bottom: 1.4rem; }
+  .h1-b { font-size: 2.4rem; font-weight: 800; line-height: 1.2; color: #fff; margin-bottom: 0.9rem; letter-spacing: -0.02em; }
+  .h1-b em { color: #fb923c; font-style: normal; }
+  .sub-b { font-size: 1rem; color: rgba(255,255,255,0.68); line-height: 1.65; margin-bottom: 1.8rem; max-width: 460px; margin-left: auto; margin-right: auto; }
+  .search-b {
+    display: flex; align-items: center; gap: 0; background: #fff; border-radius: 12px;
+    padding: 0.6rem 0.6rem 0.6rem 1.2rem; max-width: 520px; width: 100%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(251,146,60,0.2);
+    margin: 0 auto;
+  }
+  .search-b input { flex: 1; border: none; outline: none; font-size: 0.95rem; color: #0f172a; background: transparent; }
+  .search-b input::placeholder { color: #94a3b8; }
+  .search-btn-b { background: #ea580c; color: #fff; border: none; border-radius: 8px; padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+  .hint-b { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 0.75rem; }
+  .stats-b { display: flex; gap: 2rem; justify-content: center; margin-top: 2rem; }
+  .stat-b { text-align: center; }
+  .stat-b-num { font-size: 1.4rem; font-weight: 800; color: #fb923c; }
+  .stat-b-label { font-size: 0.7rem; color: rgba(255,255,255,0.4); letter-spacing: 0.04em; text-transform: uppercase; margin-top: 0.1rem; }
+
+  /* ── VARIANT C: Clean Light — Map blurred, white card, accessible ── */
+  .variant-c {
+    height: 100vh; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: #f0f4f8;
+  }
+  .map-bg-c {
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(59,130,246,0.12) 50px),
+      repeating-linear-gradient(90deg, transparent, transparent 69px, rgba(59,130,246,0.08) 70px),
+      repeating-linear-gradient(45deg, transparent, transparent 99px, rgba(59,130,246,0.05) 100px),
+      linear-gradient(135deg, #dbeafe 0%, #e0f2fe 50%, #f0fdf4 100%);
+    z-index: 0;
+    filter: blur(1px);
+  }
+  .card-c {
+    position: relative; z-index: 2; background: rgba(255,255,255,0.96);
+    border-radius: 20px; padding: 2.5rem 2rem 2rem;
+    max-width: 580px; width: calc(100% - 3rem);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 24px 64px rgba(0,0,0,0.12);
+    text-align: center;
+  }
+  .icon-c { font-size: 2.2rem; margin-bottom: 0.8rem; }
+  .h1-c { font-size: 1.75rem; font-weight: 800; color: #0f172a; line-height: 1.3; margin-bottom: 0.7rem; letter-spacing: -0.02em; }
+  .sub-c { font-size: 0.95rem; color: #475569; line-height: 1.65; margin-bottom: 1.6rem; }
+  .search-c {
+    display: flex; align-items: center; gap: 0; background: #f8fafc; border: 1.5px solid #e2e8f0;
+    border-radius: 10px; padding: 0.5rem 0.5rem 0.5rem 1rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+  }
+  .search-c input { flex: 1; border: none; outline: none; font-size: 0.9rem; color: #0f172a; background: transparent; }
+  .search-c input::placeholder { color: #94a3b8; }
+  .search-btn-c { background: #2563eb; color: #fff; border: none; border-radius: 7px; padding: 0.55rem 1.1rem; font-size: 0.82rem; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+  .trust-c { display: flex; gap: 1.2rem; justify-content: center; margin-top: 1.4rem; align-items: center; }
+  .trust-c-item { display: flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; color: #64748b; }
+  .trust-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
+
+  /* tabs */
+  .tabs { display: flex; gap: 1rem; justify-content: center; padding: 1rem; border-bottom: 1px solid #1e293b; }
+  .tab { padding: 0.5rem 1.2rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: 1.5px solid transparent; }
+  .tab.active { background: #0284c7; color: #fff; }
+  .tab:not(.active) { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.1); }
+  .tab:not(.active):hover { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
+</style>
+</head>
+<body>
+
+<!-- Tab nav -->
+<div style="position:fixed;top:0;left:0;right:0;z-index:100;background:#0f172a;border-bottom:1px solid #1e293b;">
+  <div class="tabs">
+    <button class="tab active" onclick="show('a',this)">Variant A — Dark Map</button>
+    <button class="tab" onclick="show('b',this)">Variant B — Warm Alert</button>
+    <button class="tab" onclick="show('c',this)">Variant C — Light Card</button>
+  </div>
+</div>
+<div style="height:56px"></div>
+
+<!-- ═══════════════════════════════════════════════════════ VARIANT A -->
+<div id="panel-a" class="variant-a" style="height:calc(100vh - 56px)">
+  <div class="map-bg-a"></div>
+  <div class="map-overlay-a"></div>
+
+  <!-- Nav -->
+  <nav class="nav" style="top:0">
+    <div class="nav-logo">🌊 Flood Risk Hà Nội</div>
+    <span class="nav-badge">Beta</span>
+  </nav>
+
+  <!-- Decorative flood markers -->
+  <div class="marker" style="top:35%;left:22%;z-index:2;opacity:0.6"></div>
+  <div class="marker" style="top:55%;left:65%;z-index:2;opacity:0.5"></div>
+  <div class="marker" style="top:28%;left:58%;z-index:2;opacity:0.7"></div>
+  <div class="marker" style="top:70%;left:38%;z-index:2;opacity:0.4"></div>
+  <div class="marker" style="top:42%;left:80%;z-index:2;opacity:0.5"></div>
+
+  <div class="hero-a">
+    <div class="pill-a"><span class="pill-dot"></span> Hà Nội · 579 phường đang được theo dõi</div>
+    <h1 class="h1-a">Nhà bạn có đang<br>trong vùng ngập?</h1>
+    <p class="sub-a">Chúng tôi hiểu nỗi lo khi sống ở vùng hay bị ngập. Tra cứu ngay để bảo vệ ngôi nhà yêu quý của bạn.</p>
+    <div class="search-a">
+      <svg class="search-icon-a" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Tìm phường, ngõ... (VD: Mỹ Đình, Cầu Giấy)" />
+      <button class="search-btn-a">Tra cứu</button>
+    </div>
+    <p class="hint-a">Nhập tên phường, ngõ hoặc tên đường bất kỳ tại Hà Nội</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ VARIANT B -->
+<div id="panel-b" class="variant-b" style="display:none;height:calc(100vh - 56px)">
+  <div class="map-bg-b"></div>
+  <div class="map-overlay-b"></div>
+  <nav class="nav" style="top:0">
+    <div class="nav-logo" style="color:#fdba74">🌊 Flood Risk Hà Nội</div>
+    <span class="nav-badge" style="background:rgba(251,146,60,0.15);color:#fdba74;border:1px solid rgba(251,146,60,0.3)">Beta</span>
+  </nav>
+
+  <div class="marker" style="top:30%;left:25%;z-index:2;opacity:0.5;background:rgba(251,146,60,0.7);box-shadow:0 0 0 6px rgba(251,146,60,0.15),0 0 0 12px rgba(251,146,60,0.06)"></div>
+  <div class="marker" style="top:60%;left:68%;z-index:2;opacity:0.4;background:rgba(251,146,60,0.7);box-shadow:0 0 0 6px rgba(251,146,60,0.1)"></div>
+  <div class="marker" style="top:44%;left:78%;z-index:2;opacity:0.6;background:rgba(251,146,60,0.7);box-shadow:0 0 0 6px rgba(251,146,60,0.15)"></div>
+
+  <div class="hero-b">
+    <div class="pill-b">⚠ Mùa mưa đang đến — Kiểm tra ngay</div>
+    <h1 class="h1-b">Bạn biết <em>nhà mình</em><br>có hay bị ngập không?</h1>
+    <p class="sub-b">Hàng nghìn ngôi nhà tại Hà Nội bị ngập mỗi mùa mưa. Tra cứu địa chỉ của bạn để biết rủi ro và lịch sử ngập lụt.</p>
+    <div class="search-b">
+      <svg style="color:#94a3b8;margin-right:0.6rem;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Nhập tên phường hoặc ngõ..." />
+      <button class="search-btn-b">Kiểm tra</button>
+    </div>
+    <p class="hint-b">Dữ liệu từ 579 phường Hà Nội · Cập nhật liên tục</p>
+    <div class="stats-b">
+      <div class="stat-b"><div class="stat-b-num">579</div><div class="stat-b-label">Phường theo dõi</div></div>
+      <div class="stat-b"><div class="stat-b-num">90+</div><div class="stat-b-label">Điểm ngập ghi nhận</div></div>
+      <div class="stat-b"><div class="stat-b-num">360+</div><div class="stat-b-label">Bản ghi giá đất</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ VARIANT C -->
+<div id="panel-c" class="variant-c" style="display:none;height:calc(100vh - 56px)">
+  <div class="map-bg-c"></div>
+  <div class="card-c">
+    <div class="icon-c">🌊</div>
+    <h1 class="h1-c">Nhà bạn có nằm trong<br>vùng ngập lụt không?</h1>
+    <p class="sub-c">Chúng tôi hiểu nỗi lo khi sở hữu nhà ở khu vực hay bị ngập. Tra cứu địa chỉ để theo dõi và bảo vệ ngôi nhà yêu quý của bạn.</p>
+    <div class="search-c">
+      <svg style="color:#94a3b8;margin-right:0.6rem;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Tìm phường, ngõ... (VD: Mỹ Đình, Cầu Giấy)" />
+      <button class="search-btn-c">Tra cứu</button>
+    </div>
+    <div class="trust-c">
+      <div class="trust-c-item"><span class="trust-dot"></span> 579 phường Hà Nội</div>
+      <div class="trust-c-item"><span class="trust-dot"></span> Dữ liệu thực tế</div>
+      <div class="trust-c-item"><span class="trust-dot"></span> Miễn phí</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id, btn) {
+  ['a','b','c'].forEach(v => {
+    document.getElementById('panel-'+v).style.display = (v===id) ? 'flex' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+// flex for all variants so centering works
+document.getElementById('panel-a').style.display = 'flex';
+</script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIR-29 Mockup — Search UI (Wireframe C)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            border: 'hsl(214.3 31.8% 91.4%)',
+            ring:   'hsl(222.2 84% 4.9%)',
+            background: 'hsl(0 0% 100%)',
+            foreground: 'hsl(222.2 84% 4.9%)',
+            primary: { DEFAULT: 'hsl(221.2 83.2% 53.3%)', foreground: 'hsl(210 40% 98%)' },
+            muted:   { DEFAULT: 'hsl(210 40% 96.1%)', foreground: 'hsl(215.4 16.3% 46.9%)' },
+            destructive: { DEFAULT: 'hsl(0 84.2% 60.2%)', foreground: 'hsl(210 40% 98%)' },
+            accent:  { DEFAULT: 'hsl(210 40% 96.1%)', foreground: 'hsl(222.2 47.4% 11.2%)' },
+          },
+          boxShadow: {
+            'search': '0 2px 12px 0 rgba(0,0,0,0.12)',
+            'sheet':  '0 -4px 24px 0 rgba(0,0,0,0.10)',
+          },
+          keyframes: {
+            'sheet-up':   { from: { transform: 'translateY(100%)' }, to: { transform: 'translateY(0)' } },
+            'fade-in':    { from: { opacity: '0', transform: 'translateY(-4px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+            'fade-out':   { from: { opacity: '1' }, to: { opacity: '0' } },
+          },
+          animation: {
+            'sheet-up':   'sheet-up 0.28s cubic-bezier(0.32,0.72,0,1)',
+            'fade-in':    'fade-in 0.15s ease-out',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: #f1f5f9; }
+
+    /* ── State machine ───────────────────────────────── */
+    /* states: default | typing | selected | no-result | desktop */
+    .state-default  .show-on-typing,
+    .state-default  .show-on-selected,
+    .state-default  .show-on-noresult  { display: none !important; }
+
+    .state-typing   .show-on-default,
+    .state-typing   .show-on-selected,
+    .state-typing   .show-on-noresult  { display: none !important; }
+
+    .state-selected .show-on-default,
+    .state-selected .show-on-typing,
+    .state-selected .show-on-noresult  { display: none !important; }
+
+    .state-noresult .show-on-default,
+    .state-noresult .show-on-typing,
+    .state-noresult .show-on-selected  { display: none !important; }
+
+    /* map dim on typing / noresult */
+    .state-typing   #map-bg,
+    .state-noresult #map-bg            { opacity: 0.45; transition: opacity .2s; }
+
+    /* bottom sheet animation */
+    .sheet-panel { animation: sheet-up .28s cubic-bezier(0.32,0.72,0,1); }
+    .dropdown    { animation: fade-in .15s ease-out; }
+
+    /* desktop overrides (≥1024px) */
+    @media (min-width: 1024px) {
+      #search-bar-wrap { max-width: 100% !important; margin: 0 !important; border-radius: 0 !important; }
+      #bottom-sheet    { position: absolute; left: 0; bottom: 0; top: 0; width: 320px;
+                         border-radius: 0; box-shadow: 4px 0 24px rgba(0,0,0,.10);
+                         transform: none !important; height: 100%; }
+      #sheet-inner     { height: 100%; border-radius: 0; display: flex; flex-direction: column; }
+      #drag-handle     { display: none; }
+      #sheet-scroll    { flex: 1; overflow-y: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     STATE SWITCHER (dev tool — remove in production)
+════════════════════════════════════════════════════════ -->
+<div class="fixed top-2 right-2 z-[9999] flex flex-col gap-1 bg-white/90 backdrop-blur border border-slate-200 rounded-xl p-2 shadow-lg text-xs font-medium">
+  <span class="text-slate-400 px-1 mb-0.5 uppercase tracking-wide text-[10px]">State</span>
+  <button onclick="setState('default')"   class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-default">Default</button>
+  <button onclick="setState('typing')"    class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-typing">Typing</button>
+  <button onclick="setState('selected')"  class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-selected">Selected</button>
+  <button onclick="setState('noresult')"  class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-noresult">No Result</button>
+  <hr class="border-slate-200 my-0.5" />
+  <span class="text-slate-400 px-1 uppercase tracking-wide text-[10px]">Viewport</span>
+  <button onclick="setViewport('mobile')" class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-mobile">Mobile 375px</button>
+  <button onclick="setViewport('desktop')"class="state-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 text-left" id="btn-desktop">Desktop 1280px</button>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     APP FRAME
+════════════════════════════════════════════════════════ -->
+<div id="app-frame" class="mx-auto bg-white shadow-2xl overflow-hidden flex flex-col relative"
+     style="width:375px; height:812px; border-radius:24px; margin:24px auto;">
+
+  <!-- ── HEADER ────────────────────────────────────────── -->
+  <header class="flex items-center gap-2 px-4 h-12 bg-white border-b border-slate-100 shrink-0 z-20">
+    <span class="text-xl">🌊</span>
+    <span class="font-semibold text-slate-800 text-sm tracking-tight">Flood Risk Hà Nội</span>
+    <div class="ml-auto flex items-center gap-1">
+      <!-- hamburger -->
+      <button class="w-8 h-8 flex flex-col justify-center items-center gap-[5px] rounded-lg hover:bg-slate-100">
+        <span class="w-4 h-[2px] bg-slate-500 rounded"></span>
+        <span class="w-4 h-[2px] bg-slate-500 rounded"></span>
+        <span class="w-3 h-[2px] bg-slate-500 rounded self-start"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── SEARCH BAR WRAP ───────────────────────────────── -->
+  <div class="px-3 py-2 bg-white z-30 relative shrink-0" id="search-bar-wrap">
+
+    <!-- Search input row -->
+    <div class="relative flex items-center">
+      <!-- Input -->
+      <div class="flex items-center w-full rounded-full border border-slate-200 bg-white shadow-search px-4 h-10 gap-2 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+        <!-- search icon -->
+        <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+
+        <!-- placeholder / filled text -->
+        <span class="show-on-default text-slate-400 text-sm flex-1 truncate select-none">Nhập tên phường, ngõ... (VD: Tây Sơn)</span>
+        <span class="show-on-typing   text-slate-800 text-sm flex-1 truncate">tay son</span>
+        <span class="show-on-selected text-slate-800 text-sm flex-1 truncate flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-blue-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          Tây Sơn, Đống Đa
+        </span>
+        <span class="show-on-noresult text-slate-800 text-sm flex-1 truncate">abcxyz123</span>
+
+        <!-- clear button -->
+        <button onclick="setState('default')"
+                class="show-on-typing show-on-selected show-on-noresult w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center shrink-0 transition-colors">
+          <svg class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── DROPDOWN (typing / no-result) ──────────────── -->
+    <!-- v2: NO flood count, NO source. Only ward + district + has_flood_data indicator -->
+    <div class="dropdown show-on-typing absolute left-3 right-3 top-[calc(100%-8px)] bg-white rounded-2xl shadow-search border border-slate-100 overflow-hidden z-40 mt-1">
+      <!-- item 1 — hover, has_flood_data: true -->
+      <button onclick="setState('selected')" class="w-full flex items-center gap-3 px-4 py-3 bg-blue-50 hover:bg-blue-50 text-left transition-colors group">
+        <svg class="w-4 h-4 text-blue-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-medium text-slate-800 truncate">Tây Sơn</div>
+          <div class="text-xs text-slate-500 truncate">Đống Đa</div>
+        </div>
+        <span class="text-[11px] font-medium text-emerald-600 shrink-0 flex items-center gap-1">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+          Có dữ liệu
+        </span>
+      </button>
+      <div class="border-t border-slate-50"></div>
+      <!-- item 2 — has_flood_data: true -->
+      <button class="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left transition-colors">
+        <svg class="w-4 h-4 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-medium text-slate-800 truncate">Tây Hồ</div>
+          <div class="text-xs text-slate-500 truncate">Tây Hồ</div>
+        </div>
+        <span class="text-[11px] font-medium text-emerald-600 shrink-0 flex items-center gap-1">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+          Có dữ liệu
+        </span>
+      </button>
+      <div class="border-t border-slate-50"></div>
+      <!-- item 3 — has_flood_data: false -->
+      <button class="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left transition-colors">
+        <svg class="w-4 h-4 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-medium text-slate-800 truncate">Tây Mỗ</div>
+          <div class="text-xs text-slate-500 truncate">Nam Từ Liêm</div>
+        </div>
+        <span class="text-[11px] text-slate-400 shrink-0">— Chưa có</span>
+      </button>
+      <div class="border-t border-slate-50"></div>
+      <!-- item 4 — has_flood_data: false -->
+      <button class="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left transition-colors">
+        <svg class="w-4 h-4 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-medium text-slate-800 truncate">Tây La</div>
+          <div class="text-xs text-slate-500 truncate">Hà Đông</div>
+        </div>
+        <span class="text-[11px] text-slate-400 shrink-0">— Chưa có</span>
+      </button>
+      <div class="border-t border-slate-50"></div>
+      <!-- item 5 -->
+      <button class="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 text-left transition-colors">
+        <svg class="w-4 h-4 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-medium text-slate-800 truncate">Tây Tựu</div>
+          <div class="text-xs text-slate-500 truncate">Bắc Từ Liêm</div>
+        </div>
+        <span class="text-[11px] font-medium text-emerald-600 shrink-0 flex items-center gap-1">
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+          Có dữ liệu
+        </span>
+      </button>
+    </div>
+
+    <!-- ── NO-RESULT DROPDOWN ───────────────────────────── -->
+    <div class="dropdown show-on-noresult absolute left-3 right-3 top-[calc(100%-8px)] bg-white rounded-2xl shadow-search border border-slate-100 overflow-hidden z-40 mt-1 px-4 py-4">
+      <div class="flex items-start gap-3">
+        <span class="text-amber-500 mt-0.5 shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+        </span>
+        <div>
+          <p class="text-sm font-medium text-slate-800">Không tìm thấy địa điểm</p>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Thử tên phường hoặc quận, ví dụ:<br/>
+            <span class="text-blue-600 font-medium cursor-pointer hover:underline" onclick="setState('selected')">"Đống Đa"</span>,
+            <span class="text-blue-600 font-medium cursor-pointer hover:underline">"Hoàn Kiếm"</span>,
+            <span class="text-blue-600 font-medium cursor-pointer hover:underline">"Cầu Giấy"</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /search-bar-wrap -->
+
+  <!-- ── MAP ──────────────────────────────────────────── -->
+  <div class="flex-1 relative overflow-hidden" id="map-area">
+    <!-- map background -->
+    <div id="map-bg" class="absolute inset-0 transition-opacity duration-200"
+         style="background: linear-gradient(160deg,#e2eaf5 0%,#d4e1f0 40%,#c8d8eb 100%);">
+      <!-- grid lines (street grid illusion) -->
+      <svg class="absolute inset-0 w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#94a3b8" stroke-width="0.5"/>
+          </pattern>
+          <!-- diagonal roads -->
+          <pattern id="road" width="120" height="120" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="120" x2="120" y2="0" stroke="#b0c4de" stroke-width="1.5"/>
+            <line x1="-40" y1="120" x2="80" y2="0" stroke="#b0c4de" stroke-width="0.8"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)"/>
+        <rect width="100%" height="100%" fill="url(#road)"/>
+        <!-- main roads -->
+        <line x1="50" y1="0" x2="50" y2="100%" stroke="#94a3b8" stroke-width="2.5"/>
+        <line x1="150" y1="0" x2="150" y2="100%" stroke="#94a3b8" stroke-width="1.5"/>
+        <line x1="0" y1="80" x2="100%" y2="80" stroke="#94a3b8" stroke-width="2"/>
+        <line x1="0" y1="200" x2="100%" y2="200" stroke="#94a3b8" stroke-width="1.5"/>
+        <line x1="0" y1="330" x2="100%" y2="330" stroke="#94a3b8" stroke-width="2"/>
+        <!-- diagonal road -->
+        <line x1="0" y1="150" x2="375" y2="0" stroke="#94a3b8" stroke-width="1.5"/>
+        <line x1="0" y1="500" x2="375" y2="200" stroke="#94a3b8" stroke-width="1.5"/>
+        <!-- water body (Hồ Tây impression) -->
+        <ellipse cx="80" cy="160" rx="55" ry="35" fill="#b8d4ec" opacity="0.6"/>
+        <ellipse cx="260" cy="380" rx="30" ry="18" fill="#b8d4ec" opacity="0.5"/>
+        <!-- blocks -->
+        <rect x="55" y="95" width="55" height="35" rx="2" fill="#d1dde8" opacity="0.7"/>
+        <rect x="120" y="95" width="25" height="35" rx="2" fill="#d1dde8" opacity="0.7"/>
+        <rect x="155" y="95" width="45" height="35" rx="2" fill="#d1dde8" opacity="0.7"/>
+        <rect x="55" y="215" width="80" height="50" rx="2" fill="#d1dde8" opacity="0.7"/>
+        <rect x="155" y="215" width="60" height="50" rx="2" fill="#d1dde8" opacity="0.7"/>
+        <rect x="230" y="95" width="80" height="80" rx="2" fill="#d1dde8" opacity="0.7"/>
+        <rect x="55" y="345" width="100" height="60" rx="2" fill="#d1dde8" opacity="0.7"/>
+        <rect x="170" y="345" width="140" height="60" rx="2" fill="#d1dde8" opacity="0.7"/>
+      </svg>
+
+      <!-- 500m radius circle (shown when selected) -->
+      <div class="show-on-selected absolute"
+           style="left:calc(50% - 70px); top:calc(50% - 60px); width:140px; height:120px;">
+        <div class="w-full h-full rounded-full border-2 border-blue-400 bg-blue-100/30 flex items-center justify-center relative">
+          <!-- label -->
+          <span class="absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] text-blue-600 font-medium whitespace-nowrap bg-white/80 px-1.5 py-0.5 rounded-full border border-blue-100">500m bán kính</span>
+        </div>
+      </div>
+
+      <!-- flood markers: default + selected states -->
+      <!-- default: scattered markers -->
+      <div class="show-on-default">
+        <div class="absolute" style="left:42px; top:82px;">
+          <div class="w-5 h-5 rounded-full bg-red-500 border-2 border-white shadow-md flex items-center justify-center">
+            <div class="w-2 h-2 rounded-full bg-white"></div>
+          </div>
+        </div>
+        <div class="absolute" style="left:200px; top:130px;">
+          <div class="w-4 h-4 rounded-full bg-amber-400 border-2 border-white shadow-md flex items-center justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+          </div>
+        </div>
+        <div class="absolute" style="left:280px; top:240px;">
+          <div class="w-5 h-5 rounded-full bg-red-500 border-2 border-white shadow-md flex items-center justify-center">
+            <div class="w-2 h-2 rounded-full bg-white"></div>
+          </div>
+        </div>
+        <div class="absolute" style="left:130px; top:310px;">
+          <div class="w-4 h-4 rounded-full bg-amber-400 border-2 border-white shadow-md flex items-center justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+          </div>
+        </div>
+        <div class="absolute" style="left:85px; top:210px;">
+          <div class="w-3 h-3 rounded-full bg-green-500 border-2 border-white shadow-md"></div>
+        </div>
+      </div>
+
+      <!-- selected: concentrated markers inside radius -->
+      <div class="show-on-selected">
+        <!-- center pin -->
+        <div class="absolute" style="left:calc(50% - 10px); top:calc(50% - 20px);">
+          <div class="w-5 h-6 text-blue-600">
+            <svg viewBox="0 0 24 28" fill="currentColor"><path d="M12 0C7.58 0 4 3.58 4 8c0 6 8 16 8 16s8-10 8-16c0-4.42-3.58-8-8-8zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>
+          </div>
+        </div>
+        <div class="absolute" style="left:calc(50% - 50px); top:calc(50% - 30px);">
+          <div class="w-5 h-5 rounded-full bg-red-500 border-2 border-white shadow-md flex items-center justify-center">
+            <div class="w-2 h-2 rounded-full bg-white"></div>
+          </div>
+        </div>
+        <div class="absolute" style="left:calc(50% + 20px); top:calc(50% - 45px);">
+          <div class="w-5 h-5 rounded-full bg-red-500 border-2 border-white shadow-md flex items-center justify-center">
+            <div class="w-2 h-2 rounded-full bg-white"></div>
+          </div>
+        </div>
+        <div class="absolute" style="left:calc(50% + 40px); top:calc(50% - 5px);">
+          <div class="w-4 h-4 rounded-full bg-red-500 border-2 border-white shadow-md flex items-center justify-center">
+            <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+          </div>
+        </div>
+        <div class="absolute" style="left:calc(50% - 30px); top:calc(50% + 20px);">
+          <div class="w-4 h-4 rounded-full bg-amber-400 border-2 border-white shadow-md"></div>
+        </div>
+        <div class="absolute" style="left:calc(50% + 10px); top:calc(50% + 30px);">
+          <div class="w-4 h-4 rounded-full bg-red-500 border-2 border-white shadow-md"></div>
+        </div>
+      </div>
+
+      <!-- map label -->
+      <div class="show-on-default absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/70 backdrop-blur-sm text-xs text-slate-500 px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+        Hà Nội — Bản đồ rủi ro ngập lụt
+      </div>
+    </div><!-- /map-bg -->
+
+    <!-- map controls -->
+    <div class="absolute right-3 bottom-24 z-10 flex flex-col rounded-xl overflow-hidden border border-slate-200 shadow-md bg-white">
+      <button class="w-8 h-8 flex items-center justify-center hover:bg-slate-50 text-slate-600 text-lg font-light border-b border-slate-100">+</button>
+      <button class="w-8 h-8 flex items-center justify-center hover:bg-slate-50 text-slate-600 text-lg font-light border-b border-slate-100">−</button>
+      <button class="w-8 h-8 flex items-center justify-center hover:bg-slate-50 text-slate-500">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+      </button>
+    </div>
+
+    <!-- ── BOTTOM SHEET (selected state) ─────────────── -->
+    <div id="bottom-sheet"
+         class="show-on-selected sheet-panel absolute bottom-0 left-0 right-0 z-20">
+      <div id="sheet-inner" class="bg-white rounded-t-2xl shadow-sheet">
+
+        <!-- drag handle -->
+        <div id="drag-handle" class="flex justify-center pt-3 pb-1">
+          <div class="w-10 h-1 rounded-full bg-slate-200"></div>
+        </div>
+
+        <div id="sheet-scroll" class="px-4 pb-6 pt-2">
+          <!-- ward header — v2: NO flood count, NO event details, NO source -->
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h2 class="text-base font-semibold text-slate-900 mb-0.5">Tây Sơn</h2>
+              <p class="text-xs text-slate-500">Đống Đa · Hà Nội</p>
+            </div>
+            <button onclick="setState('default')" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+
+          <!-- divider -->
+          <div class="h-px bg-slate-100 mb-3"></div>
+
+          <!-- has_flood_data signal + data_year_range — v2 -->
+          <div class="bg-emerald-50 border border-emerald-100 rounded-xl px-4 py-3 mb-4 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-emerald-800">Chúng tôi có dữ liệu cho khu vực này</p>
+              <p class="text-xs text-emerald-600 mt-0.5">Dữ liệu ghi nhận từ 2019 đến 2024</p>
+            </div>
+          </div>
+
+          <!-- blur teaser — NO event details, NO source -->
+          <div class="relative rounded-xl overflow-hidden mb-4 bg-slate-50 px-4 py-3">
+            <div class="flex flex-col gap-2 blur-sm pointer-events-none select-none">
+              <div class="h-3 bg-slate-200 rounded w-4/5"></div>
+              <div class="h-3 bg-slate-200 rounded w-3/5"></div>
+              <div class="h-3 bg-slate-200 rounded w-2/3"></div>
+              <div class="h-3 bg-slate-200 rounded w-1/2"></div>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span class="text-[11px] text-slate-600 bg-white/95 px-3 py-1.5 rounded-full border border-slate-200 shadow-sm font-medium">🔒 Chi tiết có sau khi thanh toán</span>
+            </div>
+          </div>
+
+          <!-- CTA button -->
+          <button class="w-full h-11 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white text-sm font-semibold rounded-xl shadow-sm flex items-center justify-center gap-2 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.962-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+            Xem báo cáo đầy đủ
+            <span class="ml-auto bg-blue-500 text-white text-xs px-2 py-0.5 rounded-lg font-medium">35.000 ₫</span>
+          </button>
+
+          <p class="text-[10px] text-slate-400 text-center mt-2">Thanh toán 1 lần · Lịch sử 5 năm · Bản đồ chi tiết</p>
+        </div>
+      </div>
+    </div><!-- /bottom-sheet -->
+
+  </div><!-- /map-area -->
+
+</div><!-- /app-frame -->
+
+<!-- ── LEGEND ─────────────────────────────────────────── -->
+<div class="mx-auto mt-4 mb-8 flex flex-wrap gap-3 justify-center text-xs text-slate-500" style="max-width:375px">
+  <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span> Ngập nặng ≥5</span>
+  <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span> Ngập vừa 1–4</span>
+  <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span> Không có dữ liệu</span>
+  <span class="flex items-center gap-1.5">
+    <svg class="w-3 h-3 text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
+    Bán kính 500m
+  </span>
+</div>
+
+<script>
+  const STATES = ['default','typing','selected','noresult'];
+
+  function setState(s) {
+    const frame = document.getElementById('app-frame');
+    STATES.forEach(x => frame.classList.remove('state-' + x));
+    frame.classList.add('state-' + s);
+    // update switcher highlight
+    STATES.forEach(x => {
+      const btn = document.getElementById('btn-' + x);
+      if (btn) btn.classList.toggle('bg-blue-50', x === s);
+      if (btn) btn.classList.toggle('text-blue-700', x === s);
+      if (btn) btn.classList.toggle('font-semibold', x === s);
+    });
+    // re-trigger sheet animation
+    if (s === 'selected') {
+      const sheet = document.getElementById('bottom-sheet');
+      sheet.classList.remove('sheet-panel');
+      void sheet.offsetWidth;
+      sheet.classList.add('sheet-panel');
+    }
+  }
+
+  function setViewport(v) {
+    const frame = document.getElementById('app-frame');
+    const btnM = document.getElementById('btn-mobile');
+    const btnD = document.getElementById('btn-desktop');
+    if (v === 'mobile') {
+      frame.style.width  = '375px';
+      frame.style.height = '812px';
+      frame.style.borderRadius = '24px';
+      frame.style.margin = '24px auto';
+      btnM.classList.add('bg-blue-50','text-blue-700','font-semibold');
+      btnD.classList.remove('bg-blue-50','text-blue-700','font-semibold');
+    } else {
+      frame.style.width  = '1280px';
+      frame.style.height = '780px';
+      frame.style.borderRadius = '12px';
+      frame.style.margin = '24px auto';
+      btnD.classList.add('bg-blue-50','text-blue-700','font-semibold');
+      btnM.classList.remove('bg-blue-50','text-blue-700','font-semibold');
+    }
+  }
+
+  // init
+  setState('default');
+  document.getElementById('btn-mobile').classList.add('bg-blue-50','text-blue-700','font-semibold');
+</script>
+</body>
+</html>

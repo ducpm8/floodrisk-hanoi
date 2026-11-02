@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIR-38 Mockup — Map MVP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    .screen { display: none; }
+    .screen.active { display: flex; }
+    .tab-btn { transition: all .15s; }
+    .tab-btn.active { background: #1e40af; color: white; }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen p-6">
+
+  <!-- Nav tabs -->
+  <div class="max-w-4xl mx-auto mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <h1 class="text-lg font-bold text-slate-900">FIR-38 Mockup — Map MVP</h1>
+        <p class="text-xs text-slate-500">Text proximity list (default) + admin Google Maps toggle</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="show('home-text')" class="tab-btn active text-xs font-semibold px-3 py-1.5 rounded-lg border border-blue-800">🏠 Home (text mode)</button>
+        <button onclick="show('home-no-ward')" class="tab-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700">🏠 Home (no ward)</button>
+        <button onclick="show('admin')" class="tab-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700">⚙️ Admin toggle</button>
+        <button onclick="show('home-google')" class="tab-btn text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700">🗺️ Home (Google mode)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 1: Homepage — text mode, ward selected
+  ============================================================ -->
+  <div id="home-text" class="screen active max-w-sm mx-auto flex-col" style="height:780px;">
+    <!-- Phone frame -->
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200" style="height:780px;">
+
+      <!-- Status bar -->
+      <div class="bg-white px-5 pt-3 pb-1 flex justify-between items-center">
+        <span class="text-xs font-semibold text-slate-800">9:41</span>
+        <div class="flex gap-1 items-center">
+          <div class="w-4 h-2.5 border border-slate-700 rounded-sm relative"><div class="absolute inset-0.5 right-0 bg-slate-700 rounded-sm" style="right:1px"></div></div>
+        </div>
+      </div>
+
+      <!-- Search bar -->
+      <div class="px-4 py-2 bg-white shadow-sm z-10">
+        <div class="flex items-center gap-2 bg-slate-100 rounded-2xl px-3 py-2.5">
+          <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span class="text-sm text-slate-800 font-medium">Phường Cầu Giấy, Cầu Giấy</span>
+          <div class="ml-auto w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+            <svg class="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proximity list area -->
+      <div class="flex-1 overflow-y-auto bg-slate-50 px-4 py-4">
+        <p class="text-[11px] text-slate-400 uppercase tracking-wide font-medium mb-3">4 điểm ngập gần nhất · bán kính 3 km</p>
+
+        <!-- Zone 1 — severe -->
+        <div class="border border-red-100 bg-red-50 rounded-xl px-3 py-2.5 flex items-start gap-3 mb-2">
+          <div class="mt-1 shrink-0"><span class="inline-block w-2.5 h-2.5 rounded-full bg-red-500"></span></div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-800 truncate">Ngõ Xã Đàn, Đống Đa</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Đống Đa · 15/07/2023</p>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="text-xs font-semibold text-slate-700">420 m</p>
+            <p class="text-[10px] font-medium mt-0.5 text-red-600">Nghiêm trọng</p>
+          </div>
+        </div>
+
+        <!-- Zone 2 — moderate -->
+        <div class="border border-orange-100 bg-orange-50 rounded-xl px-3 py-2.5 flex items-start gap-3 mb-2">
+          <div class="mt-1 shrink-0"><span class="inline-block w-2.5 h-2.5 rounded-full bg-orange-500"></span></div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-800 truncate">Phố Khâm Thiên, Đống Đa</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Đống Đa · 02/08/2023</p>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="text-xs font-semibold text-slate-700">780 m</p>
+            <p class="text-[10px] font-medium mt-0.5 text-orange-600">Trung bình</p>
+          </div>
+        </div>
+
+        <!-- Zone 3 — moderate -->
+        <div class="border border-orange-100 bg-orange-50 rounded-xl px-3 py-2.5 flex items-start gap-3 mb-2">
+          <div class="mt-1 shrink-0"><span class="inline-block w-2.5 h-2.5 rounded-full bg-orange-500"></span></div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-800 truncate">Phường Yên Hòa, Cầu Giấy</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Cầu Giấy · 12/09/2020</p>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="text-xs font-semibold text-slate-700">1.1 km</p>
+            <p class="text-[10px] font-medium mt-0.5 text-orange-600">Trung bình</p>
+          </div>
+        </div>
+
+        <!-- Zone 4 — minor -->
+        <div class="border border-yellow-100 bg-yellow-50 rounded-xl px-3 py-2.5 flex items-start gap-3 mb-2">
+          <div class="mt-1 shrink-0"><span class="inline-block w-2.5 h-2.5 rounded-full bg-yellow-400"></span></div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-800 truncate">Phường Trung Hòa, Cầu Giấy</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Cầu Giấy · 25/07/2019</p>
+          </div>
+          <div class="text-right shrink-0">
+            <p class="text-xs font-semibold text-slate-700">2.4 km</p>
+            <p class="text-[10px] font-medium mt-0.5 text-yellow-600">Nhẹ</p>
+          </div>
+        </div>
+
+        <!-- Info note -->
+        <div class="mt-4 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2.5">
+          <p class="text-[11px] text-blue-700 leading-relaxed">
+            💡 Dữ liệu lịch sử 2019–2023. Chọn phường để xem báo cáo đầy đủ kèm xu hướng giá bất động sản.
+          </p>
+        </div>
+      </div>
+
+      <!-- Bottom home indicator -->
+      <div class="bg-white h-6 flex items-center justify-center">
+        <div class="w-28 h-1 rounded-full bg-slate-200"></div>
+      </div>
+    </div>
+    <p class="text-center text-xs text-slate-400 mt-3">map_mode = "text" (default)</p>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 2: Homepage — no ward selected yet
+  ============================================================ -->
+  <div id="home-no-ward" class="screen max-w-sm mx-auto flex-col" style="height:780px;">
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200" style="height:780px;">
+      <div class="bg-white px-5 pt-3 pb-1 flex justify-between items-center">
+        <span class="text-xs font-semibold text-slate-800">9:41</span>
+      </div>
+      <div class="px-4 py-2 bg-white shadow-sm z-10">
+        <div class="flex items-center gap-2 bg-slate-100 rounded-2xl px-3 py-2.5">
+          <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span class="text-sm text-slate-400">Tìm kiếm phường, quận...</span>
+        </div>
+      </div>
+      <!-- Empty state -->
+      <div class="flex-1 bg-slate-50 flex flex-col items-center justify-center gap-2 px-8 text-center">
+        <svg class="w-12 h-12 text-slate-200" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+        </svg>
+        <p class="text-sm text-slate-400">Tìm kiếm địa chỉ để xem lịch sử ngập lụt</p>
+      </div>
+      <div class="bg-white h-6 flex items-center justify-center">
+        <div class="w-28 h-1 rounded-full bg-slate-200"></div>
+      </div>
+    </div>
+    <p class="text-center text-xs text-slate-400 mt-3">Trạng thái ban đầu — chưa chọn phường</p>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 3: Admin crawl page — map mode toggle card
+  ============================================================ -->
+  <div id="admin" class="screen max-w-lg mx-auto flex-col">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+
+      <!-- Header -->
+      <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-2">
+        <span class="text-xl">🌊</span>
+        <span class="text-sm text-slate-500">Flood Risk HN</span>
+        <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+        <span class="text-sm font-medium text-slate-800">Quản lý crawl</span>
+      </header>
+
+      <div class="px-4 py-5 space-y-4 bg-slate-50">
+
+        <!-- Page title -->
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h1 class="text-lg font-semibold text-slate-900">Quản lý Crawl Dữ Liệu</h1>
+            <p class="text-xs text-slate-500 mt-0.5">Kích hoạt thủ công sau mưa lớn</p>
+          </div>
+          <button class="flex items-center gap-1.5 bg-blue-600 text-white text-xs font-semibold px-3 py-2 rounded-xl shadow-sm">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+            Thêm nguồn
+          </button>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-2">
+          <div class="bg-white border border-slate-100 rounded-xl p-3">
+            <p class="text-[10px] text-slate-400 uppercase tracking-wide mb-0.5">Tổng nguồn</p>
+            <p class="text-sm font-semibold text-slate-800">6</p>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3">
+            <p class="text-[10px] text-emerald-600 uppercase tracking-wide mb-0.5">Đang bật</p>
+            <p class="text-sm font-semibold text-emerald-700">4</p>
+          </div>
+          <div class="bg-red-50 border border-red-100 rounded-xl p-3">
+            <p class="text-[10px] text-red-400 uppercase tracking-wide mb-0.5">Lỗi gần nhất</p>
+            <p class="text-sm font-semibold text-red-600">1 nguồn</p>
+          </div>
+        </div>
+
+        <!-- ★ MAP MODE TOGGLE CARD (FIR-38) — state: text mode ON -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm" id="toggle-card">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <p class="text-sm font-semibold text-slate-900">Chế độ bản đồ</p>
+              <p class="text-[11px] text-slate-400 mt-0.5" id="toggle-label">📋 Danh sách văn bản đang bật</p>
+            </div>
+            <div class="flex items-center gap-3 shrink-0">
+              <span class="text-xs text-slate-500">Văn bản</span>
+              <!-- Toggle switch -->
+              <button
+                onclick="toggleMap()"
+                id="map-toggle"
+                class="w-11 h-6 rounded-full flex items-center px-0.5 transition-colors bg-slate-200"
+                aria-label="Toggle map mode"
+              >
+                <div id="map-knob" class="w-5 h-5 rounded-full bg-white shadow transition-transform"></div>
+              </button>
+              <span class="text-xs text-slate-500">Google Maps</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sample source card -->
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">📰 Tin tức</span>
+            <div class="flex-1 h-px bg-slate-200"></div>
+            <span class="text-[10px] text-slate-400">3 nguồn</span>
+          </div>
+          <div class="space-y-2">
+            <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm">
+              <div class="flex items-start justify-between gap-2 mb-2.5">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-sm font-semibold text-slate-900">vnexpress</span>
+                    <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-50 text-amber-700">news</span>
+                  </div>
+                  <p class="text-[10px] text-slate-400 mt-0.5">🔗 vnexpress.net/ha-noi-ngap</p>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <span class="text-[10px] text-slate-500">Bật</span>
+                  <button class="w-9 h-5 rounded-full flex items-center px-0.5 bg-emerald-500">
+                    <div class="w-4 h-4 rounded-full bg-white shadow translate-x-4"></div>
+                  </button>
+                </div>
+              </div>
+              <div class="h-px bg-slate-100 mb-2.5"></div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium bg-emerald-50 text-emerald-700">Thành công</span>
+                <button class="text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1.5 rounded-xl flex items-center gap-1">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"/></svg>
+                  Chạy ngay
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p class="text-center text-xs text-slate-400 mt-3">Admin /crawl page — toggle card at top (FIR-38)</p>
+  </div>
+
+  <!-- ============================================================
+       SCREEN 4: Homepage — Google Maps mode
+  ============================================================ -->
+  <div id="home-google" class="screen max-w-sm mx-auto flex-col" style="height:780px;">
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col border border-slate-200" style="height:780px;">
+      <div class="bg-white px-5 pt-3 pb-1 flex justify-between items-center">
+        <span class="text-xs font-semibold text-slate-800">9:41</span>
+      </div>
+      <div class="px-4 py-2 bg-white shadow-sm z-10">
+        <div class="flex items-center gap-2 bg-slate-100 rounded-2xl px-3 py-2.5">
+          <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <span class="text-sm text-slate-800 font-medium">Phường Cầu Giấy, Cầu Giấy</span>
+        </div>
+      </div>
+      <!-- Fake map placeholder -->
+      <div class="flex-1 relative bg-slate-200 flex items-center justify-center">
+        <!-- Map grid lines -->
+        <svg class="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+          <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#94a3b8" stroke-width="0.5"/></pattern></defs>
+          <rect width="100%" height="100%" fill="url(#grid)"/>
+        </svg>
+        <!-- Roads simulation -->
+        <svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0" y1="45%" x2="100%" y2="45%" stroke="#fff" stroke-width="8" opacity="0.7"/>
+          <line x1="0" y1="60%" x2="100%" y2="60%" stroke="#fff" stroke-width="5" opacity="0.5"/>
+          <line x1="35%" y1="0" x2="35%" y2="100%" stroke="#fff" stroke-width="8" opacity="0.7"/>
+          <line x1="65%" y1="0" x2="65%" y2="100%" stroke="#fff" stroke-width="5" opacity="0.5"/>
+        </svg>
+        <!-- Severity circles -->
+        <div class="absolute" style="left:35%;top:38%;transform:translate(-50%,-50%)">
+          <div class="w-20 h-20 rounded-full bg-red-500 opacity-30 border-2 border-red-500"></div>
+        </div>
+        <div class="absolute" style="left:58%;top:55%;transform:translate(-50%,-50%)">
+          <div class="w-16 h-16 rounded-full bg-orange-500 opacity-25 border-2 border-orange-500"></div>
+        </div>
+        <div class="absolute" style="left:70%;top:35%;transform:translate(-50%,-50%)">
+          <div class="w-12 h-12 rounded-full bg-yellow-400 opacity-25 border-2 border-yellow-400"></div>
+        </div>
+        <!-- Google Maps branding placeholder -->
+        <div class="absolute bottom-2 right-2 bg-white rounded px-1.5 py-0.5 shadow text-[9px] text-slate-500 font-medium">Google Maps</div>
+        <!-- Center pin -->
+        <div class="relative z-10 flex flex-col items-center">
+          <div class="w-6 h-6 rounded-full bg-blue-600 border-2 border-white shadow-lg"></div>
+          <div class="w-0 h-0 border-l-4 border-r-4 border-t-6 border-l-transparent border-r-transparent border-t-blue-600 -mt-0.5"></div>
+        </div>
+      </div>
+      <div class="bg-white h-6 flex items-center justify-center">
+        <div class="w-28 h-1 rounded-full bg-slate-200"></div>
+      </div>
+    </div>
+    <p class="text-center text-xs text-slate-400 mt-3">map_mode = "google" — admin toggled on</p>
+  </div>
+
+  <script>
+    const tabs = ['home-text', 'home-no-ward', 'admin', 'home-google'];
+    const btns = document.querySelectorAll('.tab-btn');
+
+    function show(id) {
+      tabs.forEach(t => document.getElementById(t).classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btns.forEach((b, i) => {
+        b.classList.toggle('active', tabs[i] === id);
+        if (!b.classList.contains('active')) {
+          b.classList.add('bg-white', 'text-slate-700', 'border-slate-300');
+          b.classList.remove('border-blue-800');
+        } else {
+          b.classList.remove('bg-white', 'text-slate-700', 'border-slate-300');
+          b.classList.add('border-blue-800');
+        }
+      });
+    }
+
+    let googleMode = false;
+    function toggleMap() {
+      googleMode = !googleMode;
+      const toggle = document.getElementById('map-toggle');
+      const knob = document.getElementById('map-knob');
+      const label = document.getElementById('toggle-label');
+      if (googleMode) {
+        toggle.classList.replace('bg-slate-200', 'bg-blue-600');
+        knob.classList.add('translate-x-5');
+        label.textContent = '🗺️ Google Maps đang bật';
+      } else {
+        toggle.classList.replace('bg-blue-600', 'bg-slate-200');
+        knob.classList.remove('translate-x-5');
+        label.textContent = '📋 Danh sách văn bản đang bật';
+      }
+    }
+  </script>
+</body>
+</html>

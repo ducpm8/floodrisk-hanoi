@@ -1,0 +1,258 @@
+[
+  {
+    "loc": "Dương Đình Nghệ",
+    "ward": "phuong yen hoa",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Đường Ngọc Lâm (từ ngã ba Long Biên 1 đến XN MTĐT Gia Lâm)",
+    "ward": "phuong long bien cu",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Hoa Bằng (ngõ 99)",
+    "ward": "phuong hang bong",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Hoàng Quốc Việt (đại học Điện Lực)",
+    "ward": "phuong bach khoa",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Khu TT18, P.Phú La",
+    "ward": "phuong phu la",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Phan Văn Trường (cổng chợ - doanh trại quân đội)",
+    "ward": "phuong phuc tan",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Phố Xốm - đoạn đối diện tòa nhà Hải Phát",
+    "ward": "phuong phu thuong",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Phú Xá (ngã 3 Phú Xá - Phúc Hoa)",
+    "ward": "xa phuc hoa",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Quang Trung (đối diện nhà ga La Khê)",
+    "ward": "phuong la khe",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Trần Bình (UBND phường Mai Dịch đến bệnh viện 19/8)",
+    "ward": "phuong mai dich",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Yên Nghĩa (từ BX Yên Nghĩa đến ngã ba Ba La)",
+    "ward": "phuong yen nghia",
+    "district": "Unknown",
+    "depth_cm": 25,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Bùi Xương Trạch",
+    "ward": "phuong dai kim",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Đỗ Đức Dục",
+    "ward": "phuong phuc xa",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Đức Giang",
+    "ward": "phuong duc giang",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Dương Đình Nghệ - Nam Trung Yên (sau KeangNam)",
+    "ward": "trung hoa",
+    "district": "Cầu Giấy",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Huỳnh Thúc Kháng",
+    "ward": "dong da",
+    "district": "Đống Đa",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Khu đô thị Văn Quán",
+    "ward": "phuong van quan",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Lê Đức Thọ (quảng trường SVĐ Mỹ Đình)",
+    "ward": "phuong my dinh 1",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Mạc Thị Bưởi",
+    "ward": "phuong hang bai",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Minh Khai (chân cầu Vĩnh Tuy)",
+    "ward": "phuong minh khai",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Ngã ba Mỹ Đình - Thiên Hiền",
+    "ward": "my dinh ii",
+    "district": "Nam Từ Liêm",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Ngọc Lâm",
+    "ward": "phuong ngoc lam",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Nguyễn Trãi (trước Đại học KHXH&NV)",
+    "ward": "thanh xuan trung",
+    "district": "Thanh Xuân",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Phan Văn Trường",
+    "ward": "cau giay",
+    "district": "Cầu Giấy",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Quang Trung (Hà Đông)",
+    "ward": "phuong quang trung",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Tây Mỗ",
+    "ward": "phuong tay mo",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Thành Công (trước UBND phường)",
+    "ward": "phuong thanh cong",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Thiên Đức",
+    "ward": "xa thien duc",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Thụy Khuê (trường Chu Văn An - Dốc La Pho)",
+    "ward": "phuong thuy khue",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Tô Hiệu",
+    "ward": "xa to hieu",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Văn Tiến Dũng",
+    "ward": "phuong yen so",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  },
+  {
+    "loc": "Xuân Phương",
+    "ward": "phuong xuan phuong",
+    "district": "Unknown",
+    "depth_cm": 20,
+    "severity": "moderate",
+    "date": "2025-10-07"
+  }
+]

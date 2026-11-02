@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__atlassian__getJiraIssue",
+      "mcp__atlassian__editJiraIssue",
+      "mcp__atlassian__addCommentToJiraIssue",
+      "mcp__atlassian__searchJiraIssuesUsingJql",
+      "mcp__plugin_context-mode_context-mode__ctx_execute_file",
+      "mcp__atlassian__createJiraIssue",
+      "mcp__plugin_context-mode_context-mode__ctx_batch_execute",
+      "mcp__plugin_context-mode_context-mode__ctx_search",
+      "mcp__plugin_context-mode_context-mode__ctx_execute",
+      "mcp__atlassian__getTransitionsForJiraIssue",
+      "mcp__atlassian__transitionJiraIssue",
+      "Bash(DATABASE_SYNC_URL=postgresql+psycopg2://flood:flood@localhost:5432/flooddb alembic upgrade *)",
+      "Bash(DATABASE_URL=postgresql+asyncpg://flood:flood@localhost:5432/flooddb uvicorn api.main:app --port 8000)",
+      "Bash(curl -s http://localhost:8000/api/admin/crawl-sources)",
+      "Bash(python -m json.tool)",
+      "Bash(curl -s -X POST http://localhost:8000/api/admin/crawl-trigger/thoatnuochanoi)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -X POST http://localhost:8000/api/admin/crawl-trigger/thoatnuochanoi)",
+      "Bash(python -c ' *)",
+      "PowerShell(Stop-Process *)",
+      "Bash(uvicorn api.main:app --port 8000)",
+      "Bash(PGPASSWORD=flood psql *)",
+      "Bash(python *)",
+      "Bash(pkill -f \"uvicorn api.main\")"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "shadcn"
+  ]
+}

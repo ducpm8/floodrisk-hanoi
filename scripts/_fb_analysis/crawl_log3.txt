@@ -1,0 +1,23 @@
+{"type": "start", "url": "https://www.facebook.com/profile/100069422482221/search?q=ng%E1%BA%ADp", "max_posts": 10, "mode": "cookies"}
+{"type": "navigating", "url": "https://www.facebook.com/profile/100069422482221/search?q=ng%E1%BA%ADp"}
+{"type": "browser_ready"}
+{"type": "expanded", "count": 1}
+{"type": "post_staged", "post_id": "1280379937619410", "preview": "VOV Giao Thông\nMở rộng số lượng hồ điều hòa, Hà Nội sẽ tăng khả năng chống ngập?", "staged_so_far": 1}
+{"type": "post_staged", "post_id": "txt_00af8a40e49cb508", "preview": "VOV Giao Thông\nCác bác tài đang di chuyển ngoài đường nếu gặp tình trạng ngập ún", "staged_so_far": 2}
+{"type": "scroll", "n": 1, "staged_so_far": 2}
+{"type": "expanded", "count": 3}
+{"type": "post_staged", "post_id": "1252281213762616", "preview": "VOV Giao Thông\nVừa mưa đầu mùa, người Hà Nội đã phập phồng lo ngập", "staged_so_far": 3}
+{"type": "post_staged", "post_id": "1110509127939826", "preview": "VOV Giao Thông\nĐoạn Võ Chí Công qua khu vực Lotte Tây Hồ vẫn còn ngập, các bác t", "staged_so_far": 4}
+{"type": "post_staged", "post_id": "1117798697210869", "preview": "VOV Giao Thông\nCẬP NHẬT TÌNH HÌNH NGẬP TRÊN CAO TỐC HÀ NỘI – THÁI NGUYÊN (SÁNG 1", "staged_so_far": 5}
+{"type": "post_staged", "post_id": "1115290667461672", "preview": "VOV Giao Thông\nTình hình giao thông, mưa ngập giờ cao điểm chiều 7/10/2025\n Từ b", "staged_so_far": 6}
+{"type": "scroll", "n": 2, "staged_so_far": 6}
+{"type": "expanded", "count": 4}
+{"type": "post_staged", "post_id": "1114911320832940", "preview": "VOV Giao Thông\nGiờ cao điểm sáng 7/10 bắt đầu bằng rất nhiều thông tin ngập. Dướ", "staged_so_far": 7}
+{"type": "post_staged", "post_id": "1109608694696536", "preview": "VOV Giao Thông\nGiao thông giờ cao điểm sáng 1/10/2025:\n Đội CSGT số 2 cảnh báo đ", "staged_so_far": 8}
+{"type": "post_staged", "post_id": "1115821377408601", "preview": "VOV Giao Thông\nGiờ cao điểm sáng 8/10/2025\n Đường Lê Quang Đạo - Tân Mỹ (trước c", "staged_so_far": 9}
+{"type": "scroll", "n": 3, "staged_so_far": 9}
+{"type": "expanded", "count": 3}
+{"type": "post_staged", "post_id": "1108746828116056", "preview": "VOV Giao Thông\nMưa lớn khiến khu vực quanh sân vận động Mỹ Đình ngập sâu.\n---\nP/", "staged_so_far": 10}
+{"type": "done", "staged": 10, "skipped": 0}
+{"type": "extraction_start", "posts": 10}
+{"type": "extraction_done", "flood_events_added": 48, "errors": []}

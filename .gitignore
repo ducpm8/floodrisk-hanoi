@@ -1,0 +1,23 @@
+.env
+
+# YouTube + Facebook + Instagram auth cookies (FIR-49/FIR-83)
+# Bearer-token-equivalent for Google / Meta sessions — never commit.
+yt_cookies.json
+yt_cookies.txt
+fb_cookies.json
+ig_cookies.json
+
+*.pyc
+__pycache__/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+node_modules/
+.next/
+scripts/seed_errors.log
+scripts/seed_results.json
+scripts/spike_nlp_extraction.md
+.gstack/

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage Hero — Approved Direction (Variant A + OSM bg)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; }
+
+  /* ── Full-screen hero ── */
+  .page {
+    height: 100vh; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+
+  /* Static OSM tile background — dark-toned Hanoi map */
+  /* In production: replace with actual OSM static image or Mapbox static */
+  .map-bg {
+    position: absolute; inset: 0; z-index: 0;
+    /* Simulate OSM tile appearance: light beige roads on grey canvas */
+    background:
+      /* major road grid at ~zoom 11 scale */
+      repeating-linear-gradient(0deg, transparent, transparent 44px, rgba(180,170,155,0.25) 45px, rgba(180,170,155,0.25) 47px, transparent 48px),
+      repeating-linear-gradient(90deg, transparent, transparent 64px, rgba(180,170,155,0.2) 65px, rgba(180,170,155,0.2) 67px, transparent 68px),
+      /* arterial roads — diagonal */
+      repeating-linear-gradient(35deg, transparent, transparent 119px, rgba(190,175,140,0.15) 120px, rgba(190,175,140,0.15) 122px, transparent 123px),
+      repeating-linear-gradient(-35deg, transparent, transparent 159px, rgba(190,175,140,0.12) 160px, rgba(190,175,140,0.12) 162px, transparent 163px),
+      /* base: dark olive like OSM dark style */
+      linear-gradient(160deg, #1a1f14 0%, #1c2318 30%, #171d13 60%, #1a2016 100%);
+    filter: saturate(0.6);
+  }
+
+  /* Dark overlay for text legibility */
+  .map-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(
+      180deg,
+      rgba(10, 15, 10, 0.35) 0%,
+      rgba(10, 15, 10, 0.55) 40%,
+      rgba(10, 15, 10, 0.72) 100%
+    );
+  }
+
+  /* Decorative: flood location dots on the map */
+  .flood-dot {
+    position: absolute; border-radius: 50%; z-index: 2;
+    width: 8px; height: 8px;
+    background: rgba(56, 189, 248, 0.85);
+    box-shadow: 0 0 0 5px rgba(56,189,248,0.12), 0 0 0 10px rgba(56,189,248,0.05);
+  }
+
+  /* Nav bar */
+  nav {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 1.5rem; height: 48px;
+  }
+  .logo { font-size: 0.88rem; font-weight: 700; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 0.4rem; }
+  .nav-pill { font-size: 0.68rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); padding: 0.2rem 0.65rem; border-radius: 99px; }
+
+  /* Hero content */
+  .hero {
+    position: relative; z-index: 3;
+    text-align: center; max-width: 600px;
+    padding: 2rem 1.5rem;
+    color: #fff;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: rgba(56,189,248,0.14); border: 1px solid rgba(56,189,248,0.28);
+    color: #7dd3fc; font-size: 0.71rem; font-weight: 600;
+    letter-spacing: 0.05em; padding: 0.28rem 0.8rem; border-radius: 99px;
+    margin-bottom: 1.4rem;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #38bdf8; }
+
+  h1 {
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 800; line-height: 1.2;
+    color: #fff; letter-spacing: -0.025em;
+    margin-bottom: 1rem;
+  }
+
+  .sub {
+    font-size: 1rem; color: rgba(255,255,255,0.7);
+    line-height: 1.65; max-width: 460px;
+    margin: 0 auto 2rem;
+  }
+
+  /* Search box */
+  .search-wrap {
+    display: flex; align-items: center;
+    background: #fff; border-radius: 99px;
+    padding: 6px 6px 6px 18px;
+    max-width: 520px; width: 100%; margin: 0 auto;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4), 0 1px 6px rgba(0,0,0,0.2);
+  }
+  .search-icon { color: #64748b; flex-shrink: 0; margin-right: 8px; }
+  .search-wrap input {
+    flex: 1; border: none; outline: none;
+    font-size: 0.92rem; color: #0f172a;
+    background: transparent; min-width: 0;
+  }
+  .search-wrap input::placeholder { color: #94a3b8; }
+  .search-btn {
+    background: #0369a1; color: #fff;
+    border: none; border-radius: 99px;
+    padding: 9px 20px; font-size: 0.84rem; font-weight: 600;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  }
+  .search-btn:hover { background: #0284c7; }
+
+  .hint {
+    font-size: 0.72rem; color: rgba(255,255,255,0.38);
+    margin-top: 0.75rem;
+  }
+
+  /* ── After-select state (bottom sheet preview) ── */
+  .sheet-preview {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
+    background: #fff; border-radius: 20px 20px 0 0;
+    padding: 1.5rem; max-height: 45vh;
+    box-shadow: 0 -4px 32px rgba(0,0,0,0.25);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+    display: none;
+  }
+  .sheet-handle { width: 36px; height: 4px; background: #e2e8f0; border-radius: 2px; margin: 0 auto 1rem; }
+  .sheet-ward { font-size: 1.1rem; font-weight: 700; color: #0f172a; }
+  .sheet-district { font-size: 0.82rem; color: #64748b; margin-top: 0.2rem; }
+  .sheet-badge { display: inline-block; margin-top: 0.6rem; background: #eff6ff; color: #2563eb; border-radius: 6px; padding: 0.3rem 0.7rem; font-size: 0.78rem; font-weight: 600; }
+
+  /* ANNOTATION OVERLAY */
+  .annotations {
+    position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
+    z-index: 50; display: flex; flex-direction: column; gap: 0.6rem; max-width: 220px;
+  }
+  .ann {
+    background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.2);
+    border-radius: 8px; padding: 0.5rem 0.75rem; font-size: 0.7rem; color: #94a3b8;
+    line-height: 1.4;
+  }
+  .ann strong { color: #7dd3fc; display: block; margin-bottom: 0.2rem; font-size: 0.65rem; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  /* Demo state toggle */
+  .demo-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: #1e293b; border-top: 1px solid #334155;
+    padding: 0.6rem 1rem; display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.75rem; color: #94a3b8;
+  }
+  .demo-btn {
+    background: #334155; color: #e2e8f0; border: none; border-radius: 6px;
+    padding: 0.35rem 0.8rem; font-size: 0.72rem; cursor: pointer;
+  }
+  .demo-btn:hover { background: #475569; }
+  .demo-btn.active { background: #0284c7; color: #fff; }
+</style>
+</head>
+<body>
+<div class="page" id="page">
+  <!-- Map background (production: replace .map-bg with <img> OSM static tile) -->
+  <div class="map-bg" id="mapBg"></div>
+  <div class="map-overlay"></div>
+
+  <!-- Flood location markers -->
+  <div class="flood-dot" style="top:32%;left:24%"></div>
+  <div class="flood-dot" style="top:52%;left:62%"></div>
+  <div class="flood-dot" style="top:27%;left:55%"></div>
+  <div class="flood-dot" style="top:68%;left:40%"></div>
+  <div class="flood-dot" style="top:45%;left:78%;opacity:0.6"></div>
+  <div class="flood-dot" style="top:60%;left:18%;opacity:0.5"></div>
+
+  <!-- Nav -->
+  <nav>
+    <div class="logo">🌊 Flood Risk Hà Nội</div>
+    <span class="nav-pill">Beta</span>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="badge"><span class="badge-dot"></span> Hà Nội · 579 phường đang được theo dõi</div>
+    <h1>Nhà bạn có đang<br>trong vùng ngập?</h1>
+    <p class="sub">Chúng tôi hiểu nỗi lo khi sống ở vùng hay bị ngập lụt. Tra cứu ngay để theo dõi và bảo vệ ngôi nhà yêu quý của bạn.</p>
+    <div class="search-wrap">
+      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" placeholder="Tìm phường, ngõ... (VD: Mỹ Đình, Cầu Giấy)" id="searchInput" />
+      <button class="search-btn" onclick="showSheet()">Tra cứu</button>
+    </div>
+    <p class="hint">Nhập tên phường, ngõ hoặc tên đường bất kỳ tại Hà Nội</p>
+  </div>
+
+  <!-- Annotations -->
+  <div class="annotations">
+    <div class="ann"><strong>Map BG</strong>Static OSM tile as CSS background-image. Dark overlay: rgba(10,15,10,0.55).</div>
+    <div class="ann"><strong>Hero stays</strong>Hero does NOT collapse on select. ResultSheet slides up as overlay.</div>
+    <div class="ann"><strong>Badge pill</strong>Live ward count from API. Update monthly.</div>
+    <div class="ann"><strong>Font deferred</strong>system-ui now → Be Vietnam Pro planned.</div>
+  </div>
+</div>
+
+<!-- ResultSheet (shown after ward select) -->
+<div class="sheet-preview" id="sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-ward">Phường Mỹ Đình 1</div>
+  <div class="sheet-district">Quận Nam Từ Liêm</div>
+  <span class="sheet-badge">✓ Có dữ liệu ngập lụt</span>
+  <p style="margin-top:1rem;font-size:0.82rem;color:#64748b;line-height:1.5">3 sự kiện ngập được ghi nhận. Mức độ: Trung bình. Gần đường Mỹ Đình, hay ngập sau mưa lớn 50mm+.</p>
+</div>
+
+<!-- Demo bar -->
+<div class="demo-bar">
+  <span>Demo state:</span>
+  <button class="demo-btn active" onclick="setState('hero',this)">Default hero</button>
+  <button class="demo-btn" onclick="setState('sheet',this)">After ward select</button>
+  <span style="margin-left:auto;color:#475569">Approved direction — Variant A + OSM bg + sheet overlay</span>
+</div>
+
+<script>
+function showSheet() {
+  const sheet = document.getElementById('sheet');
+  sheet.style.display = 'block';
+  document.querySelectorAll('.demo-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.demo-btn')[1].classList.add('active');
+}
+function setState(s, btn) {
+  document.querySelectorAll('.demo-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const sheet = document.getElementById('sheet');
+  if (s === 'sheet') { showSheet(); }
+  else { sheet.style.display = 'none'; }
+}
+// Enter key on search
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') showSheet();
+});
+</script>
+</body>
+</html>

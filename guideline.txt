@@ -1,0 +1,217 @@
+========================================================
+  HANOI FLOOD RISK APP — LOCAL DEV START GUIDE
+  Manual testing on Windows (no Docker, no Redis)
+========================================================
+
+PREREQUISITES (already installed on this machine)
+--------------------------------------------------
+  Python   : C:\Program Files\PyManager\python.exe
+  Node/npm : C:\Program Files\nodejs\  (on PATH)
+  Postgres : C:\Program Files\PostgreSQL\18\  (Windows service, auto-start)
+  Database : flooddb on localhost:5432, user=flood, pass=flood
+
+  Redis is NOT installed. App degrades gracefully without it:
+    - Search cache disabled (still works, just uncached)
+    - Map mode defaults to "text" (proximity list)
+    - PATCH /api/admin/settings will fail — ignore during basic testing
+
+
+STEP 1 — VERIFY POSTGRES IS RUNNING
+-------------------------------------
+  Open PowerShell and run:
+
+    Get-Service postgresql-x64-18
+
+  Expected: Status = Running
+  If stopped:
+
+    Start-Service postgresql-x64-18
+
+
+STEP 2 — START BACKEND (FastAPI)
+----------------------------------
+  Open a NEW terminal window (keep it open — this runs the server).
+  cd to project root first:
+
+    cd C:\firstproject
+
+  Then start the API:
+
+    "C:\Program Files\PyManager\python.exe" -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --log-level info
+
+  Wait for this line to appear:
+    INFO:     Application startup complete.
+
+  Verify it works — open another terminal and run:
+    Invoke-WebRequest http://localhost:8000/health -UseBasicParsing
+
+  Expected response: StatusCode 200, Content: {"status":"ok"}
+
+  NOTE: PowerShell's "curl" is an alias for Invoke-WebRequest, NOT real curl.
+  Always add -UseBasicParsing or it errors about Internet Explorer engine.
+  Alternatively use the browser: http://localhost:8000/health
+
+
+STEP 3 — START FRONTEND (Next.js)
+-----------------------------------
+  Open ANOTHER new terminal window (keep it open too).
+
+    cd C:\firstproject\web
+    $env:NODE_OPTIONS="--max-old-space-size=4096"
+    npm run dev
+
+  Wait for this line to appear:
+    ▲ Next.js 14.x.x
+    - Local: http://localhost:3000
+
+  Takes ~5-10 seconds on first run.
+
+
+STEP 4 — OPEN IN BROWSER
+--------------------------
+  Open any browser and go to:
+
+    http://localhost:3000
+
+  You should see:
+    - Full-screen Hanoi map background (dark overlay)
+    - "Nhà bạn có đang trong vùng ngập?" centered on screen
+    - Pill-shaped search bar in the middle
+    - Nav bar: "🌊 Flood Risk Hà Nội  Beta"
+
+
+STEP 5 — VERIFY SEARCH WORKS
+------------------------------
+  Click the search bar and type: My Dinh
+
+  Expected:
+    - Dropdown appears below search bar
+    - Shows results like "Mỹ Đình I - Nam Từ Liêm" with green badge "✓ Có dữ liệu"
+
+  Click a result.
+  Expected:
+    - Bottom sheet slides up showing ward name + flood data
+    - Hero (map background + heading) stays visible behind the sheet
+
+
+STEP 6 — VERIFY API ENDPOINTS MANUALLY
+----------------------------------------
+  Open browser or use curl for these:
+
+  GET http://localhost:8000/api/search?q=My+Dinh
+    -> Returns list of matching wards with flood data status
+
+  GET http://localhost:8000/api/flood-zones?ward_id=123
+    -> Returns flood event records for a ward
+
+  GET http://localhost:8000/api/admin/settings
+    -> Returns { "map_mode": "text" }  (Redis not running → default)
+
+  Full API docs (Swagger UI):
+    http://localhost:8000/docs
+
+
+STEP 7 — ADMIN PANEL
+----------------------
+  URL: http://localhost:3000/admin
+
+  Features:
+    - Paste text or upload HTML file to manually ingest flood event
+    - Trigger crawl runs
+    - Note: Requires ADMIN_TOKEN header for PATCH endpoints.
+      For basic GET/view, no token needed.
+
+
+STOP SERVERS
+-------------
+  In each terminal window, press:  Ctrl + C
+
+  That's it. Postgres keeps running (Windows service — fine to leave it).
+
+
+KILL EXISTING SERVER PROCESSES (port already in use)
+------------------------------------------------------
+  If you get "port already in use" or want to force-kill leftover processes,
+  run the bundled script:
+
+    powershell -ExecutionPolicy Bypass -File C:\firstproject\kill-servers.ps1
+
+  That kills anything on ports 8000 and 3000.
+
+
+KNOWN LIMITATIONS (without Redis)
+-----------------------------------
+  - Switching map mode (text ↔ Google Maps) via admin won't persist
+    because Redis is not running. Stays on "text" mode always.
+  - Search results are not cached — slightly slower but functionally identical.
+  - Facebook staging queue won't work.
+
+
+TROUBLESHOOTING
+----------------
+  Problem: "uvicorn: command not found"
+  Fix: Use the full path shown in Step 2 — do not use bare "uvicorn"
+
+  Problem: API starts but returns 500 on /api/search
+  Fix: Check Postgres is running (Step 1). Check .env file exists at C:\firstproject\.env
+
+  Problem: Next.js shows blank page or 404
+  Fix: Make sure you ran "npm run dev" from C:\firstproject\web (not the root)
+
+  Problem: "Module not found" on API start
+  Fix: Run from C:\firstproject root, not from inside C:\firstproject\api
+
+  Problem: "FATAL ERROR: Zone Allocation failed - process out of memory"
+  Fix: Node.js ran out of heap. Set memory limit before npm run dev:
+    $env:NODE_OPTIONS="--max-old-space-size=4096"
+    npm run dev
+
+  Problem: Port 8000 or 3000 already in use
+    ERROR: [Errno 10048] error while attempting to bind on address
+  Fix: See "KILL EXISTING SERVER PROCESSES" section above.
+
+  Problem: curl errors about "Internet Explorer engine not available"
+  Fix: PowerShell "curl" is an alias for Invoke-WebRequest — always add -UseBasicParsing:
+    Invoke-WebRequest http://localhost:8000/health -UseBasicParsing
+  Or just open the URL in a browser instead.
+
+
+ENV FILES (do not edit unless needed)
+---------------------------------------
+  Backend  : C:\firstproject\.env
+  Frontend : C:\firstproject\web\.env.local
+
+  API_BASE_URL=http://localhost:8000       <- frontend talks to backend here
+  DATABASE_URL=postgresql+asyncpg://flood:flood@localhost:5432/flooddb
+  REDIS_URL=redis://localhost:6379         <- Redis not installed, errors are suppressed
+
+
+RUN DATABASE MIGRATIONS (if schema is out of date)
+----------------------------------------------------
+  cd C:\firstproject
+  "C:\Program Files\PyManager\python.exe" -m alembic upgrade head
+
+  Current migration head: 017
+
+
+========================================================
+  QUICK REFERENCE — COPY-PASTE COMMANDS
+========================================================
+
+  # Kill existing servers (run first if ports are in use)
+  powershell -ExecutionPolicy Bypass -File C:\firstproject\kill-servers.ps1
+
+  # Terminal 1 — Backend
+  cd C:\firstproject
+  "C:\Program Files\PyManager\python.exe" -m uvicorn api.main:app --host 127.0.0.1 --port 8000 --log-level info
+
+  # Terminal 2 — Frontend
+  cd C:\firstproject\web
+  $env:NODE_OPTIONS="--max-old-space-size=4096"
+  npm run dev
+
+  # Browser
+  http://localhost:3000       <- App
+  http://localhost:8000/docs  <- API Swagger docs
+
+========================================================
