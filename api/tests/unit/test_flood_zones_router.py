@@ -18,7 +18,8 @@ from api.main import app
 
 FakeZoneRow = namedtuple(
     "FakeZoneRow",
-    ["id", "lat", "lng", "severity", "ward", "location_name", "district", "event_date"],
+    ["id", "lat", "lng", "severity", "ward", "location_name", "district", "event_date", "cause"],
+    defaults=(None,),
 )
 
 
@@ -151,3 +152,19 @@ def test_flood_zones_event_date_as_string():
 
     event_date = r.json()["zones"][0]["event_date"]
     assert event_date == "2023-07-15"
+
+
+def test_flood_zones_unknown_district_serializes_as_null():
+    """FIR-84: legacy 'Unknown' district must serialize as null, not a string."""
+    rows = [
+        FakeZoneRow(uuid.uuid4(), 21.0, 105.8, "minor", "phu do", None,
+                    "Unknown", date(2023, 1, 1)),
+    ]
+    app.dependency_overrides[get_db] = _override_db(rows)
+
+    with TestClient(app) as client:
+        r = client.get("/api/flood-zones")
+
+    zone = r.json()["zones"][0]
+    assert zone["district"] is None
+    assert zone["district"] != "Unknown"

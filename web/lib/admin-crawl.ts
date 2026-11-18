@@ -1,4 +1,5 @@
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api"
+import { apiFetch, apiUrl } from "./api"
+
 const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN ?? ""
 
 function headers(): HeadersInit {
@@ -29,19 +30,21 @@ export interface CreateSourcePayload {
 }
 
 export async function fetchSources(): Promise<CrawlSource[]> {
-  const res = await fetch(`${BASE}/admin/crawl-sources`, { headers: headers() })
+  const res = await apiFetch(apiUrl("/api/admin/crawl-sources"), { headers: headers() })
   if (!res.ok) throw new Error(`${res.status}`)
   return res.json()
 }
 
 export async function fetchCrawlerClasses(): Promise<string[]> {
-  const res = await fetch(`${BASE}/admin/crawler-classes`, { headers: headers() })
+  const res = await apiFetch(apiUrl("/api/admin/crawler-classes"), {
+    headers: headers(),
+  })
   if (!res.ok) throw new Error(`${res.status}`)
   return res.json()
 }
 
 export async function createSource(payload: CreateSourcePayload): Promise<CrawlSource> {
-  const res = await fetch(`${BASE}/admin/crawl-sources`, {
+  const res = await apiFetch(apiUrl("/api/admin/crawl-sources"), {
     method: "POST",
     headers: headers(),
     body: JSON.stringify(payload),
@@ -57,7 +60,7 @@ export async function patchSource(
   sourceName: string,
   patch: { is_enabled?: boolean; source_url?: string; notes?: string },
 ): Promise<CrawlSource> {
-  const res = await fetch(`${BASE}/admin/crawl-sources/${sourceName}`, {
+  const res = await apiFetch(apiUrl(`/api/admin/crawl-sources/${sourceName}`), {
     method: "PATCH",
     headers: headers(),
     body: JSON.stringify(patch),
@@ -67,7 +70,7 @@ export async function patchSource(
 }
 
 export async function deleteSource(sourceName: string): Promise<void> {
-  const res = await fetch(`${BASE}/admin/crawl-sources/${sourceName}`, {
+  const res = await apiFetch(apiUrl(`/api/admin/crawl-sources/${sourceName}`), {
     method: "DELETE",
     headers: headers(),
   })
@@ -78,7 +81,7 @@ export async function deleteSource(sourceName: string): Promise<void> {
 }
 
 export async function triggerCrawl(sourceName: string): Promise<{ run_id: string }> {
-  const res = await fetch(`${BASE}/admin/crawl-trigger/${sourceName}`, {
+  const res = await apiFetch(apiUrl(`/api/admin/crawl-trigger/${sourceName}`), {
     method: "POST",
     headers: headers(),
   })

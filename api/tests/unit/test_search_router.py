@@ -24,7 +24,11 @@ FakeRow = namedtuple(
     ["ward_name_vi", "ward_name", "district", "lat", "lng", "flood_count", "min_year", "max_year"],
 )
 
-AliasRow = namedtuple("AliasRow", ["alias_norm", "alias_vi", "alias_type", "ward_name"])
+AliasRow = namedtuple(
+    "AliasRow",
+    ["alias_norm", "alias_vi", "alias_type", "ward_name", "lat", "lng"],
+    defaults=(None, None),
+)
 
 
 def _override_db(rows: list[FakeRow], alias_rows=None, alias_ward_rows=None):
@@ -183,6 +187,30 @@ def test_search_year_range_format():
     assert "-" not in yr, "year range must use en-dash (–), not hyphen (-)"
 
 
+def test_search_unknown_district_serializes_as_null():
+    """FIR-84: the seed's legacy 'Unknown' placeholder must never reach clients."""
+    rows = [FakeRow("Phú Đô", "phu do", "Unknown", 21.01, 105.77, 0, None, None)]
+    app.dependency_overrides[get_db] = _override_db(rows)
+
+    with TestClient(app) as client:
+        r = client.get("/api/search?q=phu+do")
+
+    item = r.json()["results"][0]
+    assert item["district"] is None
+    assert item["district"] != "Unknown"
+
+
+def test_search_unknown_district_case_insensitive():
+    """' unknown ' (any case / whitespace) is treated as missing too."""
+    rows = [FakeRow("Phú Đô", "phu do", "  uNkNoWn ", 21.01, 105.77, 0, None, None)]
+    app.dependency_overrides[get_db] = _override_db(rows)
+
+    with TestClient(app) as client:
+        r = client.get("/api/search?q=phu+do")
+
+    assert r.json()["results"][0]["district"] is None
+
+
 # ---------------------------------------------------------------------------
 # Alias match — location_name/type
 # ---------------------------------------------------------------------------
@@ -206,6 +234,39 @@ def test_search_alias_match_location_name_is_alias_vi():
     assert item["location_name"] == "Royal City"
     assert item["location_type"] == "apartment"
     assert item["ward"] == "Phường Trung Hòa"
+    # Alias without its own coordinates falls back to the ward centroid.
+    assert item["lat"] == pytest.approx(21.01)
+    assert item["lng"] == pytest.approx(105.79)
+    assert item["coords_precise"] is False
+
+
+def test_search_alias_coords_override_ward_centroid():
+    """Migration 020: a geocoded alias uses its own lat/lng for the map."""
+    alias_rows = [
+        AliasRow(
+            "vinhomes smart city",
+            "Vinhomes Smart City",
+            "apartment",
+            "phuong tay mo",
+            21.005884,
+            105.754505,
+        ),
+    ]
+    alias_ward_rows = [
+        FakeRow("Phường Tây Mỗ", "phuong tay mo", "Nam Từ Liêm", 21.0056, 105.7491, 1, 2020, 2024),
+    ]
+    app.dependency_overrides[get_db] = _override_db([], alias_rows, alias_ward_rows)
+
+    with TestClient(app) as client:
+        r = client.get("/api/search?q=smart+city")
+
+    assert r.status_code == 200
+    item = r.json()["results"][0]
+    assert item["location_name"] == "Vinhomes Smart City"
+    assert item["lat"] == pytest.approx(21.005884)
+    assert item["lng"] == pytest.approx(105.754505)
+    # Map must trust this point and skip runtime Google geocoding.
+    assert item["coords_precise"] is True
 
 
 def test_search_alias_match_street_type():
@@ -284,6 +345,58 @@ def test_search_alias_fallback_to_alias_norm_when_vi_missing():
 
     item = r.json()["results"][0]
     assert item["location_name"] == "some place"
+
+
+def test_search_direct_ward_with_street_alias_uses_alias_label():
+    """FIR-80: a ward that matches both directly and by street alias must show
+    the street alias as its primary label, not the containing ward name."""
+    rows = [
+        FakeRow("Phường Thượng Đình", "phuong thuong dinh", "Thanh Xuân",
+                21.0, 105.8, 0, None, None),
+    ]
+    alias_rows = [
+        AliasRow("nguyen trai", "Nguyễn Trãi", "street", "phuong thuong dinh"),
+    ]
+    alias_ward_rows = [
+        FakeRow("Phường Thượng Đình", "phuong thuong dinh", "Thanh Xuân",
+                21.0, 105.8, 4, 2021, 2024),
+    ]
+    app.dependency_overrides[get_db] = _override_db(rows, alias_rows, alias_ward_rows)
+
+    with TestClient(app) as client:
+        r = client.get("/api/search?q=nguyen+trai")
+
+    assert r.status_code == 200
+    results = r.json()["results"]
+    assert len(results) == 1
+    item = results[0]
+    assert item["location_name"] == "Nguyễn Trãi"
+    assert item["location_type"] == "street"
+    assert item["ward"] == "Phường Thượng Đình"
+    assert item["has_flood_data"] is True
+
+
+def test_search_direct_ward_with_district_alias_keeps_ward_label():
+    """Non street/apartment/landmark aliases do not override a direct match."""
+    rows = [
+        FakeRow("Phường Thượng Đình", "phuong thuong dinh", "Thanh Xuân",
+                21.0, 105.8, 0, None, None),
+    ]
+    alias_rows = [
+        AliasRow("thanh xuan", "Thanh Xuân", "district", "phuong thuong dinh"),
+    ]
+    alias_ward_rows = [
+        FakeRow("Phường Thượng Đình", "phuong thuong dinh", "Thanh Xuân",
+                21.0, 105.8, 0, None, None),
+    ]
+    app.dependency_overrides[get_db] = _override_db(rows, alias_rows, alias_ward_rows)
+
+    with TestClient(app) as client:
+        r = client.get("/api/search?q=thanh+xuan")
+
+    item = r.json()["results"][0]
+    assert item["location_name"] == "Phường Thượng Đình"
+    assert item["location_type"] == "ward"
 
 
 # ---------------------------------------------------------------------------

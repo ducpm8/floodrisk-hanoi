@@ -17,9 +17,14 @@ target_metadata = Base.metadata
 
 def get_url() -> str:
     """
-    Prefer DATABASE_SYNC_URL (psycopg2) for migrations.
-    Falls back to DATABASE_URL with asyncpg swapped for psycopg2.
+    Prefer an explicit URL set by the caller (tests pass one via
+    ``alembic_cfg`` so migrations run against DATABASE_TEST_URL, never the
+    dev DB). Otherwise fall back to DATABASE_SYNC_URL, then DATABASE_URL
+    with asyncpg swapped for psycopg2.
     """
+    override = config.get_main_option("sqlalchemy.url")
+    if override:
+        return override
     url = os.environ.get("DATABASE_SYNC_URL") or os.environ.get("DATABASE_URL", "")
     return url.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
 

@@ -2,7 +2,7 @@
  * Price history API calls for FIR-13.
  */
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+import { apiFetch } from "./api";
 
 export interface PricePoint {
   month: string;              // "YYYY-MM"
@@ -18,8 +18,8 @@ export interface PriceHistory {
 }
 
 export async function fetchPriceHistory(ward: string): Promise<PriceHistory> {
-  const res = await fetch(
-    `${API}/api/price/history?ward=${encodeURIComponent(ward)}`
+  const res = await apiFetch(
+    `/api/price/history?ward=${encodeURIComponent(ward)}`
   );
   if (!res.ok) {
     throw new Error(`Price history fetch failed: ${res.status}`);

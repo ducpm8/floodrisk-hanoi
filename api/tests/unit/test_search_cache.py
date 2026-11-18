@@ -118,6 +118,8 @@ async def test_search_returns_cached_response_without_db() -> None:
             {
                 "ward": "Trung Liệt",
                 "ward_normalized": "trung liet",
+                "location_name": "Trung Liệt",
+                "location_type": "ward",
                 "district": "Đống Đa",
                 "lat": 21.02,
                 "lng": 105.84,
@@ -140,3 +142,58 @@ async def test_search_returns_cached_response_without_db() -> None:
     data = resp.json()
     assert data["total"] == 1
     assert data["results"][0]["ward"] == "Trung Liệt"
+
+
+@pytest.mark.asyncio
+async def test_search_uses_v2_cache_namespace() -> None:
+    """FIR-80: cache key bumped to search:v2: so stale alias labels (1h TTL)
+    from the old search: namespace can never be served."""
+    from types import SimpleNamespace
+
+    from httpx import ASGITransport, AsyncClient
+
+    from api.database import get_db
+    from api.main import app
+
+    direct_row = SimpleNamespace(
+        ward_name="trung liet",
+        ward_name_vi="Trung Liệt",
+        district="Đống Đa",
+        lat=21.02,
+        lng=105.84,
+        flood_count=0,
+        min_year=None,
+        max_year=None,
+    )
+
+    def _result(rows):
+        result = MagicMock()
+        result.fetchall.return_value = rows
+        return result
+
+    async def _get_db():
+        session = AsyncMock()
+        # call 0: direct ward query, call 1: alias query (no aliases)
+        session.execute = AsyncMock(side_effect=[_result([direct_row]), _result([])])
+        yield session
+
+    app.dependency_overrides[get_db] = _get_db
+    get_mock = AsyncMock(return_value=None)
+    set_mock = AsyncMock()
+
+    try:
+        with patch("api.routers.search.cache_get", new=get_mock):
+            with patch("api.routers.search.cache_set", new=set_mock):
+                async with AsyncClient(
+                    transport=ASGITransport(app=app), base_url="http://test"
+                ) as client:
+                    resp = await client.get(
+                        "/api/search", params={"q": "trung liet"}
+                    )
+    finally:
+        app.dependency_overrides.clear()
+
+    assert resp.status_code == 200
+    get_mock.assert_awaited_once_with("search:v2:trung liet")
+    set_mock.assert_awaited_once()
+    assert set_mock.await_args.args[0] == "search:v2:trung liet"

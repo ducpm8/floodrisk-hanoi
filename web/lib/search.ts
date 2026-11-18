@@ -14,11 +14,13 @@ export interface SearchResult {
   ward_normalized: string
   location_name: string
   location_type: string
-  district: string
+  district: string | null
   lat: number
   lng: number
   has_flood_data: boolean
   data_year_range: string | null
+  /** True when lat/lng is the alias's own geocoded point, not the ward centroid. */
+  coords_precise?: boolean
 }
 
 export interface SearchResponse {

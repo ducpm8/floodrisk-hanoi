@@ -11,7 +11,7 @@ from unittest.mock import MagicMock, call
 
 import pytest
 
-from api.seeds.seed_aliases_extended import ALIASES, _resolve_ward, seed
+from api.seeds.seed_aliases_extended import ALIASES, GEOCODED_ALIASES, _resolve_ward, seed
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -130,6 +130,21 @@ class TestAliasesData:
         slang = [e for e in ALIASES if e[3] == "slang"]
         assert len(slang) >= 15
 
+    def test_geocoded_aliases_are_well_formed(self):
+        assert GEOCODED_ALIASES
+        for alias_vi, ward_vi, alias_type, lat, lng in GEOCODED_ALIASES:
+            assert alias_vi.strip()
+            assert ward_vi.strip()
+            assert alias_type in {"street", "landmark", "apartment"}
+            assert 20.5 <= lat <= 21.5
+            assert 105.2 <= lng <= 106.1
+
+    def test_smart_city_alias_points_at_the_mall(self):
+        by_name = {entry[0]: entry for entry in GEOCODED_ALIASES}
+        mall = by_name["Vincom Mega Mall Smart City"]
+        assert mall[1] == "Phường Tây Mỗ"
+        assert mall[3:] == (21.005737, 105.754678)
+
     def test_no_empty_alias_vi(self):
         for alias_vi, _, _, _ in ALIASES:
             assert alias_vi.strip(), "Empty alias_vi found"
@@ -173,7 +188,7 @@ class TestSeedFunction:
             with patch("api.seeds.seed_aliases_extended.create_engine", return_value=engine):
                 result = seed("postgresql+psycopg2://x:x@localhost/x")
 
-        assert result["skipped"] == len(ALIASES)
+        assert result["skipped"] == len(ALIASES) + len(GEOCODED_ALIASES)
         assert result["street"] == 0
         assert result["landmark"] == 0
         assert result["apartment"] == 0

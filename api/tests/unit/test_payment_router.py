@@ -9,6 +9,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy.exc import MultipleResultsFound
 
 from api.database import get_db
 from api.main import app
@@ -240,3 +241,113 @@ def test_status_response_has_all_fields():
     assert "order_id" in data
     assert "status" in data
     assert "paid_at" in data
+
+
+# ---------------------------------------------------------------------------
+# GET /api/payment/check (FIR-82)
+# ---------------------------------------------------------------------------
+
+def _check_db(purchases=None, error=None):
+    """Mock for /check: handler reads result.scalars().first()."""
+    async def _get_db():
+        async def mock_execute(stmt, *args, **kwargs):
+            if error is not None:
+                raise error
+            mock_result = MagicMock()
+            mock_result.scalars.return_value.first.return_value = (
+                purchases[0] if purchases else None
+            )
+            return mock_result
+
+        session = AsyncMock()
+        session.execute = mock_execute
+        yield session
+
+    return _get_db
+
+
+def _check_url(session_id=None, lat=21.024, lng=105.841):
+    return f"/api/payment/check?session_id={session_id or uuid.uuid4()}&lat={lat}&lng={lng}"
+
+
+def test_check_paid_report_found_returns_200():
+    purchase = _make_purchase(status="paid")
+    app.dependency_overrides[get_db] = _check_db([purchase])
+    with TestClient(app) as client:
+        r = client.get(_check_url(purchase.session_id))
+    assert r.status_code == 200
+    assert r.json() == {"has_paid_report": True, "order_id": str(purchase.id)}
+
+
+def test_check_no_paid_report_returns_false():
+    app.dependency_overrides[get_db] = _check_db([])
+    with TestClient(app) as client:
+        r = client.get(_check_url())
+    assert r.status_code == 200
+    assert r.json() == {"has_paid_report": False, "order_id": None}
+
+
+def test_check_invalid_session_id_returns_400():
+    app.dependency_overrides[get_db] = _check_db([])
+    with TestClient(app) as client:
+        r = client.get(_check_url(session_id="not-a-uuid"))
+    assert r.status_code == 400
+
+
+class _TwoPaidRowsResult:
+    """Emulates a session with two paid rows in range.
+
+    The old scalar_one_or_none() implementation raised MultipleResultsFound
+    here; the ordered first() query must pick the most recent row instead.
+    """
+
+    def __init__(self, rows):
+        self._rows = rows
+
+    def scalar_one_or_none(self):
+        raise MultipleResultsFound(
+            "Multiple rows were found when one or none was required"
+        )
+
+    def scalars(self):
+        return SimpleNamespace(first=lambda: self._rows[0])
+
+
+def test_check_multiple_paid_rows_same_session_returns_200():
+    recent = _make_purchase(status="paid")
+    older = _make_purchase(session_id=recent.session_id, status="paid")
+
+    async def _get_db():
+        async def mock_execute(stmt, *args, **kwargs):
+            return _TwoPaidRowsResult([recent, older])
+
+        session = AsyncMock()
+        session.execute = mock_execute
+        yield session
+
+    app.dependency_overrides[get_db] = _get_db
+    with TestClient(app) as client:
+        r = client.get(_check_url(recent.session_id))
+    assert r.status_code == 200
+    assert r.json() == {"has_paid_report": True, "order_id": str(recent.id)}
+
+
+def test_check_response_has_cors_header():
+    purchase = _make_purchase(status="paid")
+    app.dependency_overrides[get_db] = _check_db([purchase])
+    with TestClient(app) as client:
+        r = client.get(
+            _check_url(purchase.session_id),
+            headers={"Origin": "http://localhost:3000"},
+        )
+    assert r.status_code == 200
+    assert r.headers["access-control-allow-origin"] == "http://localhost:3000"
+
+
+def test_unhandled_error_returns_json_500_with_cors_header():
+    app.dependency_overrides[get_db] = _check_db(error=RuntimeError("boom"))
+    with TestClient(app, raise_server_exceptions=False) as client:
+        r = client.get(_check_url(), headers={"Origin": "http://localhost:3000"})
+    assert r.status_code == 500
+    assert r.json() == {"detail": "Internal server error"}
+    assert r.headers["access-control-allow-origin"] == "http://localhost:3000"

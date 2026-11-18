@@ -132,7 +132,7 @@ export function SearchSection({
               <span className="truncate font-medium text-slate-900">{ward.location_name}</span>
               <span className="truncate text-xs text-slate-500">
                 {ward.location_type !== "ward" ? `${ward.ward} · ` : ""}
-                {ward.district && ward.district !== "Unknown" ? ward.district : "Hà Nội"}
+                {ward.district ? ward.district : "Hà Nội"}
               </span>
             </div>
             {ward.has_flood_data ? (

@@ -6,6 +6,7 @@ import { SearchSection } from "@/components/search/SearchSection"
 import { ResultSheet } from "@/components/search/ResultSheet"
 import { fetchSettings, type MapMode } from "@/lib/admin-settings"
 import type { SearchResult } from "@/lib/search"
+import type { ReportEventLocation } from "@/lib/report"
 
 const PENDING_WARD_KEY = "pending_ward"
 
@@ -14,7 +15,8 @@ export default function HomePage() {
   const [selectedWard, setSelectedWard] = useState<SearchResult | null>(null)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [mapMode, setMapMode] = useState<MapMode>("text")
-  const [reportEventLocations, setReportEventLocations] = useState<{ lat: number; lng: number; location_name?: string }[]>([])
+  const [reportEventLocations, setReportEventLocations] = useState<ReportEventLocation[]>([])
+  const [activeEventIdx, setActiveEventIdx] = useState<number | null>(null)
   const [hasSearched, setHasSearched] = useState(false)
 
   useEffect(() => {
@@ -43,6 +45,7 @@ export default function HomePage() {
     localStorage.setItem(PENDING_WARD_KEY, JSON.stringify(ward))
     setSelectedWard(ward)
     setReportEventLocations([])
+    setActiveEventIdx(null)
     setIsSheetOpen(true)
     setIsDropdownOpen(false)
   }
@@ -51,6 +54,7 @@ export default function HomePage() {
     setIsSheetOpen(false)
     setSelectedWard(null)
     setReportEventLocations([])
+    setActiveEventIdx(null)
     setHasSearched(false)
   }
 
@@ -64,6 +68,8 @@ export default function HomePage() {
             selectedWard={selectedWard}
             reportEventLocations={reportEventLocations}
             hideZones={isSheetOpen}
+            activeEventIdx={activeEventIdx}
+            onEventSelect={setActiveEventIdx}
           />
         </div>
       ) : (
@@ -145,7 +151,7 @@ export default function HomePage() {
                 <p className="text-sm font-semibold text-gray-900">{selectedWard.location_name}</p>
                 <p className="text-xs text-gray-500">
                   {selectedWard.location_type !== "ward" && `${selectedWard.ward} · `}
-                  {selectedWard.district && selectedWard.district !== "Unknown" ? selectedWard.district : "Hà Nội"}
+                  {selectedWard.district ? selectedWard.district : "Hà Nội"}
                 </p>
               </div>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -163,6 +169,8 @@ export default function HomePage() {
         open={isSheetOpen}
         onOpenChange={setIsSheetOpen}
         onReportLoaded={setReportEventLocations}
+        activeEventIdx={activeEventIdx}
+        onEventSelect={setActiveEventIdx}
       />
     </div>
   )

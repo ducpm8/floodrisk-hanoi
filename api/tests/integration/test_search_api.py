@@ -138,6 +138,17 @@ def test_search_limited_to_10_results(search_db):
     assert len(r.json()["results"]) <= 10
 
 
+def test_search_never_returns_literal_unknown_district(search_db):
+    """FIR-84: 'Unknown' placeholder values must be scrubbed at the API boundary."""
+    with TestClient(app) as client:
+        r = client.get("/api/search?q=phuong")  # broad match across many wards
+
+    assert r.status_code == 200
+    assert all(
+        item["district"] != "Unknown" for item in r.json()["results"]
+    )
+
+
 def test_search_nonexistent_ward_returns_empty(search_db):
     with TestClient(app) as client:
         r = client.get("/api/search?q=khong+ton+tai+xyz")

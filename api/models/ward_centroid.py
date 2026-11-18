@@ -17,7 +17,7 @@ class WardCentroid(Base):
 
     ward_name = Column(String(100), primary_key=True)   # normalized: "dong da"
     ward_name_vi = Column(String(100), nullable=False)  # display: "Đống Đa"
-    district = Column(String(100), nullable=False)
+    district = Column(String(100), nullable=True)
     lat = Column(Numeric(9, 6), nullable=False)
     lng = Column(Numeric(9, 6), nullable=False)
     geom = Column(Geography(geometry_type="POINT", srid=4326), nullable=False)

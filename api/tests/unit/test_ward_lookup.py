@@ -137,7 +137,17 @@ class TestResolveLocationAliasHit:
         assert result is not None
         assert result.ward_name == "phuong bach khoa"
         assert result.resolution_level == "district"
+        assert result.lat == 21.01
+        assert result.lng == 105.87
         assert result.confidence == 0.7
+
+    def test_alias_lookups_prefer_alias_coordinates(self):
+        from api.utils.ward_lookup import _ALIAS_LOOKUP, _ALIAS_SUBSTRING_LOOKUP
+
+        assert "COALESCE(la.lat, wc.lat)" in _ALIAS_LOOKUP.text
+        assert "COALESCE(la.lng, wc.lng)" in _ALIAS_LOOKUP.text
+        assert "COALESCE(la.lat, wc.lat)" in _ALIAS_SUBSTRING_LOOKUP.text
+        assert "COALESCE(la.lng, wc.lng)" in _ALIAS_SUBSTRING_LOOKUP.text
 
     def test_landmark_alias_resolves(self):
         conn = self._conn_ward_miss_alias_hit("landmark")

@@ -24,8 +24,10 @@ def _make_event(
     event_date=date(2023, 9, 15), depth_cm=40,
     duration_hours=6, source="official",
     source_url="https://thoatnuochanoi.vn/test",
+    ward="trung liet", location_name=None,
 ):
     e = SimpleNamespace()
+    e.id = uuid.uuid4()
     e.lat, e.lng = lat, lng
     e.severity = severity
     e.event_date = event_date
@@ -33,12 +35,17 @@ def _make_event(
     e.duration_hours = duration_hours
     e.source = source
     e.source_url = source_url
+    e.ward = ward
+    e.location_name = location_name
     return e
 
 
 def _make_ward(ward_name_vi="Tây Sơn", district="Đống Đa"):
+    from api.utils.text import normalize_ward
+
     w = SimpleNamespace()
     w.ward_name_vi = ward_name_vi
+    w.ward_name = normalize_ward(ward_name_vi)
     w.district = district
     return w
 
@@ -77,30 +84,27 @@ def _teaser_db(events=None, ward=None):
     return _get_db
 
 
-def _report_db(purchase=_SENTINEL, events=None, ward=None):
+def _report_db(purchase=_SENTINEL, events=None, ward=None, name_events=None, no_geom_events=None):
     """
-    Mock for report flow: call 1=purchase check, call 2=events list, call 3=ward.
-
-    purchase=_SENTINEL (default) → scalar_one_or_none returns None (no paid purchase).
-    purchase=<obj>               → scalar_one_or_none returns that object (paid).
+    Mock for report flow. Statements are matched by SQL text so the optional
+    location_name / NULL-geom branches can be reordered without breaking tests.
     """
     resolved_purchase = None if purchase is _SENTINEL else purchase
-    call_count = 0
 
     async def _get_db():
-        nonlocal call_count
-
         async def mock_execute(stmt, *args, **kwargs):
-            nonlocal call_count
-            call_count += 1
+            sql = str(stmt)
             mock_result = MagicMock()
-            if call_count == 1:
-                # Purchase verification — always use scalar_one_or_none
-                mock_result.scalar_one_or_none.return_value = resolved_purchase
-            elif call_count == 2:
-                mock_result.scalars.return_value.all.return_value = events or []
-            else:
+            if "purchased_reports" in sql:
+                mock_result.scalars.return_value.first.return_value = resolved_purchase
+            elif "ward_centroids" in sql:
                 mock_result.scalar_one_or_none.return_value = ward
+            elif "geom IS NULL" in sql:
+                mock_result.scalars.return_value.all.return_value = no_geom_events or []
+            elif "ILIKE" in sql.upper():
+                mock_result.scalars.return_value.all.return_value = name_events or []
+            else:
+                mock_result.scalars.return_value.all.return_value = events or []
             return mock_result
 
         session = AsyncMock()
@@ -111,10 +115,18 @@ def _report_db(purchase=_SENTINEL, events=None, ward=None):
 
 
 # Keep backwards-compatible alias used by a few tests below
-def _db_override(events=None, ward=None, purchase=_SENTINEL):
+def _db_override(
+    events=None, ward=None, purchase=_SENTINEL, name_events=None, no_geom_events=None
+):
     if purchase is _SENTINEL:
         return _teaser_db(events=events, ward=ward)
-    return _report_db(purchase=purchase, events=events, ward=ward)
+    return _report_db(
+        purchase=purchase,
+        events=events,
+        ward=ward,
+        name_events=name_events,
+        no_geom_events=no_geom_events,
+    )
 
 
 @pytest.fixture(autouse=True)
@@ -202,6 +214,19 @@ def test_teaser_has_flood_data_true_regardless_of_severity():
     data = r.json()
     assert data["has_flood_data"] is True
     assert "risk_level" not in data
+
+
+def test_teaser_unknown_district_omitted_from_location():
+    """FIR-84: legacy 'Unknown' district must not leak into the location label."""
+    app.dependency_overrides[get_db] = _teaser_db(
+        events=[_make_event()], ward=_make_ward("Tây Sơn", "Unknown")
+    )
+    with TestClient(app) as client:
+        r = client.get("/api/flood/teaser?lat=21.024&lng=105.841")
+
+    location = r.json()["location"]
+    assert "Tây Sơn" in location
+    assert "Unknown" not in location
 
 
 # ---------------------------------------------------------------------------
@@ -342,6 +367,24 @@ def test_report_summary_avg_depth():
     assert r.json()["summary"]["avg_depth_cm"] == pytest.approx(50.0)
 
 
+def test_report_unknown_district_omitted_from_location():
+    """FIR-84: paid report location must be 'Ward' — never 'Ward, Unknown'."""
+    purchase = _make_purchase(status="paid")
+    app.dependency_overrides[get_db] = _report_db(
+        purchase=purchase, events=[_make_event()],
+        ward=_make_ward("Tây Sơn", "Unknown"),
+    )
+    with TestClient(app) as client:
+        r = client.post("/api/flood/report", json={
+            "session_id": str(uuid.uuid4()),
+            "lat": 21.024, "lng": 105.841,
+        })
+
+    location = r.json()["location"]
+    assert location == "Tây Sơn"
+    assert "Unknown" not in location
+
+
 # ---------------------------------------------------------------------------
 # POST /api/flood/report — input validation
 # ---------------------------------------------------------------------------
@@ -363,3 +406,90 @@ def test_report_invalid_session_id_returns_400():
             "lat": 21.024, "lng": 105.841,
         })
     assert r.status_code == 400
+
+
+# ---------------------------------------------------------------------------
+# POST /api/flood/report — coordinate-less rows (3f)
+# ---------------------------------------------------------------------------
+
+def _no_geom_event(ward=None, district=None):
+    e = _make_event(lat=None, lng=None, ward=ward)
+    e.district = district
+    e.location_name = "Điểm nhập tay"
+    e.geom = None
+    return e
+
+
+def _paid_post():
+    with TestClient(app) as client:
+        return client.post("/api/flood/report", json={
+            "session_id": str(uuid.uuid4()),
+            "lat": 21.024, "lng": 105.841,
+        })
+
+
+def test_report_includes_no_coordinate_row_by_ward():
+    purchase = _make_purchase(status="paid")
+    row = _no_geom_event(ward="my dinh i")
+    app.dependency_overrides[get_db] = _report_db(
+        purchase=purchase,
+        events=[],
+        ward=_make_ward("Mỹ Đình I", "Nam Từ Liêm"),
+        no_geom_events=[row],
+    )
+
+    r = _paid_post()
+
+    assert r.status_code == 200
+    body = r.json()
+    assert len(body["flood_events"]) == 1
+    assert body["flood_events"][0]["lat"] is None
+    assert body["flood_events"][0]["lng"] is None
+
+
+def test_report_includes_no_coordinate_row_by_district_prefix_variant():
+    purchase = _make_purchase(status="paid")
+    row = _no_geom_event(ward="khac", district="Nam Từ Liêm")
+    app.dependency_overrides[get_db] = _report_db(
+        purchase=purchase,
+        events=[],
+        ward=_make_ward("Mỹ Đình I", "Quận Nam Từ Liêm"),
+        no_geom_events=[row],
+    )
+
+    r = _paid_post()
+
+    assert r.status_code == 200
+    assert len(r.json()["flood_events"]) == 1
+
+
+def test_report_excludes_no_coordinate_row_outside_ward_and_district():
+    purchase = _make_purchase(status="paid")
+    row = _no_geom_event(ward="ba dinh", district="Ba Đình")
+    app.dependency_overrides[get_db] = _report_db(
+        purchase=purchase,
+        events=[],
+        ward=_make_ward("Mỹ Đình I", "Nam Từ Liêm"),
+        no_geom_events=[row],
+    )
+
+    r = _paid_post()
+
+    assert r.status_code == 200
+    assert r.json()["flood_events"] == []
+
+
+def test_report_no_coordinate_row_deduplicated_against_geom_branch():
+    purchase = _make_purchase(status="paid")
+    row = _no_geom_event(ward="my dinh i")
+    app.dependency_overrides[get_db] = _report_db(
+        purchase=purchase,
+        events=[row],
+        ward=_make_ward("Mỹ Đình I", "Nam Từ Liêm"),
+        no_geom_events=[row],
+    )
+
+    r = _paid_post()
+
+    assert r.status_code == 200
+    assert len(r.json()["flood_events"]) == 1

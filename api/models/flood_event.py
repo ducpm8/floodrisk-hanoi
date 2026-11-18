@@ -28,9 +28,14 @@ class FloodEvent(Base):
     event_date = Column(Date, nullable=False)
     severity = Column(Enum("minor", "moderate", "severe", name="flood_severity"))
     depth_cm = Column(Integer, nullable=True)
+    depth_basis = Column(Text, nullable=True)  # measured | extracted | estimated; NULL when depth_cm is NULL
     duration_hours = Column(Integer, nullable=True)
     source = Column(Enum("official", "news", "community", name="flood_source"))
     source_url = Column(Text, nullable=True)
     is_seed = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     cause = Column(Text, nullable=True)    # weather trigger extracted by Haiku; NULL for governance source
+    # Offline geocoding provenance (Tier 1 street backfill, migration 024).
+    coord_source = Column(Text, nullable=True)      # geocoded_street | ward_centroid
+    coord_confidence = Column(Numeric(3, 2), nullable=True)
+    coord_flag = Column(Text, nullable=True)        # ward_only | geocode_failed | too_far | no_street

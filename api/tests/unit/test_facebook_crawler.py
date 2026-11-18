@@ -123,6 +123,19 @@ def test_alert_admin_logs_error(caplog: pytest.LogCaptureFixture) -> None:
     assert "session expired for group 999" in caplog.text
 
 
+def test_alert_admin_sends_email(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Email is always mocked in tests — assert the notifier is called."""
+    sent: list[tuple[str, str]] = []
+    monkeypatch.setattr(
+        "api.scrapers.facebook.send_admin_alert",
+        lambda subject, body: sent.append((subject, body)),
+    )
+
+    FacebookCrawler()._alert_admin("session expired for group 999")
+
+    assert sent == [("Facebook crawler alert", "session expired for group 999")]
+
+
 # ---------------------------------------------------------------------------
 # HTML parsing
 # ---------------------------------------------------------------------------

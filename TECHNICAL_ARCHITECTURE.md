@@ -72,6 +72,7 @@ firstproject/
         └── 015_cause_field.py          # FIR-40: cause TEXT on flood_events
 │   ├── seeds/
 │   │   ├── seed_wards.py
+│   │   ├── seed_wards_2025.py      # 126 phường/xã (NQ 1656, 2025-07-01) + old-name aliases
 │   │   ├── seed_dev.py             # 10 flood events + 5 price records (is_seed=TRUE)
 │   │   └── seed_manual_test.py     # 90 events + 360 price records (is_seed=TRUE)
 │   └── tests/
@@ -304,7 +305,9 @@ def verify_momo_signature(raw_body: bytes, signature: str, secret: str) -> bool:
 
 ## 7. Geocoding
 
-Static ward centroid table. 579 Hanoi wards seeded from OSM Overpass (one-time).
+Static ward centroid table. 519 pre-2025 Hà Nội wards from OSM Overpass plus the 126 phường/xã in effect from 2025-07-01 (Nghị quyết 1656/NQ-UBTVQH15). The 126 rows are seeded by `api/seeds/seed_wards_2025.py` from `api/seeds/data/hanoi_wards_2025.json` (coordinate = representative point of each polygon from thanglequoc/vietnamese-provinces-database v5.2.0, MIT). Pre-2025 names that no longer exist resolve through `location_aliases` (`source='manual'`).
+
+Street-level coordinates for existing events are filled offline by `scripts/geocode_tier1.py` (OSM-derived, 1 req/s, resumable cache under `.gstack/geocode/`). Migration 024 adds `flood_events.coord_source` (`geocoded_street` | `ward_centroid`), `coord_confidence` and `coord_flag` (`ward_only` | `geocode_failed` | `too_far` | `no_street`); the batch only updates rows whose `lat IS NULL`.
 
 ```python
 # api/utils/text.py

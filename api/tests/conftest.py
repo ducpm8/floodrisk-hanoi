@@ -13,6 +13,8 @@ Quick start:
 
 import os
 
+os.environ.setdefault("ENABLE_CRAWL_ROUTERS", "true")  # must precede api.main import
+
 import pytest
 from alembic import command
 from alembic.config import Config

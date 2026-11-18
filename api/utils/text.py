@@ -2,6 +2,28 @@ import re
 import unicodedata
 
 
+def clean_district(value: str | None) -> str | None:
+    """
+    Return a usable district label, or None when the value is missing/placeholder.
+
+    The ward seed historically wrote the literal string "Unknown" when OSM had
+    no district tag. That leaked straight into API responses (FIR-84), so all
+    API read paths funnel district values through this helper.
+
+    >>> clean_district("Đống Đa")
+    'Đống Đa'
+    >>> clean_district("  unknown ")
+    >>> clean_district("")
+    >>> clean_district(None)
+    """
+    if value is None:
+        return None
+    cleaned = value.strip()
+    if not cleaned or cleaned.lower() == "unknown":
+        return None
+    return cleaned
+
+
 def normalize_ward(name: str) -> str:
     """
     Normalize a Vietnamese ward name for database lookup.
