@@ -213,6 +213,16 @@ ALIASES: list[tuple[str, str, str, str]] = [
     ("Nhổn",                  "Phường Minh Khai",      "Phường Phúc Diễn",     "slang"),
 ]
 
+# Landmark/apartment aliases with their own precise coordinates (migration 020).
+# These override the ward centroid in search results and in event resolution.
+# (alias_vi, ward_vi, alias_type, lat, lng)
+GEOCODED_ALIASES: list[tuple[str, str, str, float, float]] = [
+    # Vincom Mega Mall Smart City (Vinhomes Smart City, Tây Mỗ).
+    ("Vinhomes Smart City", "Phường Tây Mỗ", "apartment", 21.005737, 105.754678),
+    ("Vincom Mega Mall Smart City", "Phường Tây Mỗ", "landmark", 21.005737, 105.754678),
+    ("Smart City Mega Mall", "Phường Tây Mỗ", "landmark", 21.005737, 105.754678),
+]
+
 
 def seed(database_url: str | None = None) -> dict:
     url = database_url or os.environ.get(
@@ -256,11 +266,48 @@ def seed(database_url: str | None = None) -> dict:
             else:
                 log.debug("  - %s already exists", alias_vi)
 
+        # Precise-coordinate aliases: upsert so existing rows get the lat/lng.
+        for alias_vi, ward_vi, alias_type, lat, lng in GEOCODED_ALIASES:
+            ward_name = _resolve_ward(conn, ward_vi)
+            if not ward_name:
+                log.warning("SKIP geocoded %r — ward %r not found", alias_vi, ward_vi)
+                skipped += 1
+                continue
+            alias_norm = normalize_ward(alias_vi)
+            result = conn.execute(
+                text("""
+                    INSERT INTO location_aliases
+                        (alias_norm, alias_vi, ward_name, alias_type,
+                         confidence, source, lat, lng)
+                    VALUES
+                        (:alias_norm, :alias_vi, :ward_name, :alias_type,
+                         0.95, 'static', :lat, :lng)
+                    ON CONFLICT (alias_norm) DO UPDATE SET
+                        lat = EXCLUDED.lat,
+                        lng = EXCLUDED.lng,
+                        alias_vi = EXCLUDED.alias_vi,
+                        ward_name = EXCLUDED.ward_name,
+                        alias_type = EXCLUDED.alias_type,
+                        confidence = EXCLUDED.confidence
+                """),
+                {
+                    "alias_norm": alias_norm,
+                    "alias_vi": alias_vi,
+                    "ward_name": ward_name,
+                    "alias_type": alias_type,
+                    "lat": lat,
+                    "lng": lng,
+                },
+            )
+            if result.rowcount:
+                counts["geocoded"] = counts.get("geocoded", 0) + 1
+                log.info("  ✓ [geocoded %s] %s → (%.6f, %.6f)", alias_type, alias_vi, lat, lng)
+
     total = sum(counts.values())
     log.info(
-        "Done. %d inserted (street=%d, landmark=%d, apartment=%d, slang=%d). %d skipped.",
-        total, counts["street"], counts["landmark"], counts["apartment"], counts["slang"],
-        skipped,
+        "Done. %d upserted (street=%d, landmark=%d, apartment=%d, slang=%d, geocoded=%d). %d skipped.",
+        total, counts["street"], counts["landmark"], counts["apartment"],
+        counts["slang"], counts.get("geocoded", 0), skipped,
     )
     engine.dispose()
     return {**counts, "skipped": skipped}

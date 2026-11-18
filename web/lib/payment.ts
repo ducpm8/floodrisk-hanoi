@@ -3,9 +3,8 @@
  * All amounts in VND. order_id is a UUID.
  */
 
+import { apiFetch } from "./api"
 import { getOrCreateSessionId } from "./session";
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export interface InitiatePaymentResult {
   order_id: string;
@@ -20,7 +19,7 @@ export async function initiatePayment(
   const sessionId = getOrCreateSessionId();
   const idempotencyKey = crypto.randomUUID();
 
-  const res = await fetch(`${API}/api/payment/initiate`, {
+  const res = await apiFetch("/api/payment/initiate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -47,8 +46,8 @@ export interface PaymentStatus {
 
 export async function checkPaymentStatus(orderId: string): Promise<PaymentStatus> {
   const sessionId = getOrCreateSessionId();
-  const res = await fetch(
-    `${API}/api/payment/status?order_id=${encodeURIComponent(orderId)}&session_id=${encodeURIComponent(sessionId)}`
+  const res = await apiFetch(
+    `/api/payment/status?order_id=${encodeURIComponent(orderId)}&session_id=${encodeURIComponent(sessionId)}`
   );
 
   if (!res.ok) {
@@ -60,8 +59,8 @@ export async function checkPaymentStatus(orderId: string): Promise<PaymentStatus
 
 export async function devConfirmPayment(orderId: string): Promise<PaymentStatus> {
   const sessionId = getOrCreateSessionId();
-  const res = await fetch(
-    `${API}/api/payment/dev-confirm?order_id=${encodeURIComponent(orderId)}&session_id=${encodeURIComponent(sessionId)}`,
+  const res = await apiFetch(
+    `/api/payment/dev-confirm?order_id=${encodeURIComponent(orderId)}&session_id=${encodeURIComponent(sessionId)}`,
     { method: "POST" }
   );
 
@@ -82,8 +81,8 @@ export async function checkSessionReport(
   lng: number
 ): Promise<SessionReportCheck> {
   const sessionId = getOrCreateSessionId();
-  const res = await fetch(
-    `${API}/api/payment/check?session_id=${encodeURIComponent(sessionId)}&lat=${lat}&lng=${lng}`
+  const res = await apiFetch(
+    `/api/payment/check?session_id=${encodeURIComponent(sessionId)}&lat=${lat}&lng=${lng}`
   );
 
   if (!res.ok) {

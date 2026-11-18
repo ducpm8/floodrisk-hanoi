@@ -20,11 +20,11 @@ import sys
 import time
 
 import requests
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, inspect, text
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from api.utils.text import normalize_ward  # noqa: E402
+from api.utils.text import clean_district, normalize_ward  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -91,18 +91,20 @@ def parse_ward(element: dict) -> dict | None:
     if province and "Hà Nội" not in province and "Ha Noi" not in province:
         return None
 
-    # District from "is_in:district" tag or parent tag if available
-    district = (
+    # District from "is_in:district" tag or parent tag if available.
+    # Never fall back to a literal "Unknown" — that placeholder used to leak
+    # to API clients (FIR-84). clean_district() returns None instead.
+    district = clean_district(
         tags.get("is_in:district")
         or tags.get("addr:district")
         or tags.get("is_in")
-        or "Unknown"
     )
     # Clean up district prefix (e.g. "Quận Đống Đa" → "Đống Đa")
-    for prefix in ("Quận ", "Huyện ", "Thị xã "):
-        if district.startswith(prefix):
-            district = district[len(prefix):]
-            break
+    if district:
+        for prefix in ("Quận ", "Huyện ", "Thị xã "):
+            if district.startswith(prefix):
+                district = district[len(prefix):]
+                break
 
     return {
         "ward_name": normalize_ward(name_vi),
@@ -129,9 +131,33 @@ def seed(database_url: str | None = None) -> int:
 
     engine = create_engine(url)
     inserted = 0
+    skipped = 0
+
+    # ward_centroids.district was NOT NULL in migration 002. If the column is
+    # still NOT NULL we cannot write NULL for wards whose OSM tags have no
+    # district, so skip them ("write nothing") instead of the old "Unknown"
+    # placeholder. Once the ALTER below has been applied, NULL is written.
+    district_nullable = next(
+        (
+            col["nullable"]
+            for col in inspect(engine).get_columns("ward_centroids")
+            if col["name"] == "district"
+        ),
+        False,
+    )
 
     with engine.begin() as conn:
         for ward in wards:
+            if ward["district"] is None and not district_nullable:
+                # Needed once:
+                #   ALTER TABLE ward_centroids ALTER COLUMN district DROP NOT NULL;
+                log.warning(
+                    "Skipping %s — no district tag and district column is NOT NULL. "
+                    "Apply: ALTER TABLE ward_centroids ALTER COLUMN district DROP NOT NULL;",
+                    ward["ward_name"],
+                )
+                skipped += 1
+                continue
             result = conn.execute(
                 text("""
                     INSERT INTO ward_centroids (ward_name, ward_name_vi, district, lat, lng, geom)
@@ -149,7 +175,12 @@ def seed(database_url: str | None = None) -> int:
             )
             inserted += result.rowcount
 
-    log.info(f"Inserted {inserted} new wards ({len(wards) - inserted} already existed)")
+    log.info(
+        "Inserted %d new wards (%d already existed, %d skipped for missing district)",
+        inserted,
+        len(wards) - inserted - skipped,
+        skipped,
+    )
     engine.dispose()
     return inserted
 

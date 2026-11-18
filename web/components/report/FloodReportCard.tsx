@@ -17,10 +17,16 @@
  *   4. On return, parent re-mounts with lat/lng → fetchFullReport() → paid state
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { fetchTeaser, fetchFullReport, type TeaserData, type FullReportData } from "@/lib/report";
+import {
+  fetchTeaser,
+  fetchFullReport,
+  type TeaserData,
+  type FullReportData,
+  type ReportEventLocation,
+} from "@/lib/report";
 import { initiatePayment, checkSessionReport } from "@/lib/payment";
 
 const SEVERITY_LABELS: Record<string, string> = {
@@ -34,7 +40,11 @@ interface Props {
   lng: number;
   ward: string;
   locationName?: string;
-  onReportLoaded?: (locations: { lat: number; lng: number; location_name?: string }[]) => void;
+  onReportLoaded?: (locations: ReportEventLocation[]) => void;
+  /** Index (in onReportLoaded order) of the pin selected on the map. */
+  activeEventIdx?: number | null;
+  /** Called with the pin index when a list row is clicked. */
+  onEventSelect?: (index: number) => void;
 }
 
 type State = "loading" | "teaser" | "paying" | "paid" | "error";
@@ -48,11 +58,27 @@ function extractDomain(url: string | null): string | null {
   }
 }
 
-export function FloodReportCard({ lat, lng, ward, locationName, onReportLoaded }: Props) {
+export function FloodReportCard({
+  lat,
+  lng,
+  ward,
+  locationName,
+  onReportLoaded,
+  activeEventIdx,
+  onEventSelect,
+}: Props) {
   const [state, setState] = useState<State>("loading");
   const [teaser, setTeaser] = useState<TeaserData | null>(null);
   const [report, setReport] = useState<FullReportData | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const rowRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+
+  // Keep the selected list row (and the map pin) in sync, scrolling it into view.
+  useEffect(() => {
+    if (activeEventIdx == null) return;
+    const row = rowRefs.current.get(activeEventIdx);
+    row?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [activeEventIdx]);
 
   useEffect(() => {
     setState("loading");
@@ -70,7 +96,14 @@ export function FloodReportCard({ lat, lng, ward, locationName, onReportLoaded }
             onReportLoaded?.(
               full.flood_events
                 .filter((e) => e.lat != null && e.lng != null)
-                .map((e) => ({ lat: e.lat!, lng: e.lng!, location_name: e.location_name ?? undefined }))
+                .map((e) => ({
+                  lat: e.lat!,
+                  lng: e.lng!,
+                  location_name: e.location_name ?? undefined,
+                  severity: e.severity,
+                  event_date: e.event_date,
+                  depth_cm: e.depth_cm,
+                }))
             );
             return;
           } catch {
@@ -135,6 +168,15 @@ export function FloodReportCard({ lat, lng, ward, locationName, onReportLoaded }
   }
 
   if (state === "paid" && report) {
+    // Rows with coords get the same 1-based number as their map pin.
+    // Rows without coords get no number and do not shift the numbering.
+    let nextPin = 0;
+    const eventRows = report.flood_events.map((event) => {
+      const hasCoords = event.lat != null && event.lng != null;
+      const pinIndex = hasCoords ? nextPin++ : null;
+      return { event, pinIndex };
+    });
+
     return (
       <div className="space-y-4 p-4">
         <div className="flex items-center justify-between">
@@ -171,52 +213,100 @@ export function FloodReportCard({ lat, lng, ward, locationName, onReportLoaded }
         </div>
 
         {/* Event list */}
-        {report.flood_events.length > 0 && (
+        {eventRows.length > 0 && (
           <div className="space-y-2">
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
               Lịch sử sự kiện
             </p>
             <div className="space-y-2">
-              {report.flood_events.map((e, i) => (
-                <div
-                  key={i}
-                  className="flex items-start justify-between text-sm border-b pb-2 last:border-0"
-                >
-                  <div>
-                    {(e.location_name || e.ward) && (
-                      <p className="font-medium">{e.location_name ?? e.ward}</p>
-                    )}
-                    <p className="text-xs text-muted-foreground">{e.event_date}</p>
-                    {e.depth_cm && (
-                      <p className="text-xs text-muted-foreground">
-                        Sâu {e.depth_cm} cm
-                        {e.duration_hours ? ` · ${e.duration_hours}h` : ""}
-                      </p>
-                    )}
-                    {e.source_url && (
-                      <a
-                        href={e.source_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-blue-500 underline"
-                      >
-                        {extractDomain(e.source_url)}
-                      </a>
-                    )}
-                  </div>
-                  <span
-                    className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full border ${
-                      e.severity === "severe"
-                        ? "border-red-300 text-red-600 bg-red-50"
-                        : e.severity === "moderate"
-                        ? "border-yellow-300 text-yellow-600 bg-yellow-50"
-                        : "border-gray-200 text-gray-500 bg-gray-50"
-                    }`}
+              {eventRows.map(({ event: e, pinIndex }, rowIdx) => {
+                const isActive = pinIndex !== null && activeEventIdx === pinIndex;
+                const badgeColor =
+                  e.severity === "severe"
+                    ? "bg-red-500"
+                    : e.severity === "moderate"
+                    ? "bg-orange-500"
+                    : "bg-yellow-500";
+                return (
+                  <div
+                    key={rowIdx}
+                    ref={(el) => {
+                      if (pinIndex === null) return;
+                      if (el) rowRefs.current.set(pinIndex, el);
+                      else rowRefs.current.delete(pinIndex);
+                    }}
+                    role={pinIndex !== null ? "button" : undefined}
+                    tabIndex={pinIndex !== null ? 0 : undefined}
+                    onClick={pinIndex !== null ? () => onEventSelect?.(pinIndex) : undefined}
+                    onKeyDown={
+                      pinIndex !== null
+                        ? (ev) => {
+                            // Let Enter/Space on the nested source link navigate.
+                            if (ev.target !== ev.currentTarget) return
+                            if (ev.key === "Enter" || ev.key === " ") {
+                              ev.preventDefault();
+                              onEventSelect?.(pinIndex);
+                            }
+                          }
+                        : undefined
+                    }
+                    className={[
+                      "flex items-start justify-between gap-2 text-sm border-b pb-2 last:border-0 rounded-md px-2 -mx-2 transition-colors",
+                      pinIndex !== null ? "cursor-pointer hover:bg-slate-50" : "",
+                      isActive ? "ring-2 ring-sky-400 bg-sky-50" : "",
+                    ].join(" ")}
                   >
-                    {SEVERITY_LABELS[e.severity] ?? e.severity}
-                  </span>
-                </div>
-              ))}
+                    <div className="flex items-start gap-2">
+                      {pinIndex !== null && (
+                        <span
+                          className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white ${badgeColor}`}
+                        >
+                          {pinIndex + 1}
+                        </span>
+                      )}
+                      <div>
+                        {(e.location_name || e.ward) && (
+                          <p className="font-medium">{e.location_name ?? e.ward}</p>
+                        )}
+                        <p className="text-xs text-muted-foreground">{e.event_date}</p>
+                        {pinIndex === null && e.lat == null && (
+                          <p className="text-[11px] italic text-muted-foreground">
+                            Chưa có vị trí trên bản đồ
+                          </p>
+                        )}
+                        {e.depth_cm && (
+                          <p className="text-xs text-muted-foreground">
+                            Sâu {e.depth_cm} cm
+                            {e.duration_hours ? ` · ${e.duration_hours}h` : ""}
+                          </p>
+                        )}
+                        {e.source_url && (
+                          <a
+                            href={e.source_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-blue-500 underline"
+                            onClick={(ev) => ev.stopPropagation()}
+                          >
+                            {extractDomain(e.source_url)}
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    <span
+                      className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full border ${
+                        e.severity === "severe"
+                          ? "border-red-300 text-red-600 bg-red-50"
+                          : e.severity === "moderate"
+                          ? "border-orange-300 text-orange-600 bg-orange-50"
+                          : "border-yellow-300 text-yellow-600 bg-yellow-50"
+                      }`}
+                    >
+                      {SEVERITY_LABELS[e.severity] ?? e.severity}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}

@@ -32,6 +32,7 @@ from api.database import get_db
 from api.models.flood_event import FloodEvent
 from api.models.purchased_report import PurchasedReport
 from api.models.ward_centroid import WardCentroid
+from api.utils.text import clean_district, normalize_ward
 
 router = APIRouter()
 
@@ -77,34 +78,84 @@ async def _fetch_events_near(
 
 
 async def _fetch_events_combined(
-    db: AsyncSession, lat: float, lng: float, location_name: str | None
+    db: AsyncSession,
+    lat: float,
+    lng: float,
+    location_name: str | None,
+    nearest_ward: WardCentroid | None = None,
 ) -> list:
     """
-    Union of geom-based (500m radius) and location_name ILIKE events.
+    Union of:
+      1. geom-based (500m radius) events,
+      2. location_name ILIKE matches,
+      3. coordinate-less rows (geom IS NULL) whose ward or district matches
+         the nearest ward.
     Deduplicates by event ID, sorted newest-first.
     Used for paid report when searching a named street/landmark.
     """
-    geom_events = await _fetch_events_near(db, lat, lng)
+    if nearest_ward is None:
+        nearest_ward = await _nearest_ward(db, lat, lng)
 
-    if not location_name:
-        return geom_events
+    branches: list[list] = [list(await _fetch_events_near(db, lat, lng))]
 
-    name_stmt = (
-        select(FloodEvent)
-        .where(FloodEvent.location_name.ilike(f"%{location_name}%"))
-        .order_by(FloodEvent.event_date.desc())
-    )
-    name_result = await db.execute(name_stmt)
-    name_events = name_result.scalars().all()
+    if location_name:
+        name_stmt = (
+            select(FloodEvent)
+            .where(FloodEvent.location_name.ilike(f"%{location_name}%"))
+            .order_by(FloodEvent.event_date.desc())
+        )
+        name_result = await db.execute(name_stmt)
+        branches.append(list(name_result.scalars().all()))
+
+    if nearest_ward is not None:
+        # Rows injected directly into the DB may have no coordinates. They
+        # still belong to the report of their ward / district, just without
+        # a map pin. NULL-geom rows are the exception, so filtering the
+        # district variants in Python is cheaper than SQL normalisation.
+        no_geom_result = await db.execute(
+            select(FloodEvent)
+            .where(FloodEvent.geom.is_(None))
+            .order_by(FloodEvent.event_date.desc())
+        )
+        # Stored wards come in both forms ("phuong cau giay" and "cau giay");
+        # /api/search joins on both, so match both here too.
+        ward_keys = {nearest_ward.ward_name, nearest_ward.ward_name.removeprefix("phuong ")}
+        district_key = _district_key(nearest_ward.district)
+        branches.append(
+            [
+                e
+                for e in no_geom_result.scalars().all()
+                if e.ward in ward_keys
+                or (
+                    district_key is not None
+                    and _district_key(e.district) == district_key
+                )
+            ]
+        )
 
     seen: set = set()
     combined = []
-    for e in list(geom_events) + list(name_events):
-        if e.id not in seen:
-            seen.add(e.id)
-            combined.append(e)
+    for events in branches:
+        for e in events:
+            if e.id not in seen:
+                seen.add(e.id)
+                combined.append(e)
     combined.sort(key=lambda e: e.event_date, reverse=True)
     return combined
+
+
+def _district_key(value: str | None) -> str | None:
+    """
+    Canonical key for district comparison: "Quận Ba Đình" and "Ba Đình" match.
+    """
+    cleaned = clean_district(value)
+    if not cleaned:
+        return None
+    key = normalize_ward(cleaned)
+    for prefix in ("quan ", "huyen ", "thi xa ", "thanh pho "):
+        if key.startswith(prefix):
+            return key[len(prefix):]
+    return key
 
 
 async def _nearest_ward(
@@ -145,7 +196,7 @@ async def flood_teaser(
     events = await _fetch_events_near(db, lat, lng)
     ward = await _nearest_ward(db, lat, lng)
 
-    district = ward.district if ward and ward.district and ward.district != "Unknown" else None
+    district = clean_district(ward.district) if ward else None
     location = (
         f"{ward.ward_name_vi}, {district}" if ward and district
         else ward.ward_name_vi if ward
@@ -233,26 +284,34 @@ async def flood_report(
     # of the requested point.  Both conditions must hold — session AND location.
     pt = _geography_point(body.lng, body.lat)
 
-    purchase_stmt = select(PurchasedReport).where(
-        PurchasedReport.session_id == session_uuid,
-        PurchasedReport.status == "paid",
-        ST_DWithin(
-            cast(
-                ST_SetSRID(
-                    ST_MakePoint(
-                        PurchasedReport.location_lng,
-                        PurchasedReport.location_lat,
+    purchase_stmt = (
+        select(PurchasedReport)
+        .where(
+            PurchasedReport.session_id == session_uuid,
+            PurchasedReport.status == "paid",
+            ST_DWithin(
+                cast(
+                    ST_SetSRID(
+                        ST_MakePoint(
+                            PurchasedReport.location_lng,
+                            PurchasedReport.location_lat,
+                        ),
+                        4326,
                     ),
-                    4326,
+                    type_=FloodEvent.geom.type,
                 ),
-                type_=FloodEvent.geom.type,
+                pt,
+                _RADIUS_M,
             ),
-            pt,
-            _RADIUS_M,
-        ),
+        )
+        # A session can hold several paid purchases inside the radius
+        # (repeat purchases, overlapping wards). Any paid one unlocks the
+        # report — take the most recent instead of failing on multiple rows.
+        .order_by(PurchasedReport.created_at.desc())
+        .limit(1)
     )
     purchase_result = await db.execute(purchase_stmt)
-    purchase = purchase_result.scalar_one_or_none()
+    purchase = purchase_result.scalars().first()
 
     if purchase is None:
         raise HTTPException(
@@ -261,12 +320,17 @@ async def flood_report(
         )
 
     # Payment verified — fetch full flood data (geom + optional location_name match)
-    events = await _fetch_events_combined(db, body.lat, body.lng, body.location_name)
     ward = await _nearest_ward(db, body.lat, body.lng)
+    events = await _fetch_events_combined(
+        db, body.lat, body.lng, body.location_name, nearest_ward=ward
+    )
     if body.location_name:
         location = body.location_name
     elif ward:
-        location = f"{ward.ward_name_vi}, {ward.district}"
+        district = clean_district(ward.district)
+        location = (
+            f"{ward.ward_name_vi}, {district}" if district else ward.ward_name_vi
+        )
     else:
         location = f"{body.lat:.4f}, {body.lng:.4f}"
 

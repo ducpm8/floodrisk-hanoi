@@ -35,6 +35,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.database import get_db
 from api.models.flood_event import FloodEvent
+from api.utils.text import clean_district
 
 router = APIRouter()
 
@@ -91,7 +92,7 @@ async def get_flood_zones(
             severity=row.severity or "minor",
             ward=row.ward or "",
             ward_vi=row.location_name,
-            district=row.district,
+            district=clean_district(row.district),
             radius_m=_CIRCLE_RADIUS_M,
             event_date=str(row.event_date),
             cause=row.cause,

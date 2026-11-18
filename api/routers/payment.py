@@ -231,7 +231,9 @@ async def check_session_report(
     except ValueError:
         raise HTTPException(status_code=400, detail="session_id must be a valid UUID")
 
-    # Find any paid purchase for this session near the location (500m)
+    # Find the most recent paid purchase for this session near the location (500m).
+    # A session may hold several paid rows (a fresh idempotency UUID per purchase),
+    # so never use scalar_one_or_none() here — it raises MultipleResultsFound.
     from geoalchemy2.functions import ST_DWithin, ST_MakePoint, ST_SetSRID
     from sqlalchemy import cast
     from api.models.flood_event import FloodEvent
@@ -241,26 +243,34 @@ async def check_session_report(
         type_=FloodEvent.geom.type,
     )
 
-    stmt = select(PurchasedReport).where(
-        PurchasedReport.session_id == session_uuid,
-        PurchasedReport.status == "paid",
-        ST_DWithin(
-            cast(
-                ST_SetSRID(
-                    ST_MakePoint(
-                        PurchasedReport.location_lng,
-                        PurchasedReport.location_lat,
+    stmt = (
+        select(PurchasedReport)
+        .where(
+            PurchasedReport.session_id == session_uuid,
+            PurchasedReport.status == "paid",
+            # Rows without coordinates cannot be within 500m of anything.
+            PurchasedReport.location_lat.isnot(None),
+            PurchasedReport.location_lng.isnot(None),
+            ST_DWithin(
+                cast(
+                    ST_SetSRID(
+                        ST_MakePoint(
+                            PurchasedReport.location_lng,
+                            PurchasedReport.location_lat,
+                        ),
+                        4326,
                     ),
-                    4326,
+                    type_=FloodEvent.geom.type,
                 ),
-                type_=FloodEvent.geom.type,
+                pt,
+                500,
             ),
-            pt,
-            500,
-        ),
+        )
+        .order_by(PurchasedReport.paid_at.desc().nullslast())
+        .limit(1)
     )
     result = await db.execute(stmt)
-    purchase = result.scalar_one_or_none()
+    purchase = result.scalars().first()
 
     return SessionReportCheckResponse(
         has_paid_report=purchase is not None,

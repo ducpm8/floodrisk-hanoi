@@ -33,6 +33,7 @@ from sqlalchemy import text
 from sqlalchemy.engine import Connection
 
 from api.scrapers.base import BaseCrawler, contains_flood_keywords
+from api.utils.emailer import send_admin_alert
 
 try:
     from cloakbrowser import launch as _cloak_launch  # type: ignore[import]
@@ -805,4 +806,4 @@ class FacebookCrawler(BaseCrawler):
 
     def _alert_admin(self, message: str) -> None:
         logger.error("ADMIN ALERT: %s", message)
-        # TODO: wire to email/Slack notification when alert system is in place (FIR-19+)
+        send_admin_alert("Facebook crawler alert", message)

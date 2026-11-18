@@ -12,6 +12,20 @@ FIR-18 AI extraction worker reads staged rows and writes to flood_events.
 NOTE: If thoatnuochanoi.vn ever exposes a stable JSON/XHR endpoint, replace
 _fetch_rows() with a direct requests.get() call — faster and more reliable
 than full browser automation. Check the Network tab on page load to verify.
+
+RESEARCH 2026-11-03: the unauthenticated JSON endpoint is
+    GET https://thoatnuochanoi.vn/ungngap/api/flood/getflood
+(`/ungngap/js/index.js` calls it every 10 s). Verified HTTP 200 +
+`application/json`, shape:
+    {"Code": 1, "Content": [
+        {"TramId": "3", "TenTram": "Cao Bá Quát ...",
+         "Lng": "105.839500", "Lat": "21.030180",
+         "Icon": "202608311105287262087_Flood_level1.png"}
+    ]}
+Lat/Lng are strings. `Icon` encodes the flood level (level1/2/3) and the
+image host is https://hsdc.thoatnuochanoi.vn/images/display/<Icon>.
+This endpoint can replace the Playwright path with `requests.get()`; not
+switched yet because the DOM table may carry fields the JSON omits.
 """
 
 import json

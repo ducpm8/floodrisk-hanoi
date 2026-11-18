@@ -58,3 +58,16 @@ async def cache_set(key: str, value: str, ttl: int = CACHE_TTL) -> None:
 
 def get_redis_client() -> Optional[aioredis.Redis]:
     return _client
+
+
+async def cache_delete_prefix(prefix: str) -> int:
+    """Delete every key starting with prefix. Returns number deleted (0 if off)."""
+    if not _client:
+        return 0
+    deleted = 0
+    try:
+        async for key in _client.scan_iter(match=f"{prefix}*", count=200):
+            deleted += await _client.delete(key)
+    except Exception as exc:
+        logger.debug("Redis delete-prefix error for %s: %s", prefix, exc)
+    return deleted

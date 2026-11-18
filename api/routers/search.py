@@ -5,7 +5,7 @@ Returns up to 10 ward matches with has_flood_data + data_year_range.
 No flood counts, no source attribution — those only appear in paid /api/report.
 
 Flow:
-  1. Check Redis cache (key: search:{q_normalized}, TTL 1h)
+  1. Check Redis cache (key: search:v2:{q_normalized}, TTL 1h)
   2. normalize_ward(q) -> strip diacritics + lowercase
   3. DB fetches up to _FETCH_LIMIT candidates from two sources:
        a. ward_centroids  — direct ward name ILIKE match
@@ -15,7 +15,8 @@ Flow:
 
 SearchResult fields:
   location_name  — display name shown as primary label:
-                   alias_vi for alias matches, ward_name_vi for direct hits
+                   street/apartment/landmark alias_vi when the ward has one,
+                   otherwise ward_name_vi for direct hits
   location_type  — "ward" | "street" | "apartment" | "landmark" | "other"
   ward           — always ward_name_vi (used by ResultSheet detail panel)
 """
@@ -35,7 +36,7 @@ from api.models.flood_event import FloodEvent
 from api.models.location_alias import LocationAlias
 from api.models.ward_centroid import WardCentroid
 from api.cache import cache_get, cache_set
-from api.utils.text import normalize_ward
+from api.utils.text import clean_district, normalize_ward
 
 router = APIRouter()
 
@@ -48,11 +49,14 @@ class SearchResult(BaseModel):
     ward_normalized: str
     location_name: str
     location_type: str
-    district: str
+    district: str | None
     lat: float
     lng: float
     has_flood_data: bool
     data_year_range: str | None
+    # True when lat/lng come from the alias's own geocoded point (not the ward
+    # centroid). The map must trust these and skip runtime geocoding.
+    coords_precise: bool = False
 
 
 class SearchResponse(BaseModel):
@@ -110,7 +114,7 @@ async def search_wards(
         )
 
     # Cache hit — skip DB entirely
-    cache_key = f"search:{q_normalized}"
+    cache_key = f"search:v2:{q_normalized}"
     cached = await cache_get(cache_key)
     if cached:
         return SearchResponse(**json.loads(cached))
@@ -129,42 +133,52 @@ async def search_wards(
             LocationAlias.alias_vi,
             LocationAlias.alias_type,
             LocationAlias.ward_name,
+            LocationAlias.lat,
+            LocationAlias.lng,
         )
         .where(LocationAlias.alias_norm.ilike(f"%{q_normalized}%"))
         .limit(_FETCH_LIMIT)
     )
     alias_rows = (await db.execute(alias_stmt)).fetchall()
 
-    _TYPE_PRIORITY = {"street": 0, "apartment": 1, "landmark": 2, "other": 3}
+    _TYPE_PRIORITY = {
+        "street": 0,
+        "apartment": 1,
+        "landmark": 2,
+        "district": 3,
+        "other": 4,
+    }
+    # Types whose alias label should replace the ward's own name in results.
+    _ALIAS_LABEL_TYPES = {"street", "apartment", "landmark"}
 
     def _clean_alias_vi(raw: str) -> str:
         """Strip house-range/block parentheticals: 'Lê Trọng Tấn (từ số 16 đến 86)' → 'Lê Trọng Tấn'."""
         return re.sub(r"\s*\(.*?\)", "", raw).strip()
 
     # Best alias per ward: prefer by type priority, break ties by fuzzy score
-    alias_best: dict[str, tuple[float, str, str]] = {}
+    alias_best: dict[str, tuple[float, str, str, float | None, float | None]] = {}
     for a in alias_rows:
         score = fuzz.WRatio(q_normalized, a.alias_norm)
         raw_name = a.alias_vi or a.alias_norm
         display_name = _clean_alias_vi(raw_name)
+        candidate = (score, display_name, a.alias_type, a.lat, a.lng)
         if a.ward_name not in alias_best:
-            alias_best[a.ward_name] = (score, display_name, a.alias_type)
+            alias_best[a.ward_name] = candidate
         else:
-            cur_score, _, cur_type = alias_best[a.ward_name]
+            cur_score, _, cur_type, _, _ = alias_best[a.ward_name]
             cur_pri = _TYPE_PRIORITY.get(cur_type, 99)
             new_pri = _TYPE_PRIORITY.get(a.alias_type, 99)
             if new_pri < cur_pri or (new_pri == cur_pri and score > cur_score):
-                alias_best[a.ward_name] = (score, display_name, a.alias_type)
+                alias_best[a.ward_name] = candidate
 
-    # Fetch ward + flood data for alias-matched wards not already in direct_rows
-    direct_ward_names = {r.ward_name for r in direct_rows}
-    alias_only_wards = [w for w in alias_best if w not in direct_ward_names]
-
+    # Fetch ward + flood data for every alias-matched ward. This includes wards
+    # that also matched directly, so a direct hit can still carry its alias
+    # label (FIR-80: "Nguyễn Trãi" instead of the containing ward name).
     alias_ward_rows = []
-    if alias_only_wards:
+    if alias_best:
         alias_ward_rows = (
             await db.execute(
-                _build_ward_stmt(WardCentroid.ward_name.in_(alias_only_wards))
+                _build_ward_stmt(WardCentroid.ward_name.in_(list(alias_best)))
             )
         ).fetchall()
 
@@ -191,13 +205,27 @@ async def search_wards(
     # has_data_override=None means use row.flood_count directly
     ward_data: dict[str, tuple] = {}
 
+    # Direct matches default to the ward name as the primary label.
     for row in direct_rows:
         score = fuzz.WRatio(q_normalized, row.ward_name)
         ward_data[row.ward_name] = (row, score, row.ward_name_vi, "ward", None)
 
+    # Alias matches. A street / apartment / landmark alias always wins the
+    # primary label — even when the same ward also matched directly. Other
+    # alias types (district/other) only add wards that had no direct hit.
+    # An alias with its own coordinates (landmark/apartment geocoding, migration
+    # 020) overrides the ward centroid for the map result.
+    coords_override: dict[str, tuple[float, float]] = {}
+
     for ward_row in alias_ward_rows:
-        score, alias_vi, alias_type = alias_best[ward_row.ward_name]
-        ward_data[ward_row.ward_name] = (ward_row, score, alias_vi, alias_type, ward_row.flood_count > 0)
+        score, alias_vi, alias_type, alias_lat, alias_lng = alias_best[ward_row.ward_name]
+        if ward_row.ward_name in ward_data and alias_type not in _ALIAS_LABEL_TYPES:
+            continue
+        ward_data[ward_row.ward_name] = (
+            ward_row, score, alias_vi, alias_type, ward_row.flood_count > 0,
+        )
+        if alias_lat is not None and alias_lng is not None:
+            coords_override[ward_row.ward_name] = (float(alias_lat), float(alias_lng))
 
     if not ward_data:
         return SearchResponse(
@@ -216,17 +244,21 @@ async def search_wards(
             if has_data and row.min_year and row.max_year
             else None
         )
+        lat, lng = coords_override.get(
+            row.ward_name, (float(row.lat), float(row.lng))
+        )
         results.append(
             SearchResult(
                 ward=row.ward_name_vi,
                 ward_normalized=row.ward_name,
                 location_name=location_name,
                 location_type=location_type,
-                district=row.district,
-                lat=float(row.lat),
-                lng=float(row.lng),
+                district=clean_district(row.district),
+                lat=lat,
+                lng=lng,
                 has_flood_data=has_data,
                 data_year_range=year_range,
+                coords_precise=row.ward_name in coords_override,
             )
         )
 

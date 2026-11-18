@@ -10,12 +10,15 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { FloodReportCard } from "@/components/report/FloodReportCard"
 import type { SearchResult } from "@/lib/search"
+import type { ReportEventLocation } from "@/lib/report"
 
 interface ResultSheetProps {
   ward: SearchResult | null
   open: boolean
   onOpenChange: (open: boolean) => void
-  onReportLoaded?: (locations: { lat: number; lng: number; location_name?: string }[]) => void
+  onReportLoaded?: (locations: ReportEventLocation[]) => void
+  activeEventIdx?: number | null
+  onEventSelect?: (index: number) => void
 }
 
 /** Returns true when viewport width ≥ 1024px (Tailwind lg). */
@@ -36,6 +39,8 @@ export function ResultSheet({
   open,
   onOpenChange,
   onReportLoaded,
+  activeEventIdx,
+  onEventSelect,
 }: ResultSheetProps) {
   const isDesktop = useIsDesktop()
 
@@ -47,13 +52,23 @@ export function ResultSheet({
         side={isDesktop ? "left" : "bottom"}
         data-testid="result-sheet"
         className="overflow-y-auto"
+        // Non-modal sheet: map/InfoWindow focus must not dismiss the sheet.
+        onFocusOutside={(e) => e.preventDefault()}
+        // Desktop: zoom/pan gestures on the map must never dismiss the panel.
+        // Phone keeps the original behaviour (tap map minimises to the handle).
+        onPointerDownOutside={(e) => {
+          if (isDesktop) e.preventDefault()
+        }}
+        onInteractOutside={(e) => {
+          if (isDesktop) e.preventDefault()
+        }}
       >
         {/* Ward header */}
         <div className="mb-3 pr-6">
           <SheetTitle data-testid="sheet-ward-name">{ward.location_name}</SheetTitle>
           <SheetDescription>
             {ward.location_type !== "ward" && `${ward.ward} · `}
-            {ward.district && ward.district !== "Unknown" ? ward.district : "Hà Nội"}
+            {ward.district ? ward.district : "Hà Nội"}
           </SheetDescription>
         </div>
 
@@ -66,6 +81,8 @@ export function ResultSheet({
           ward={ward.ward_normalized}
           locationName={ward.location_type !== "ward" ? ward.location_name : undefined}
           onReportLoaded={onReportLoaded}
+          activeEventIdx={activeEventIdx}
+          onEventSelect={onEventSelect}
         />
       </SheetContent>
     </Sheet>

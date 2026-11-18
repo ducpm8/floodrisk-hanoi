@@ -13,7 +13,7 @@ Full spec: see `TECHNICAL_ARCHITECTURE.md`
 **ORM:** SQLAlchemy async — no raw SQL, no f-string queries ever
 **Auth:** Guest session only (UUID in localStorage, X-Session-ID header) — no user accounts v1
 **Payment:** SePay (bank-transfer monitor) — VietQR URL at checkout, HMAC-SHA256 webhook at `POST /api/webhooks/sepay` validates before any DB write
-**Geocoding:** Static ward centroid table (579 Hanoi wards from OSM) — no runtime geocoding API
+**Geocoding:** Static ward centroid table (519 pre-2025 OSM wards + the 126 phường/xã in effect from 2025-07-01) — no runtime geocoding API
 **Normalization:** `normalize_ward()` in `api/utils/text.py` — call before every ward DB lookup
 **LLM:** claude-haiku-4-5-20251001 for flood text extraction (FIR-18)
 **Tests:** pytest unit + integration (real DB) + Playwright E2E; email always mocked

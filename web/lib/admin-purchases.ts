@@ -1,4 +1,5 @@
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api"
+import { apiFetch, apiUrl } from "./api"
+
 const ADMIN_TOKEN = process.env.NEXT_PUBLIC_ADMIN_TOKEN ?? ""
 
 function headers(): HeadersInit {
@@ -46,14 +47,16 @@ export async function fetchPurchases(
     status,
     q,
   })
-  const res = await fetch(`${BASE}/admin/purchases?${params}`, { headers: headers() })
+  const res = await apiFetch(apiUrl(`/api/admin/purchases?${params}`), {
+    headers: headers(),
+  })
   if (!res.ok) throw new Error(`${res.status}`)
   return res.json()
 }
 
 export async function exportPurchasesCSV(status: StatusFilter): Promise<void> {
   const params = new URLSearchParams({ status })
-  const res = await fetch(`${BASE}/admin/purchases/export?${params}`, {
+  const res = await apiFetch(apiUrl(`/api/admin/purchases/export?${params}`), {
     headers: { ...(ADMIN_TOKEN ? { "X-Admin-Token": ADMIN_TOKEN } : {}) },
   })
   if (!res.ok) throw new Error(`${res.status}`)

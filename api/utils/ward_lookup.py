@@ -44,7 +44,9 @@ _WARD_LIKE = text("""
 
 _ALIAS_LOOKUP = text("""
     SELECT la.ward_name, la.alias_type, la.confidence, la.source,
-           wc.district, wc.lat::float AS lat, wc.lng::float AS lng
+           wc.district,
+           COALESCE(la.lat, wc.lat)::float AS lat,
+           COALESCE(la.lng, wc.lng)::float AS lng
     FROM location_aliases la
     JOIN ward_centroids wc ON wc.ward_name = la.ward_name
     WHERE la.alias_norm = :alias_norm
@@ -56,7 +58,9 @@ _ALIAS_LOOKUP = text("""
 # "duong nguyen chi thanh cong dai truyen hinh viet nam" → alias "nguyen chi thanh".
 _ALIAS_SUBSTRING_LOOKUP = text("""
     SELECT la.ward_name, la.alias_type, la.confidence, la.source,
-           wc.district, wc.lat::float AS lat, wc.lng::float AS lng
+           wc.district,
+           COALESCE(la.lat, wc.lat)::float AS lat,
+           COALESCE(la.lng, wc.lng)::float AS lng
     FROM location_aliases la
     JOIN ward_centroids wc ON wc.ward_name = la.ward_name
     WHERE :normalized LIKE '%' || la.alias_norm || '%'

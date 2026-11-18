@@ -4,11 +4,23 @@ Items deferred from planning/review sessions. Each has enough context to pick up
 
 ---
 
-## [x] Add docker-compose.yml for local dev DB — DONE in FIR-3 (infra/docker-compose.yml)
+## [x] Admin bulk flood-location CSV import — DONE 2026-11-03
+
+**What:** `web/app/admin/import/page.tsx` + `web/lib/admin-import.ts` + `api/routers/admin_import.py`.
+- `GET /admin/flood-import/template` — UTF-8 BOM CSV template
+- `POST /admin/flood-import` — multipart CSV, `dry_run` flag, X-Admin-Token
+
+Partial import (bad rows skipped + reported), per-row SAVEPOINT, dedupe via `uidx_flood_events_upsert` with blank `source_url` stored as `manual://admin-csv`, Hanoi bbox validation, UTF-8/CP1258 decode. 18 unit tests + 8 Playwright tests + 4 real-DB integration tests.
+
+Integration tests run against a throwaway Postgres cluster (port 5433, trust auth): `initdb` to a temp dir, `pg_ctl start`, `createdb flooddb_test`, `CREATE EXTENSION postgis`. `api/tests/integration/test_admin_import.py` overrides `get_db` so requests hit the test DB. `api/migrations/env.py` now prefers an explicit `sqlalchemy.url` set by the caller, so the test fixture's `alembic upgrade/downgrade` can never touch the dev DB.
+
+Also: paid report now includes coordinate-less rows by ward or district (`_fetch_events_combined` third branch), with "Chưa có vị trí trên bản đồ" tag and no pin. Legend reworded to "N điểm ngập trên bản đồ".
 
 ---
 
 ## [ ] Create low-priority ticket: Manual OFFB curation admin form
+
+**OUT OF SCOPE 2026-11-03 (user decision) — crawl items deferred.** The CSV import above covers manual structured entry.
 
 **What:** Simple admin form (no auth) for manually entering flood events from OFFB Facebook community posts. Fields: location_name, ward, district, lat, lng, event_date, severity, source_url.
 
@@ -22,6 +34,8 @@ Items deferred from planning/review sessions. Each has enough context to pick up
 
 ## [ ] thoatnuochanoi.vn scraper: confirm site format before implementing
 
+**OUT OF SCOPE 2026-11-03 (user decision) — crawl items deferred.** Site research is now documented at the top of `api/scrapers/official.py` (JSON endpoint `GET https://thoatnuochanoi.vn/ungngap/api/flood/getflood`).
+
 **What:** Before writing the official scraper (FIR-4), manually check whether thoatnuochanoi.vn/ungngap returns static HTML or a JSON API. The implementation path differs significantly.
 
 **Why:** FIR-4 ticket says "pending access confirmation from FIR research task." If it's a JSON API, use `requests` + JSON parsing. If static HTML, use `requests` + BeautifulSoup. If JS-rendered, need Playwright.
@@ -30,25 +44,11 @@ Items deferred from planning/review sessions. Each has enough context to pick up
 
 **Depends on:** Nothing — manual research step
 
-**What:** Add `infra/docker-compose.yml` with a `postgres:15-postgis` service + env vars for local development.
-
-**Why:** FIR-3's acceptance criteria (run `alembic upgrade head`, verify PostGIS 500m query via `EXPLAIN ANALYZE`) are untestable without a running PostGIS instance. Without this, every developer spends 30-60 minutes manually installing PostgreSQL 15 + PostGIS 3.x — a common source of "works on my machine" breakage.
-
-**Pros:** One-command local setup (`docker compose up -d db`). Consistent environment across all developers. CI can use the same image.
-
-**Cons:** Requires Docker installed locally. Adds one infra file.
-
-**Context:** Identified during FIR-3 eng review (2026-04-05). Should be done before FIR-3 implementation starts so AC can be verified locally.
-
-**Where to start:** `infra/docker-compose.yml` — use `postgis/postgis:15-3.4` image. Expose port 5432. Set `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD` from `.env`.
-
-**Depends on:** Nothing — can be done immediately.
-
 ---
 
-## [ ] Build admin frontend page for manual ingest (from 2026-04-30 review)
+## [x] Build admin frontend page for manual ingest (from 2026-04-30 review) — DONE 2026-11-03
 
-**What:** `web/app/admin/page.tsx` — two sections: (1) paste textarea → `POST /admin/manual-ingest` (JSON), (2) file picker (`<input type="file" accept=".txt,.html,.htm">`) → `POST /admin/manual-ingest/upload` (multipart). Both include optional `source_url` + `event_date` fields. Sends `X-Admin-Token` header.
+**What:** `web/app/admin/page.tsx` — two sections: paste textarea → `POST /admin/manual-ingest` (JSON), file picker (`<input type="file" accept=".txt,.html,.htm">`) → `POST /admin/manual-ingest/upload` (multipart). Both include optional `source_url` + `event_date` fields. Sends `X-Admin-Token` header. Endpoints mount only when `ENABLE_CRAWL_ROUTERS=true`.
 
 **Why:** The backend endpoints are curl-only without the UI. Admin needs to paste or upload files from a browser tab during triage.
 
@@ -58,7 +58,7 @@ Items deferred from planning/review sessions. Each has enough context to pick up
 
 ---
 
-## [ ] Implement admin manual ingest endpoints (FIR-39, decisions locked 2026-04-30)
+## [x] Implement admin manual ingest endpoints (FIR-39, decisions locked 2026-04-30) — DONE 2026-04-30
 
 **What:** Two endpoints in `api/routers/admin_ingest.py` for entering flood data without crawling:
 - `POST /admin/manual-ingest` — JSON body (paste path)
@@ -96,7 +96,7 @@ POST /admin/manual-ingest/upload
 
 ---
 
-## [ ] Implement migration 013 + location resolution pipeline fixes (from 2026-04-29 review)
+## [x] Implement migration 013 + location resolution pipeline fixes (from 2026-04-29 review) — DONE 2026-04-29
 
 **What:** 6-file change set locking in location resolution architecture decisions D1–D7.
 
@@ -116,9 +116,9 @@ POST /admin/manual-ingest/upload
 
 ---
 
-## [ ] Add source_url index on raw_flood_staging (from 2026-05-01 CEO review)
+## [x] Add source_url index on raw_flood_staging (from 2026-05-01 CEO review) — DONE 2026-11-03
 
-**What:** `CREATE INDEX idx_raw_flood_staging_source_url ON raw_flood_staging(source_url)` — add as migration 015 (or bundle into next migration).
+**What:** `CREATE INDEX idx_raw_flood_staging_source_url ON raw_flood_staging(source_url)` — added as migration 022.
 
 **Why:** The YouTube ingest duplicate check (`SELECT id FROM raw_flood_staging WHERE source_url = :url LIMIT 1`) does a full table scan. Fine at current scale (hundreds of rows), degrades as staging table grows with YouTube + manual submissions.
 
@@ -126,7 +126,7 @@ POST /admin/manual-ingest/upload
 
 **Cons:** Small write overhead on every staging INSERT. Negligible at current volume.
 
-**Where to start:** New migration file `api/migrations/versions/015_staging_source_url_index.py`. Single `CREATE INDEX` statement, no downtime.
+**Where to start:** New migration file `api/migrations/versions/022_staging_source_url_index.py` — applied 2026-11-03 (alembic head 022).
 
 **Effort:** S (human: ~15min / CC: ~1min) **Priority:** P3
 
@@ -141,6 +141,8 @@ DOM-scraper fragility concern resolved by swapping `youtube-transcript-api` → 
 ---
 
 ## [ ] Background job: auto-expire stale pending SePay orders
+
+**OUT OF SCOPE 2026-11-03 (user decision) — payment items deferred.**
 
 **What:** Implement `jobs/verify_pending_payments.py` — mark `purchased_reports` rows as `status='failed'` (or `status='expired'`) when they remain `pending` for more than 24 hours.
 

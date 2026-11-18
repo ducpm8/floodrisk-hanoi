@@ -4,9 +4,8 @@
  * fullReport: requires paid session — server returns 402 if not paid.
  */
 
+import { apiFetch } from "./api"
 import { getOrCreateSessionId } from "./session";
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export interface TeaserData {
   location: string;
@@ -15,7 +14,7 @@ export interface TeaserData {
 }
 
 export async function fetchTeaser(lat: number, lng: number): Promise<TeaserData> {
-  const res = await fetch(`${API}/api/flood/teaser?lat=${lat}&lng=${lng}`);
+  const res = await apiFetch(`/api/flood/teaser?lat=${lat}&lng=${lng}`);
   if (!res.ok) {
     throw new Error(`Teaser fetch failed: ${res.status}`);
   }
@@ -48,13 +47,26 @@ export interface FullReportData {
   summary: ReportSummary;
 }
 
+/**
+ * A paid-report flood event that has coordinates. Used by FloodReportCard to
+ * hand the map an ordered list matching the numbered pins / list rows.
+ */
+export interface ReportEventLocation {
+  lat: number;
+  lng: number;
+  location_name?: string;
+  severity: string;
+  event_date: string;
+  depth_cm: number | null;
+}
+
 export async function fetchFullReport(
   lat: number,
   lng: number,
   locationName?: string,
 ): Promise<FullReportData> {
   const sessionId = getOrCreateSessionId();
-  const res = await fetch(`${API}/api/flood/report`, {
+  const res = await apiFetch("/api/flood/report", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

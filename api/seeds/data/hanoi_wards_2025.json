@@ -1,0 +1,4591 @@
+{
+  "source": "ThangLeQuoc/vietnamese-provinces-database",
+  "source_version": "v5.2.0",
+  "source_url": "https://github.com/thanglequoc/vietnamese-provinces-database/tree/v5.2.0/json/geojson/01_ha_noi",
+  "source_license": "MIT",
+  "source_generated_at": "2026-09-20T13:13:17Z",
+  "authority": "Nghị quyết 1656/NQ-UBTVQH15 (effective 2025-07-01); geometry per QĐ 19/2025",
+  "retrieved_at": "2026-11-08",
+  "province_code": "01",
+  "province_name": "Thành phố Hà Nội",
+  "count": 126,
+  "units": [
+    {
+      "code": "00004",
+      "name_vi": "Phường Ba Đình",
+      "type": "phuong",
+      "lat": 21.039446,
+      "lng": 105.836365,
+      "centroid_lat": 21.03853,
+      "centroid_lng": 105.838061,
+      "area_km2": 2.97,
+      "predecessors": [
+        {
+          "name_vi": "Phường Nguyễn Trung Trực",
+          "district_vi": "Quận Ba Đình",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Quán Thánh",
+          "district_vi": "Quận Ba Đình",
+          "code": "00013"
+        },
+        {
+          "name_vi": "Phường Trúc Bạch",
+          "district_vi": "Quận Ba Đình",
+          "code": "00004"
+        },
+        {
+          "name_vi": "Phường Điện Biên",
+          "district_vi": "Quận Ba Đình",
+          "code": "00019"
+        },
+        {
+          "name_vi": "Phường Đội Cấn",
+          "district_vi": "Quận Ba Đình",
+          "code": "00022"
+        }
+      ]
+    },
+    {
+      "code": "00008",
+      "name_vi": "Phường Ngọc Hà",
+      "type": "phuong",
+      "lat": 21.039386,
+      "lng": 105.816857,
+      "centroid_lat": 21.038124,
+      "centroid_lng": 105.816315,
+      "area_km2": 2.68,
+      "predecessors": [
+        {
+          "name_vi": "Phường Cống Vị",
+          "district_vi": "Quận Ba Đình",
+          "code": "00007"
+        },
+        {
+          "name_vi": "Phường Liễu Giai",
+          "district_vi": "Quận Ba Đình",
+          "code": "00008"
+        },
+        {
+          "name_vi": "Phường Ngọc Hà",
+          "district_vi": "Quận Ba Đình",
+          "code": "00016"
+        },
+        {
+          "name_vi": "Phường Vĩnh Phúc",
+          "district_vi": "Quận Ba Đình",
+          "code": "00006"
+        }
+      ]
+    },
+    {
+      "code": "00025",
+      "name_vi": "Phường Giảng Võ",
+      "type": "phuong",
+      "lat": 21.02658,
+      "lng": 105.816703,
+      "centroid_lat": 21.027563,
+      "centroid_lng": 105.814254,
+      "area_km2": 2.6,
+      "predecessors": [
+        {
+          "name_vi": "Phường Giảng Võ",
+          "district_vi": "Quận Ba Đình",
+          "code": "00031"
+        },
+        {
+          "name_vi": "Phường Kim Mã",
+          "district_vi": "Quận Ba Đình",
+          "code": "00028"
+        },
+        {
+          "name_vi": "Phường Ngọc Khánh",
+          "district_vi": "Quận Ba Đình",
+          "code": "00025"
+        },
+        {
+          "name_vi": "Phường Thành Công",
+          "district_vi": "Quận Ba Đình",
+          "code": "00034"
+        }
+      ]
+    },
+    {
+      "code": "00070",
+      "name_vi": "Phường Hoàn Kiếm",
+      "type": "phuong",
+      "lat": 21.032568,
+      "lng": 105.849714,
+      "centroid_lat": 21.032025,
+      "centroid_lng": 105.850448,
+      "area_km2": 1.91,
+      "predecessors": [
+        {
+          "name_vi": "Phường Cửa Đông",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00055"
+        },
+        {
+          "name_vi": "Phường Hàng Buồm",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00046"
+        },
+        {
+          "name_vi": "Phường Hàng Bông",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00076"
+        },
+        {
+          "name_vi": "Phường Hàng Bạc",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00061"
+        },
+        {
+          "name_vi": "Phường Hàng Bồ",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00052"
+        },
+        {
+          "name_vi": "Phường Hàng Gai",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00064"
+        },
+        {
+          "name_vi": "Phường Hàng Mã",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00043"
+        },
+        {
+          "name_vi": "Phường Hàng Trống",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00070"
+        },
+        {
+          "name_vi": "Phường Hàng Đào",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00049"
+        },
+        {
+          "name_vi": "Phường Lý Thái Tổ",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00058"
+        },
+        {
+          "name_vi": "Phường Đồng Xuân",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00040"
+        }
+      ]
+    },
+    {
+      "code": "00082",
+      "name_vi": "Phường Cửa Nam",
+      "type": "phuong",
+      "lat": 21.02346,
+      "lng": 105.851133,
+      "centroid_lat": 21.022639,
+      "centroid_lng": 105.850741,
+      "area_km2": 1.68,
+      "predecessors": [
+        {
+          "name_vi": "Phường Cửa Nam",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00073"
+        },
+        {
+          "name_vi": "Phường Hàng Bài",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00088"
+        },
+        {
+          "name_vi": "Phường Phan Chu Trinh",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00085"
+        },
+        {
+          "name_vi": "Phường Tràng Tiền",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00079"
+        },
+        {
+          "name_vi": "Phường Trần Hưng Đạo",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00082"
+        }
+      ]
+    },
+    {
+      "code": "00091",
+      "name_vi": "Phường Phú Thượng",
+      "type": "phuong",
+      "lat": 21.084226,
+      "lng": 105.802035,
+      "centroid_lat": 21.086015,
+      "centroid_lng": 105.801938,
+      "area_km2": 7.21,
+      "predecessors": [
+        {
+          "name_vi": "Phường Phú Thượng",
+          "district_vi": "Quận Tây Hồ",
+          "code": "00091"
+        }
+      ]
+    },
+    {
+      "code": "00097",
+      "name_vi": "Phường Hồng Hà",
+      "type": "phuong",
+      "lat": 21.047988,
+      "lng": 105.852511,
+      "centroid_lat": 21.056479,
+      "centroid_lng": 105.845593,
+      "area_km2": 15.09,
+      "predecessors": [
+        {
+          "name_vi": "Phường Phúc Xá",
+          "district_vi": "Quận Ba Đình",
+          "code": "00001"
+        },
+        {
+          "name_vi": "Phường Bạch Đằng",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00244"
+        },
+        {
+          "name_vi": "Phường Chương Dương",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00067"
+        },
+        {
+          "name_vi": "Phường Phúc Tân",
+          "district_vi": "Quận Hoàn Kiếm",
+          "code": "00037"
+        },
+        {
+          "name_vi": "Phường Nhật Tân",
+          "district_vi": "Quận Tây Hồ",
+          "code": "00094"
+        },
+        {
+          "name_vi": "Phường Tứ Liên",
+          "district_vi": "Quận Tây Hồ",
+          "code": "00097"
+        },
+        {
+          "name_vi": "Phường Yên Phụ",
+          "district_vi": "Quận Tây Hồ",
+          "code": "00106"
+        }
+      ]
+    },
+    {
+      "code": "00103",
+      "name_vi": "Phường Tây Hồ",
+      "type": "phuong",
+      "lat": 21.062052,
+      "lng": 105.818413,
+      "centroid_lat": 21.057973,
+      "centroid_lng": 105.820222,
+      "area_km2": 10.72,
+      "predecessors": [
+        {
+          "name_vi": "Phường Bưởi",
+          "district_vi": "Quận Tây Hồ",
+          "code": "00109"
+        },
+        {
+          "name_vi": "Phường Quảng An",
+          "district_vi": "Quận Tây Hồ",
+          "code": "00100"
+        },
+        {
+          "name_vi": "Phường Thụy Khuê",
+          "district_vi": "Quận Tây Hồ",
+          "code": "00112"
+        },
+        {
+          "name_vi": "Phường Xuân La",
+          "district_vi": "Quận Tây Hồ",
+          "code": "00103"
+        }
+      ]
+    },
+    {
+      "code": "00118",
+      "name_vi": "Phường Bồ Đề",
+      "type": "phuong",
+      "lat": 21.051156,
+      "lng": 105.875859,
+      "centroid_lat": 21.051365,
+      "centroid_lng": 105.870525,
+      "area_km2": 12.94,
+      "predecessors": [
+        {
+          "name_vi": "Phường Bồ Đề",
+          "district_vi": "Quận Long Biên",
+          "code": "00139"
+        },
+        {
+          "name_vi": "Phường Gia Thụy",
+          "district_vi": "Quận Long Biên",
+          "code": "00130"
+        },
+        {
+          "name_vi": "Phường Ngọc Lâm",
+          "district_vi": "Quận Long Biên",
+          "code": "00133"
+        },
+        {
+          "name_vi": "Phường Ngọc Thụy",
+          "district_vi": "Quận Long Biên",
+          "code": "00118"
+        }
+      ]
+    },
+    {
+      "code": "00127",
+      "name_vi": "Phường Việt Hưng",
+      "type": "phuong",
+      "lat": 21.062756,
+      "lng": 105.906107,
+      "centroid_lat": 21.064841,
+      "centroid_lng": 105.903946,
+      "area_km2": 12.91,
+      "predecessors": [
+        {
+          "name_vi": "Phường Giang Biên",
+          "district_vi": "Quận Long Biên",
+          "code": "00121"
+        },
+        {
+          "name_vi": "Phường Thượng Thanh",
+          "district_vi": "Quận Long Biên",
+          "code": "00115"
+        },
+        {
+          "name_vi": "Phường Việt Hưng",
+          "district_vi": "Quận Long Biên",
+          "code": "00127"
+        },
+        {
+          "name_vi": "Phường Đức Giang",
+          "district_vi": "Quận Long Biên",
+          "code": "00124"
+        }
+      ]
+    },
+    {
+      "code": "00136",
+      "name_vi": "Phường Phúc Lợi",
+      "type": "phuong",
+      "lat": 21.041538,
+      "lng": 105.917787,
+      "centroid_lat": 21.042304,
+      "centroid_lng": 105.918635,
+      "area_km2": 10.41,
+      "predecessors": [
+        {
+          "name_vi": "Phường Phúc Lợi",
+          "district_vi": "Quận Long Biên",
+          "code": "00136"
+        },
+        {
+          "name_vi": "Phường Phúc Đồng",
+          "district_vi": "Quận Long Biên",
+          "code": "00151"
+        },
+        {
+          "name_vi": "Phường Sài Đồng",
+          "district_vi": "Quận Long Biên",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Sài Đồng",
+          "district_vi": "Quận Long Biên",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "00145",
+      "name_vi": "Phường Long Biên",
+      "type": "phuong",
+      "lat": 21.022827,
+      "lng": 105.89906,
+      "centroid_lat": 21.019847,
+      "centroid_lng": 105.896166,
+      "area_km2": 19.04,
+      "predecessors": [
+        {
+          "name_vi": "Phường Cự Khối",
+          "district_vi": "Quận Long Biên",
+          "code": "00154"
+        },
+        {
+          "name_vi": "Phường Long Biên",
+          "district_vi": "Quận Long Biên",
+          "code": "00145"
+        },
+        {
+          "name_vi": "Phường Thạch Bàn",
+          "district_vi": "Quận Long Biên",
+          "code": "00148"
+        }
+      ]
+    },
+    {
+      "code": "00160",
+      "name_vi": "Phường Nghĩa Đô",
+      "type": "phuong",
+      "lat": 21.043468,
+      "lng": 105.793561,
+      "centroid_lat": 21.045091,
+      "centroid_lng": 105.794401,
+      "area_km2": 4.34,
+      "predecessors": [
+        {
+          "name_vi": "Phường Cổ Nhuế 1",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00616"
+        },
+        {
+          "name_vi": "Phường Dịch Vọng",
+          "district_vi": "Quận Cầu Giấy",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Dịch Vọng",
+          "district_vi": "Quận Cầu Giấy",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Dịch Vọng Hậu",
+          "district_vi": "Quận Cầu Giấy",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Nghĩa Tân",
+          "district_vi": "Quận Cầu Giấy",
+          "code": "00160"
+        },
+        {
+          "name_vi": "Phường Nghĩa Đô",
+          "district_vi": "Quận Cầu Giấy",
+          "code": "00157"
+        },
+        {
+          "name_vi": "Phường Nghĩa Đô",
+          "district_vi": "Quận Cầu Giấy",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Quan Hoa",
+          "district_vi": "Quận Cầu Giấy",
+          "code": "00169"
+        },
+        {
+          "name_vi": "Phường Yên Hòa",
+          "district_vi": "Quận Cầu Giấy",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "00166",
+      "name_vi": "Phường Cầu Giấy",
+      "type": "phuong",
+      "lat": 21.029952,
+      "lng": 105.790254,
+      "centroid_lat": 21.030915,
+      "centroid_lng": 105.788062,
+      "area_km2": 3.74,
+      "predecessors": [
+        {
+          "name_vi": "Phường Dịch Vọng",
+          "district_vi": "Quận Cầu Giấy",
+          "code": "00166"
+        },
+        {
+          "name_vi": "Phường Dịch Vọng Hậu",
+          "district_vi": "Quận Cầu Giấy",
+          "code": "00167"
+        }
+      ]
+    },
+    {
+      "code": "00175",
+      "name_vi": "Phường Yên Hoà",
+      "type": "phuong",
+      "lat": 21.014237,
+      "lng": 105.795383,
+      "centroid_lat": 21.013866,
+      "centroid_lng": 105.796185,
+      "area_km2": 4.1,
+      "predecessors": [
+        {
+          "name_vi": "Phường Trung Hoà",
+          "district_vi": "Quận Cầu Giấy",
+          "code": "00175"
+        },
+        {
+          "name_vi": "Phường Yên Hoà",
+          "district_vi": "Quận Cầu Giấy",
+          "code": "00172"
+        }
+      ]
+    },
+    {
+      "code": "00190",
+      "name_vi": "Phường Ô Chợ Dừa",
+      "type": "phuong",
+      "lat": 21.022751,
+      "lng": 105.825623,
+      "centroid_lat": 21.023275,
+      "centroid_lng": 105.825762,
+      "area_km2": 1.83,
+      "predecessors": [
+        {
+          "name_vi": "Phường Cát Linh",
+          "district_vi": "Quận Đống Đa",
+          "code": "00178"
+        },
+        {
+          "name_vi": "Phường Ô Chợ Dừa",
+          "district_vi": "Quận Đống Đa",
+          "code": "00190"
+        }
+      ]
+    },
+    {
+      "code": "00199",
+      "name_vi": "Phường Láng",
+      "type": "phuong",
+      "lat": 21.021095,
+      "lng": 105.804846,
+      "centroid_lat": 21.021111,
+      "centroid_lng": 105.806008,
+      "area_km2": 1.88,
+      "predecessors": [
+        {
+          "name_vi": "Phường Láng Hạ",
+          "district_vi": "Quận Đống Đa",
+          "code": "00199"
+        },
+        {
+          "name_vi": "Phường Láng Thượng",
+          "district_vi": "Quận Đống Đa",
+          "code": "00187"
+        }
+      ]
+    },
+    {
+      "code": "00226",
+      "name_vi": "Phường Văn Miếu - Quốc Tử Giám",
+      "type": "phuong",
+      "lat": 21.01908,
+      "lng": 105.8358,
+      "centroid_lat": 21.019941,
+      "centroid_lng": 105.837107,
+      "area_km2": 1.92,
+      "predecessors": [
+        {
+          "name_vi": "Phường Hàng Bột",
+          "district_vi": "Quận Đống Đa",
+          "code": "00196"
+        },
+        {
+          "name_vi": "Phường Khâm Thiên",
+          "district_vi": "Quận Đống Đa",
+          "code": "00202"
+        },
+        {
+          "name_vi": "Phường Phương Liên",
+          "district_vi": "Quận Đống Đa",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Phương Liên - Trung Tự",
+          "district_vi": "Quận Đống Đa",
+          "code": "00226"
+        },
+        {
+          "name_vi": "Phường Quốc Tử Giám",
+          "district_vi": "Quận Đống Đa",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Thổ Quan",
+          "district_vi": "Quận Đống Đa",
+          "code": "00205"
+        },
+        {
+          "name_vi": "Phường Trung Phụng",
+          "district_vi": "Quận Đống Đa",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Trung Tự",
+          "district_vi": "Quận Đống Đa",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Văn Chương",
+          "district_vi": "Quận Đống Đa",
+          "code": "00193"
+        },
+        {
+          "name_vi": "Phường Văn Miếu",
+          "district_vi": "Quận Đống Đa",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Văn Miếu - Quốc Tử Giám",
+          "district_vi": "Quận Đống Đa",
+          "code": "00181"
+        }
+      ]
+    },
+    {
+      "code": "00229",
+      "name_vi": "Phường Kim Liên",
+      "type": "phuong",
+      "lat": 21.006032,
+      "lng": 105.832101,
+      "centroid_lat": 21.005653,
+      "centroid_lng": 105.832386,
+      "area_km2": 2.46,
+      "predecessors": [
+        {
+          "name_vi": "Phường Khương Thượng",
+          "district_vi": "Quận Đống Đa",
+          "code": "00238"
+        },
+        {
+          "name_vi": "Phường Kim Liên",
+          "district_vi": "Quận Đống Đa",
+          "code": "00229"
+        },
+        {
+          "name_vi": "Phường Ngã Tư Sở",
+          "district_vi": "Quận Đống Đa",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Phương Mai",
+          "district_vi": "Quận Đống Đa",
+          "code": "00232"
+        },
+        {
+          "name_vi": "Phường Quang Trung",
+          "district_vi": "Quận Đống Đa",
+          "code": "00214"
+        },
+        {
+          "name_vi": "Phường Trung Tự",
+          "district_vi": "Quận Đống Đa",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "00235",
+      "name_vi": "Phường Đống Đa",
+      "type": "phuong",
+      "lat": 21.011183,
+      "lng": 105.81836,
+      "centroid_lat": 21.011923,
+      "centroid_lng": 105.821778,
+      "area_km2": 2.07,
+      "predecessors": [
+        {
+          "name_vi": "Phường Nam Đồng",
+          "district_vi": "Quận Đống Đa",
+          "code": "00208"
+        },
+        {
+          "name_vi": "Phường Ngã Tư Sở",
+          "district_vi": "Quận Đống Đa",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Thịnh Quang",
+          "district_vi": "Quận Đống Đa",
+          "code": "00235"
+        },
+        {
+          "name_vi": "Phường Trung Liệt",
+          "district_vi": "Quận Đống Đa",
+          "code": "00217"
+        }
+      ]
+    },
+    {
+      "code": "00256",
+      "name_vi": "Phường Hai Bà Trưng",
+      "type": "phuong",
+      "lat": 21.014239,
+      "lng": 105.852235,
+      "centroid_lat": 21.013624,
+      "centroid_lng": 105.851895,
+      "area_km2": 2.65,
+      "predecessors": [
+        {
+          "name_vi": "Phường Lê Đại Hành",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00256"
+        },
+        {
+          "name_vi": "Phường Nguyễn Du",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00241"
+        },
+        {
+          "name_vi": "Phường Phạm Đình Hổ",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00247"
+        },
+        {
+          "name_vi": "Phường Phố Huế",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00262"
+        },
+        {
+          "name_vi": "Phường Đống Mác",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Đồng Nhân",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00259"
+        }
+      ]
+    },
+    {
+      "code": "00283",
+      "name_vi": "Phường Vĩnh Tuy",
+      "type": "phuong",
+      "lat": 20.997819,
+      "lng": 105.867849,
+      "centroid_lat": 20.998063,
+      "centroid_lng": 105.867343,
+      "area_km2": 2.33,
+      "predecessors": [
+        {
+          "name_vi": "Phường Thanh Lương",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00268"
+        },
+        {
+          "name_vi": "Phường Vĩnh Tuy",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00283"
+        },
+        {
+          "name_vi": "Phường Mai Động",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00310"
+        }
+      ]
+    },
+    {
+      "code": "00292",
+      "name_vi": "Phường Bạch Mai",
+      "type": "phuong",
+      "lat": 21.002275,
+      "lng": 105.851454,
+      "centroid_lat": 21.002211,
+      "centroid_lng": 105.851959,
+      "area_km2": 2.95,
+      "predecessors": [
+        {
+          "name_vi": "Phường Bách Khoa",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00277"
+        },
+        {
+          "name_vi": "Phường Bạch Mai",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00292"
+        },
+        {
+          "name_vi": "Phường Cầu Dền",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Cầu Dền",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Minh Khai",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00295"
+        },
+        {
+          "name_vi": "Phường Quỳnh Lôi",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Quỳnh Mai",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00289"
+        },
+        {
+          "name_vi": "Phường Thanh Nhàn",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00271"
+        },
+        {
+          "name_vi": "Phường Đồng Tâm",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00280"
+        }
+      ]
+    },
+    {
+      "code": "00301",
+      "name_vi": "Phường Vĩnh Hưng",
+      "type": "phuong",
+      "lat": 20.99126,
+      "lng": 105.88288,
+      "centroid_lat": 20.990627,
+      "centroid_lng": 105.882664,
+      "area_km2": 4.47,
+      "predecessors": [
+        {
+          "name_vi": "Phường Thanh Trì",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00301"
+        },
+        {
+          "name_vi": "Phường Vĩnh Hưng",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00304"
+        }
+      ]
+    },
+    {
+      "code": "00316",
+      "name_vi": "Phường Định Công",
+      "type": "phuong",
+      "lat": 20.97784,
+      "lng": 105.824439,
+      "centroid_lat": 20.976878,
+      "centroid_lng": 105.824903,
+      "area_km2": 5.34,
+      "predecessors": [
+        {
+          "name_vi": "Phường Đại Kim",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00316"
+        },
+        {
+          "name_vi": "Phường Định Công",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00307"
+        }
+      ]
+    },
+    {
+      "code": "00322",
+      "name_vi": "Phường Tương Mai",
+      "type": "phuong",
+      "lat": 20.990705,
+      "lng": 105.852698,
+      "centroid_lat": 20.989351,
+      "centroid_lng": 105.853665,
+      "area_km2": 3.56,
+      "predecessors": [
+        {
+          "name_vi": "Phường Trương Định",
+          "district_vi": "Quận Hai Bà Trưng",
+          "code": "00298"
+        },
+        {
+          "name_vi": "Phường Giáp Bát",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00325"
+        },
+        {
+          "name_vi": "Phường Hoàng Văn Thụ",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00322"
+        },
+        {
+          "name_vi": "Phường Tương Mai",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00313"
+        }
+      ]
+    },
+    {
+      "code": "00328",
+      "name_vi": "Phường Lĩnh Nam",
+      "type": "phuong",
+      "lat": 20.975907,
+      "lng": 105.896085,
+      "centroid_lat": 20.972519,
+      "centroid_lng": 105.891123,
+      "area_km2": 10.86,
+      "predecessors": [
+        {
+          "name_vi": "Phường Lĩnh Nam",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00328"
+        },
+        {
+          "name_vi": "Phường Trần Phú",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00334"
+        }
+      ]
+    },
+    {
+      "code": "00331",
+      "name_vi": "Phường Hoàng Mai",
+      "type": "phuong",
+      "lat": 20.973827,
+      "lng": 105.861761,
+      "centroid_lat": 20.97458,
+      "centroid_lng": 105.861819,
+      "area_km2": 9.04,
+      "predecessors": [
+        {
+          "name_vi": "Phường Thịnh Liệt",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00331"
+        },
+        {
+          "name_vi": "Phường Tân Mai",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00319"
+        }
+      ]
+    },
+    {
+      "code": "00337",
+      "name_vi": "Phường Hoàng Liệt",
+      "type": "phuong",
+      "lat": 20.961143,
+      "lng": 105.828219,
+      "centroid_lat": 20.96149,
+      "centroid_lng": 105.831687,
+      "area_km2": 4.04,
+      "predecessors": [
+        {
+          "name_vi": "Xã Tam Hiệp",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00655"
+        },
+        {
+          "name_vi": "Phường Hoàng Liệt",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00337"
+        }
+      ]
+    },
+    {
+      "code": "00340",
+      "name_vi": "Phường Yên Sở",
+      "type": "phuong",
+      "lat": 20.954818,
+      "lng": 105.856615,
+      "centroid_lat": 20.95675,
+      "centroid_lng": 105.857193,
+      "area_km2": 5.62,
+      "predecessors": [
+        {
+          "name_vi": "Phường Yên Sở",
+          "district_vi": "Quận Hoàng Mai",
+          "code": "00340"
+        }
+      ]
+    },
+    {
+      "code": "00352",
+      "name_vi": "Phường Phương Liệt",
+      "type": "phuong",
+      "lat": 20.99301,
+      "lng": 105.831382,
+      "centroid_lat": 20.992562,
+      "centroid_lng": 105.831844,
+      "area_km2": 3.2,
+      "predecessors": [
+        {
+          "name_vi": "Phường Khương Mai",
+          "district_vi": "Quận Thanh Xuân",
+          "code": "00352"
+        },
+        {
+          "name_vi": "Phường Phương Liệt",
+          "district_vi": "Quận Thanh Xuân",
+          "code": "00358"
+        }
+      ]
+    },
+    {
+      "code": "00364",
+      "name_vi": "Phường Khương Đình",
+      "type": "phuong",
+      "lat": 20.991115,
+      "lng": 105.813125,
+      "centroid_lat": 20.99098,
+      "centroid_lng": 105.814888,
+      "area_km2": 3.1,
+      "predecessors": [
+        {
+          "name_vi": "Phường Hạ Đình",
+          "district_vi": "Quận Thanh Xuân",
+          "code": "00373"
+        },
+        {
+          "name_vi": "Phường Khương Trung",
+          "district_vi": "Quận Thanh Xuân",
+          "code": "00349"
+        },
+        {
+          "name_vi": "Phường Khương Đình",
+          "district_vi": "Quận Thanh Xuân",
+          "code": "00364"
+        },
+        {
+          "name_vi": "Phường Kim Giang",
+          "district_vi": "Quận Thanh Xuân",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Thượng Đình",
+          "district_vi": "Quận Thanh Xuân",
+          "code": "00346"
+        }
+      ]
+    },
+    {
+      "code": "00367",
+      "name_vi": "Phường Thanh Xuân",
+      "type": "phuong",
+      "lat": 20.999409,
+      "lng": 105.805864,
+      "centroid_lat": 20.999488,
+      "centroid_lng": 105.804615,
+      "area_km2": 3.24,
+      "predecessors": [
+        {
+          "name_vi": "Phường Nhân Chính",
+          "district_vi": "Quận Thanh Xuân",
+          "code": "00343"
+        },
+        {
+          "name_vi": "Phường Thanh Xuân Bắc",
+          "district_vi": "Quận Thanh Xuân",
+          "code": "00367"
+        },
+        {
+          "name_vi": "Phường Thanh Xuân Nam",
+          "district_vi": "Quận Thanh Xuân",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Thanh Xuân Trung",
+          "district_vi": "Quận Thanh Xuân",
+          "code": "00355"
+        }
+      ]
+    },
+    {
+      "code": "00376",
+      "name_vi": "Xã Sóc Sơn",
+      "type": "xa",
+      "lat": 21.245413,
+      "lng": 105.849825,
+      "centroid_lat": 21.246306,
+      "centroid_lng": 105.849398,
+      "area_km2": 68.24,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Sóc Sơn",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00376"
+        },
+        {
+          "name_vi": "Xã Mai Đình",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00427"
+        },
+        {
+          "name_vi": "Xã Phù Linh",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00400"
+        },
+        {
+          "name_vi": "Xã Phù Lỗ",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00448"
+        },
+        {
+          "name_vi": "Xã Tiên Dược",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00418"
+        },
+        {
+          "name_vi": "Xã Tân Minh",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00406"
+        },
+        {
+          "name_vi": "Xã Đông Xuân",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00436"
+        }
+      ]
+    },
+    {
+      "code": "00382",
+      "name_vi": "Xã Kim Anh",
+      "type": "xa",
+      "lat": 21.295653,
+      "lng": 105.773678,
+      "centroid_lat": 21.283486,
+      "centroid_lng": 105.766171,
+      "area_km2": 52.8,
+      "predecessors": [
+        {
+          "name_vi": "Xã Minh Phú",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00397"
+        },
+        {
+          "name_vi": "Xã Minh Trí",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00382"
+        },
+        {
+          "name_vi": "Xã Tân Dân",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00415"
+        }
+      ]
+    },
+    {
+      "code": "00385",
+      "name_vi": "Xã Trung Giã",
+      "type": "xa",
+      "lat": 21.331505,
+      "lng": 105.831598,
+      "centroid_lat": 21.331728,
+      "centroid_lng": 105.830829,
+      "area_km2": 77.52,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bắc Sơn",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00379"
+        },
+        {
+          "name_vi": "Xã Hồng Kỳ",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00385"
+        },
+        {
+          "name_vi": "Xã Nam Sơn",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00388"
+        },
+        {
+          "name_vi": "Xã Trung Giã",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00391"
+        }
+      ]
+    },
+    {
+      "code": "00430",
+      "name_vi": "Xã Đa Phúc",
+      "type": "xa",
+      "lat": 21.247348,
+      "lng": 105.912963,
+      "centroid_lat": 21.250498,
+      "centroid_lng": 105.900562,
+      "area_km2": 55.32,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bắc Phú",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00403"
+        },
+        {
+          "name_vi": "Xã Kim Lũ",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00439"
+        },
+        {
+          "name_vi": "Xã Tân Hưng",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00394"
+        },
+        {
+          "name_vi": "Xã Việt Long",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00421"
+        },
+        {
+          "name_vi": "Xã Xuân Giang",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00424"
+        },
+        {
+          "name_vi": "Xã Xuân Thu",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00451"
+        },
+        {
+          "name_vi": "Xã Đức Hoà",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00430"
+        }
+      ]
+    },
+    {
+      "code": "00433",
+      "name_vi": "Xã Nội Bài",
+      "type": "xa",
+      "lat": 21.23601,
+      "lng": 105.773593,
+      "centroid_lat": 21.230801,
+      "centroid_lng": 105.794656,
+      "area_km2": 51.64,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hiền Ninh",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00412"
+        },
+        {
+          "name_vi": "Xã Phú Cường",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00442"
+        },
+        {
+          "name_vi": "Xã Phú Minh",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00445"
+        },
+        {
+          "name_vi": "Xã Quang Tiến",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00409"
+        },
+        {
+          "name_vi": "Xã Thanh Xuân",
+          "district_vi": "Huyện Sóc Sơn",
+          "code": "00433"
+        }
+      ]
+    },
+    {
+      "code": "00454",
+      "name_vi": "Xã Đông Anh",
+      "type": "xa",
+      "lat": 21.110009,
+      "lng": 105.8758,
+      "centroid_lat": 21.110091,
+      "centroid_lng": 105.871607,
+      "area_km2": 48.68,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Đông Anh",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00454"
+        },
+        {
+          "name_vi": "Xã Cổ Loa",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00505"
+        },
+        {
+          "name_vi": "Xã Dục Tú",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00496"
+        },
+        {
+          "name_vi": "Xã Mai Lâm",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00520"
+        },
+        {
+          "name_vi": "Xã Uy Nỗ",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00478"
+        },
+        {
+          "name_vi": "Xã Việt Hùng",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00487"
+        },
+        {
+          "name_vi": "Xã Đông Hội",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00523"
+        }
+      ]
+    },
+    {
+      "code": "00466",
+      "name_vi": "Xã Phúc Thịnh",
+      "type": "xa",
+      "lat": 21.158926,
+      "lng": 105.808701,
+      "centroid_lat": 21.162276,
+      "centroid_lng": 105.815375,
+      "area_km2": 42.63,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bắc Hồng",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00463"
+        },
+        {
+          "name_vi": "Xã Nam Hồng",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00469"
+        },
+        {
+          "name_vi": "Xã Nguyên Khê",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00466"
+        },
+        {
+          "name_vi": "Xã Tiên Dương",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00472"
+        },
+        {
+          "name_vi": "Xã Vân Nội",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00481"
+        }
+      ]
+    },
+    {
+      "code": "00475",
+      "name_vi": "Xã Thư Lâm",
+      "type": "xa",
+      "lat": 21.162686,
+      "lng": 105.884435,
+      "centroid_lat": 21.16479,
+      "centroid_lng": 105.887853,
+      "area_km2": 43.84,
+      "predecessors": [
+        {
+          "name_vi": "Xã Liên Hà",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00484"
+        },
+        {
+          "name_vi": "Xã Thuỵ Lâm",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00460"
+        },
+        {
+          "name_vi": "Xã Vân Hà",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00475"
+        },
+        {
+          "name_vi": "Xã Xuân Nộn",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00457"
+        }
+      ]
+    },
+    {
+      "code": "00493",
+      "name_vi": "Xã Thiên Lộc",
+      "type": "xa",
+      "lat": 21.126147,
+      "lng": 105.773125,
+      "centroid_lat": 21.124066,
+      "centroid_lng": 105.771536,
+      "area_km2": 27.96,
+      "predecessors": [
+        {
+          "name_vi": "Xã Kim Chung",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00493"
+        },
+        {
+          "name_vi": "Xã Kim Nỗ",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00490"
+        },
+        {
+          "name_vi": "Xã Võng La",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00514"
+        },
+        {
+          "name_vi": "Xã Đại Mạch",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00499"
+        }
+      ]
+    },
+    {
+      "code": "00508",
+      "name_vi": "Xã Vĩnh Thanh",
+      "type": "xa",
+      "lat": 21.103611,
+      "lng": 105.816573,
+      "centroid_lat": 21.107735,
+      "centroid_lng": 105.817842,
+      "area_km2": 22.52,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hải Bối",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00508"
+        },
+        {
+          "name_vi": "Xã Tàm Xá",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00517"
+        },
+        {
+          "name_vi": "Xã Vĩnh Ngọc",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00502"
+        },
+        {
+          "name_vi": "Xã Xuân Canh",
+          "district_vi": "Huyện Đông Anh",
+          "code": "00511"
+        }
+      ]
+    },
+    {
+      "code": "00541",
+      "name_vi": "Xã Phù Đổng",
+      "type": "xa",
+      "lat": 21.079253,
+      "lng": 105.932518,
+      "centroid_lat": 21.074081,
+      "centroid_lng": 105.945055,
+      "area_km2": 41.62,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Yên Viên",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00526"
+        },
+        {
+          "name_vi": "Xã Dương Hà",
+          "district_vi": "Huyện Gia Lâm",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Ninh Hiệp",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00535"
+        },
+        {
+          "name_vi": "Xã Phù Đổng",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00544"
+        },
+        {
+          "name_vi": "Xã Thiên Đức",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00541"
+        },
+        {
+          "name_vi": "Xã Trung Mầu",
+          "district_vi": "Huyện Gia Lâm",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Yên Thường",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00529"
+        },
+        {
+          "name_vi": "Xã Yên Viên",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00532"
+        },
+        {
+          "name_vi": "Xã Đình Xuyên",
+          "district_vi": "Huyện Gia Lâm",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "00562",
+      "name_vi": "Xã Thuận An",
+      "type": "xa",
+      "lat": 21.032624,
+      "lng": 105.982216,
+      "centroid_lat": 21.029935,
+      "centroid_lng": 105.986476,
+      "area_km2": 29.67,
+      "predecessors": [
+        {
+          "name_vi": "Xã Dương Quang",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00568"
+        },
+        {
+          "name_vi": "Xã Kim Sơn",
+          "district_vi": "Huyện Gia Lâm",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Lệ Chi",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00550"
+        },
+        {
+          "name_vi": "Xã Phú Sơn",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00562"
+        },
+        {
+          "name_vi": "Xã Phú Thị",
+          "district_vi": "Huyện Gia Lâm",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Đặng Xá",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00556"
+        }
+      ]
+    },
+    {
+      "code": "00565",
+      "name_vi": "Xã Gia Lâm",
+      "type": "xa",
+      "lat": 21.002431,
+      "lng": 105.951483,
+      "centroid_lat": 21.00279,
+      "centroid_lng": 105.94866,
+      "area_km2": 25.72,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Trâu Quỳ",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00565"
+        },
+        {
+          "name_vi": "Xã Cổ Bi",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00553"
+        },
+        {
+          "name_vi": "Xã Dương Xá",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00571"
+        },
+        {
+          "name_vi": "Xã Kiêu Kỵ",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00580"
+        }
+      ]
+    },
+    {
+      "code": "00577",
+      "name_vi": "Xã Bát Tràng",
+      "type": "xa",
+      "lat": 20.969697,
+      "lng": 105.908059,
+      "centroid_lat": 20.969142,
+      "centroid_lng": 105.911856,
+      "area_km2": 20.67,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bát Tràng",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00583"
+        },
+        {
+          "name_vi": "Xã Kim Lan",
+          "district_vi": "Huyện Gia Lâm",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Kim Đức",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00589"
+        },
+        {
+          "name_vi": "Xã Văn Đức",
+          "district_vi": "Huyện Gia Lâm",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Đa Tốn",
+          "district_vi": "Huyện Gia Lâm",
+          "code": "00577"
+        },
+        {
+          "name_vi": "Xã Đông Dư",
+          "district_vi": "Huyện Gia Lâm",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "00592",
+      "name_vi": "Phường Từ Liêm",
+      "type": "phuong",
+      "lat": 21.021894,
+      "lng": 105.767156,
+      "centroid_lat": 21.020338,
+      "centroid_lng": 105.770732,
+      "area_km2": 10.18,
+      "predecessors": [
+        {
+          "name_vi": "Phường Cầu Diễn",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00592"
+        },
+        {
+          "name_vi": "Phường Mễ Trì",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00631"
+        },
+        {
+          "name_vi": "Phường Mỹ Đình 1",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00625"
+        },
+        {
+          "name_vi": "Phường Mỹ Đình 2",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00626"
+        },
+        {
+          "name_vi": "Phường Phú Đô",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00632"
+        }
+      ]
+    },
+    {
+      "code": "00598",
+      "name_vi": "Phường Thượng Cát",
+      "type": "phuong",
+      "lat": 21.086889,
+      "lng": 105.748865,
+      "centroid_lat": 21.086588,
+      "centroid_lng": 105.749728,
+      "area_km2": 14.77,
+      "predecessors": [
+        {
+          "name_vi": "Phường Liên Mạc",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00598"
+        },
+        {
+          "name_vi": "Phường Thượng Cát",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00595"
+        }
+      ]
+    },
+    {
+      "code": "00602",
+      "name_vi": "Phường Đông Ngạc",
+      "type": "phuong",
+      "lat": 21.076461,
+      "lng": 105.778847,
+      "centroid_lat": 21.075052,
+      "centroid_lng": 105.775915,
+      "area_km2": 8.85,
+      "predecessors": [
+        {
+          "name_vi": "Phường Cổ Nhuế 2",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00617"
+        },
+        {
+          "name_vi": "Phường Thụy Phương",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00604"
+        },
+        {
+          "name_vi": "Phường Đông Ngạc",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00601"
+        },
+        {
+          "name_vi": "Phường Đức Thắng",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00602"
+        }
+      ]
+    },
+    {
+      "code": "00611",
+      "name_vi": "Phường Xuân Đỉnh",
+      "type": "phuong",
+      "lat": 21.065561,
+      "lng": 105.795557,
+      "centroid_lat": 21.064443,
+      "centroid_lng": 105.795051,
+      "area_km2": 5.46,
+      "predecessors": [
+        {
+          "name_vi": "Phường Xuân Tảo",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00611"
+        },
+        {
+          "name_vi": "Phường Xuân Đỉnh",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00610"
+        }
+      ]
+    },
+    {
+      "code": "00613",
+      "name_vi": "Phường Tây Tựu",
+      "type": "phuong",
+      "lat": 21.065263,
+      "lng": 105.740199,
+      "centroid_lat": 21.06414,
+      "centroid_lng": 105.738936,
+      "area_km2": 7.54,
+      "predecessors": [
+        {
+          "name_vi": "Phường Minh Khai",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00613"
+        },
+        {
+          "name_vi": "Phường Tây Tựu",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00607"
+        }
+      ]
+    },
+    {
+      "code": "00619",
+      "name_vi": "Phường Phú Diễn",
+      "type": "phuong",
+      "lat": 21.04855,
+      "lng": 105.763744,
+      "centroid_lat": 21.048875,
+      "centroid_lng": 105.765773,
+      "area_km2": 6.29,
+      "predecessors": [
+        {
+          "name_vi": "Phường Phú Diễn",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00619"
+        },
+        {
+          "name_vi": "Phường Phúc Diễn",
+          "district_vi": "Quận Bắc Từ Liêm",
+          "code": "00620"
+        },
+        {
+          "name_vi": "Phường Mai Dịch",
+          "district_vi": "Quận Cầu Giấy",
+          "code": "00163"
+        }
+      ]
+    },
+    {
+      "code": "00622",
+      "name_vi": "Phường Xuân Phương",
+      "type": "phuong",
+      "lat": 21.031439,
+      "lng": 105.747999,
+      "centroid_lat": 21.029551,
+      "centroid_lng": 105.7451,
+      "area_km2": 10.81,
+      "predecessors": [
+        {
+          "name_vi": "Phường Phương Canh",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00623"
+        },
+        {
+          "name_vi": "Phường Xuân Phương",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00622"
+        }
+      ]
+    },
+    {
+      "code": "00634",
+      "name_vi": "Phường Tây Mỗ",
+      "type": "phuong",
+      "lat": 21.000145,
+      "lng": 105.74782,
+      "centroid_lat": 21.000883,
+      "centroid_lng": 105.747206,
+      "area_km2": 5.56,
+      "predecessors": [
+        {
+          "name_vi": "Phường Tây Mỗ",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00628"
+        },
+        {
+          "name_vi": "Phường Đại Mỗ",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00634"
+        }
+      ]
+    },
+    {
+      "code": "00637",
+      "name_vi": "Phường Đại Mỗ",
+      "type": "phuong",
+      "lat": 20.993182,
+      "lng": 105.776807,
+      "centroid_lat": 20.993562,
+      "centroid_lng": 105.775355,
+      "area_km2": 8.1,
+      "predecessors": [
+        {
+          "name_vi": "Phường Trung Văn",
+          "district_vi": "Quận Nam Từ Liêm",
+          "code": "00637"
+        }
+      ]
+    },
+    {
+      "code": "00640",
+      "name_vi": "Xã Thanh Trì",
+      "type": "xa",
+      "lat": 20.939232,
+      "lng": 105.861202,
+      "centroid_lat": 20.938832,
+      "centroid_lng": 105.859384,
+      "area_km2": 9.94,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Văn Điển",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00640"
+        },
+        {
+          "name_vi": "Xã Ngũ Hiệp",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00667"
+        },
+        {
+          "name_vi": "Xã Tứ Hiệp",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00658"
+        },
+        {
+          "name_vi": "Xã Yên Mỹ",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00661"
+        }
+      ]
+    },
+    {
+      "code": "00643",
+      "name_vi": "Phường Thanh Liệt",
+      "type": "phuong",
+      "lat": 20.970616,
+      "lng": 105.802382,
+      "centroid_lat": 20.970221,
+      "centroid_lng": 105.806147,
+      "area_km2": 6.44,
+      "predecessors": [
+        {
+          "name_vi": "Xã Thanh Liệt",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00646"
+        },
+        {
+          "name_vi": "Xã Tân Triều",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00643"
+        }
+      ]
+    },
+    {
+      "code": "00664",
+      "name_vi": "Xã Đại Thanh",
+      "type": "xa",
+      "lat": 20.934354,
+      "lng": 105.819467,
+      "centroid_lat": 20.937069,
+      "centroid_lng": 105.814415,
+      "area_km2": 18.92,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hữu Hoà",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00652"
+        },
+        {
+          "name_vi": "Xã Tả Thanh Oai",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00649"
+        },
+        {
+          "name_vi": "Xã Vĩnh Quỳnh",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00664"
+        }
+      ]
+    },
+    {
+      "code": "00679",
+      "name_vi": "Xã Ngọc Hồi",
+      "type": "xa",
+      "lat": 20.912325,
+      "lng": 105.833581,
+      "centroid_lat": 20.912349,
+      "centroid_lng": 105.837039,
+      "area_km2": 13.35,
+      "predecessors": [
+        {
+          "name_vi": "Xã Liên Ninh",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00682"
+        },
+        {
+          "name_vi": "Xã Ngọc Hồi",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00673"
+        },
+        {
+          "name_vi": "Xã Đại áng",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00679"
+        }
+      ]
+    },
+    {
+      "code": "00685",
+      "name_vi": "Xã Nam Phù",
+      "type": "xa",
+      "lat": 20.918851,
+      "lng": 105.886535,
+      "centroid_lat": 20.919832,
+      "centroid_lng": 105.883782,
+      "area_km2": 13.74,
+      "predecessors": [
+        {
+          "name_vi": "Xã Duyên Hà",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00670"
+        },
+        {
+          "name_vi": "Xã Vạn Phúc",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00676"
+        },
+        {
+          "name_vi": "Xã Đông Mỹ",
+          "district_vi": "Huyện Thanh Trì",
+          "code": "00685"
+        }
+      ]
+    },
+    {
+      "code": "04930",
+      "name_vi": "Xã Yên Xuân",
+      "type": "xa",
+      "lat": 20.973868,
+      "lng": 105.479097,
+      "centroid_lat": 20.978015,
+      "centroid_lng": 105.470051,
+      "area_km2": 78.01,
+      "predecessors": [
+        {
+          "name_vi": "Xã Đông Xuân",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "04939"
+        },
+        {
+          "name_vi": "Xã Tiến Xuân",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "04936"
+        },
+        {
+          "name_vi": "Xã Yên Bình",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "04930"
+        },
+        {
+          "name_vi": "Xã Yên Trung",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "04927"
+        }
+      ]
+    },
+    {
+      "code": "08974",
+      "name_vi": "Xã Quang Minh",
+      "type": "xa",
+      "lat": 21.198615,
+      "lng": 105.753336,
+      "centroid_lat": 21.192629,
+      "centroid_lng": 105.751278,
+      "area_km2": 32.17,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Chi Đông",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08973"
+        },
+        {
+          "name_vi": "Thị trấn Quang Minh",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08989"
+        },
+        {
+          "name_vi": "Xã Kim Hoa",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08977"
+        },
+        {
+          "name_vi": "Xã Đại Thịnh",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08974"
+        }
+      ]
+    },
+    {
+      "code": "08980",
+      "name_vi": "Xã Yên Lãng",
+      "type": "xa",
+      "lat": 21.171123,
+      "lng": 105.664171,
+      "centroid_lat": 21.172197,
+      "centroid_lng": 105.661692,
+      "area_km2": 44.81,
+      "predecessors": [
+        {
+          "name_vi": "Xã Chu Phan",
+          "district_vi": "Huyện Mê Linh",
+          "code": "09004"
+        },
+        {
+          "name_vi": "Xã Hoàng Kim",
+          "district_vi": "Huyện Mê Linh",
+          "code": "09016"
+        },
+        {
+          "name_vi": "Xã Liên Mạc",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08998"
+        },
+        {
+          "name_vi": "Xã Thạch Đà",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08980"
+        },
+        {
+          "name_vi": "Xã Tiến Thịnh",
+          "district_vi": "Huyện Mê Linh",
+          "code": "09007"
+        },
+        {
+          "name_vi": "Xã Vạn Yên",
+          "district_vi": "Huyện Mê Linh",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "08995",
+      "name_vi": "Xã Tiến Thắng",
+      "type": "xa",
+      "lat": 21.207484,
+      "lng": 105.685021,
+      "centroid_lat": 21.210612,
+      "centroid_lng": 105.690364,
+      "area_km2": 36.34,
+      "predecessors": [
+        {
+          "name_vi": "Xã Tam Đồng",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08995"
+        },
+        {
+          "name_vi": "Xã Thanh Lâm",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08992"
+        },
+        {
+          "name_vi": "Xã Tiến Thắng",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08983"
+        },
+        {
+          "name_vi": "Xã Tự Lập",
+          "district_vi": "Huyện Mê Linh",
+          "code": "08986"
+        }
+      ]
+    },
+    {
+      "code": "09022",
+      "name_vi": "Xã Mê Linh",
+      "type": "xa",
+      "lat": 21.146338,
+      "lng": 105.734602,
+      "centroid_lat": 21.150783,
+      "centroid_lng": 105.732921,
+      "area_km2": 34.97,
+      "predecessors": [
+        {
+          "name_vi": "Xã Mê Linh",
+          "district_vi": "Huyện Mê Linh",
+          "code": "09010"
+        },
+        {
+          "name_vi": "Xã Tiền Phong",
+          "district_vi": "Huyện Mê Linh",
+          "code": "09019"
+        },
+        {
+          "name_vi": "Xã Tráng Việt",
+          "district_vi": "Huyện Mê Linh",
+          "code": "09022"
+        },
+        {
+          "name_vi": "Xã Văn Khê",
+          "district_vi": "Huyện Mê Linh",
+          "code": "09013"
+        }
+      ]
+    },
+    {
+      "code": "09552",
+      "name_vi": "Phường Kiến Hưng",
+      "type": "phuong",
+      "lat": 20.954118,
+      "lng": 105.775362,
+      "centroid_lat": 20.95493,
+      "centroid_lng": 105.779579,
+      "area_km2": 6.65,
+      "predecessors": [
+        {
+          "name_vi": "Phường Kiến Hưng",
+          "district_vi": "Quận Hà Đông",
+          "code": "09565"
+        },
+        {
+          "name_vi": "Phường Phú La",
+          "district_vi": "Quận Hà Đông",
+          "code": "09552"
+        }
+      ]
+    },
+    {
+      "code": "09556",
+      "name_vi": "Phường Hà Đông",
+      "type": "phuong",
+      "lat": 20.974245,
+      "lng": 105.777865,
+      "centroid_lat": 20.973487,
+      "centroid_lng": 105.778154,
+      "area_km2": 9,
+      "predecessors": [
+        {
+          "name_vi": "Phường Hà Cầu",
+          "district_vi": "Quận Hà Đông",
+          "code": "09556"
+        },
+        {
+          "name_vi": "Phường La Khê",
+          "district_vi": "Quận Hà Đông",
+          "code": "09551"
+        },
+        {
+          "name_vi": "Phường Mộ Lao",
+          "district_vi": "Quận Hà Đông",
+          "code": "09541"
+        },
+        {
+          "name_vi": "Phường Nguyễn Trãi",
+          "district_vi": "Quận Hà Đông",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Phúc La",
+          "district_vi": "Quận Hà Đông",
+          "code": "09553"
+        },
+        {
+          "name_vi": "Phường Quang Trung",
+          "district_vi": "Quận Hà Đông",
+          "code": "09538"
+        },
+        {
+          "name_vi": "Phường Văn Quán",
+          "district_vi": "Quận Hà Đông",
+          "code": "09542"
+        },
+        {
+          "name_vi": "Phường Vạn Phúc",
+          "district_vi": "Quận Hà Đông",
+          "code": "09544"
+        },
+        {
+          "name_vi": "Phường Yết Kiêu",
+          "district_vi": "Quận Hà Đông",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "09562",
+      "name_vi": "Phường Yên Nghĩa",
+      "type": "phuong",
+      "lat": 20.938085,
+      "lng": 105.737322,
+      "centroid_lat": 20.939154,
+      "centroid_lng": 105.736049,
+      "area_km2": 13.18,
+      "predecessors": [
+        {
+          "name_vi": "Phường Yên Nghĩa",
+          "district_vi": "Quận Hà Đông",
+          "code": "09562"
+        },
+        {
+          "name_vi": "Phường Đồng Mai",
+          "district_vi": "Quận Hà Đông",
+          "code": "10117"
+        }
+      ]
+    },
+    {
+      "code": "09568",
+      "name_vi": "Phường Phú Lương",
+      "type": "phuong",
+      "lat": 20.938533,
+      "lng": 105.76706,
+      "centroid_lat": 20.939428,
+      "centroid_lng": 105.766457,
+      "area_km2": 9.4,
+      "predecessors": [
+        {
+          "name_vi": "Phường Phú Lãm",
+          "district_vi": "Quận Hà Đông",
+          "code": "09568"
+        },
+        {
+          "name_vi": "Phường Phú Lương",
+          "district_vi": "Quận Hà Đông",
+          "code": "09571"
+        }
+      ]
+    },
+    {
+      "code": "09574",
+      "name_vi": "Phường Sơn Tây",
+      "type": "phuong",
+      "lat": 21.142461,
+      "lng": 105.487144,
+      "centroid_lat": 21.14423,
+      "centroid_lng": 105.489706,
+      "area_km2": 23.08,
+      "predecessors": [
+        {
+          "name_vi": "Phường Lê Lợi",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Ngô Quyền",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09574"
+        },
+        {
+          "name_vi": "Phường Phú Thịnh",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09577"
+        },
+        {
+          "name_vi": "Phường Quang Trung",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": null
+        },
+        {
+          "name_vi": "Phường Sơn Lộc",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09586"
+        },
+        {
+          "name_vi": "Phường Trung Hưng",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09601"
+        },
+        {
+          "name_vi": "Phường Viên Sơn",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09595"
+        },
+        {
+          "name_vi": "Xã Đường Lâm",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09592"
+        }
+      ]
+    },
+    {
+      "code": "09604",
+      "name_vi": "Phường Tùng Thiện",
+      "type": "phuong",
+      "lat": 21.122396,
+      "lng": 105.458355,
+      "centroid_lat": 21.12138,
+      "centroid_lng": 105.457761,
+      "area_km2": 32.34,
+      "predecessors": [
+        {
+          "name_vi": "Phường Trung Sơn Trầm",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09607"
+        },
+        {
+          "name_vi": "Phường Xuân Khanh",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09589"
+        },
+        {
+          "name_vi": "Xã Thanh Mỹ",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09604"
+        },
+        {
+          "name_vi": "Xã Xuân Sơn",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09598"
+        }
+      ]
+    },
+    {
+      "code": "09616",
+      "name_vi": "Xã Đoài Phương",
+      "type": "xa",
+      "lat": 21.064037,
+      "lng": 105.495124,
+      "centroid_lat": 21.068694,
+      "centroid_lng": 105.486113,
+      "area_km2": 57.1,
+      "predecessors": [
+        {
+          "name_vi": "Xã Cổ Đông",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09616"
+        },
+        {
+          "name_vi": "Xã Kim Sơn",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09610"
+        },
+        {
+          "name_vi": "Xã Sơn Đông",
+          "district_vi": "Thị xã Sơn Tây",
+          "code": "09613"
+        }
+      ]
+    },
+    {
+      "code": "09619",
+      "name_vi": "Xã Quảng Oai",
+      "type": "xa",
+      "lat": 21.182259,
+      "lng": 105.431896,
+      "centroid_lat": 21.174553,
+      "centroid_lng": 105.427619,
+      "area_km2": 49.26,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Tây Đằng",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09619"
+        },
+        {
+          "name_vi": "Xã Cam Thượng",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09688"
+        },
+        {
+          "name_vi": "Xã Chu Minh",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09667"
+        },
+        {
+          "name_vi": "Xã Thụy An",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09685"
+        },
+        {
+          "name_vi": "Xã Tiên Phong",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09682"
+        },
+        {
+          "name_vi": "Xã Đông Quang",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09679"
+        }
+      ]
+    },
+    {
+      "code": "09634",
+      "name_vi": "Xã Cổ Đô",
+      "type": "xa",
+      "lat": 21.266089,
+      "lng": 105.398117,
+      "centroid_lat": 21.268806,
+      "centroid_lng": 105.397387,
+      "area_km2": 53.25,
+      "predecessors": [
+        {
+          "name_vi": "Xã Châu Sơn",
+          "district_vi": "Huyện Ba Vì",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Cổ Đô",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09628"
+        },
+        {
+          "name_vi": "Xã Phong Vân",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09640"
+        },
+        {
+          "name_vi": "Xã Phú Cường",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09625"
+        },
+        {
+          "name_vi": "Xã Phú Hồng",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09646"
+        },
+        {
+          "name_vi": "Xã Phú Phương",
+          "district_vi": "Huyện Ba Vì",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Phú Đông",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09643"
+        },
+        {
+          "name_vi": "Xã Tản Hồng",
+          "district_vi": "Huyện Ba Vì",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Vạn Thắng",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09634"
+        }
+      ]
+    },
+    {
+      "code": "09661",
+      "name_vi": "Xã Minh Châu",
+      "type": "xa",
+      "lat": 21.212385,
+      "lng": 105.452009,
+      "centroid_lat": 21.212345,
+      "centroid_lng": 105.45344,
+      "area_km2": 10.36,
+      "predecessors": [
+        {
+          "name_vi": "Xã Minh Châu",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09661"
+        }
+      ]
+    },
+    {
+      "code": "09664",
+      "name_vi": "Xã Vật Lại",
+      "type": "xa",
+      "lat": 21.211872,
+      "lng": 105.379935,
+      "centroid_lat": 21.217143,
+      "centroid_lng": 105.391103,
+      "area_km2": 51.75,
+      "predecessors": [
+        {
+          "name_vi": "Xã Phú Châu",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09649"
+        },
+        {
+          "name_vi": "Xã Phú Sơn",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09658"
+        },
+        {
+          "name_vi": "Xã Thái Hòa",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09652"
+        },
+        {
+          "name_vi": "Xã Vật Lại",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09664"
+        },
+        {
+          "name_vi": "Xã Đồng Thái",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09655"
+        }
+      ]
+    },
+    {
+      "code": "09676",
+      "name_vi": "Xã Bất Bạt",
+      "type": "xa",
+      "lat": 21.139375,
+      "lng": 105.311014,
+      "centroid_lat": 21.167423,
+      "centroid_lng": 105.332314,
+      "area_km2": 56.43,
+      "predecessors": [
+        {
+          "name_vi": "Xã Cẩm Lĩnh",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09673"
+        },
+        {
+          "name_vi": "Xã Sơn Đà",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09676"
+        },
+        {
+          "name_vi": "Xã Thuần Mỹ",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09691"
+        },
+        {
+          "name_vi": "Xã Tòng Bạt",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09670"
+        }
+      ]
+    },
+    {
+      "code": "09694",
+      "name_vi": "Xã Suối Hai",
+      "type": "xa",
+      "lat": 21.124962,
+      "lng": 105.373963,
+      "centroid_lat": 21.123991,
+      "centroid_lng": 105.377458,
+      "area_km2": 51.56,
+      "predecessors": [
+        {
+          "name_vi": "Xã Ba Trại",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09697"
+        },
+        {
+          "name_vi": "Xã Tản Lĩnh",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09694"
+        }
+      ]
+    },
+    {
+      "code": "09700",
+      "name_vi": "Xã Ba Vì",
+      "type": "xa",
+      "lat": 21.060042,
+      "lng": 105.338363,
+      "centroid_lat": 21.058094,
+      "centroid_lng": 105.341545,
+      "area_km2": 81.27,
+      "predecessors": [
+        {
+          "name_vi": "Xã Ba Vì",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09703"
+        },
+        {
+          "name_vi": "Xã Khánh Thượng",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09712"
+        },
+        {
+          "name_vi": "Xã Minh Quang",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09700"
+        }
+      ]
+    },
+    {
+      "code": "09706",
+      "name_vi": "Xã Yên Bài",
+      "type": "xa",
+      "lat": 21.058149,
+      "lng": 105.418712,
+      "centroid_lat": 21.053759,
+      "centroid_lng": 105.419024,
+      "area_km2": 68.19,
+      "predecessors": [
+        {
+          "name_vi": "Xã Vân Hòa",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09706"
+        },
+        {
+          "name_vi": "Xã Yên Bài",
+          "district_vi": "Huyện Ba Vì",
+          "code": "09709"
+        }
+      ]
+    },
+    {
+      "code": "09715",
+      "name_vi": "Xã Phúc Thọ",
+      "type": "xa",
+      "lat": 21.107306,
+      "lng": 105.546425,
+      "centroid_lat": 21.110334,
+      "centroid_lng": 105.554623,
+      "area_km2": 39.66,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Phúc Thọ",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09715"
+        },
+        {
+          "name_vi": "Xã Long Thượng",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09745"
+        },
+        {
+          "name_vi": "Xã Long Xuyên",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Phúc Hòa",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09763"
+        },
+        {
+          "name_vi": "Xã Phụng Thượng",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09769"
+        },
+        {
+          "name_vi": "Xã Thượng Cốc",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Thọ Lộc",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Trạch Mỹ Lộc",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09760"
+        },
+        {
+          "name_vi": "Xã Tích Giang",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Tích Lộc",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09742"
+        }
+      ]
+    },
+    {
+      "code": "09739",
+      "name_vi": "Xã Phúc Lộc",
+      "type": "xa",
+      "lat": 21.145387,
+      "lng": 105.571748,
+      "centroid_lat": 21.146755,
+      "centroid_lng": 105.574757,
+      "area_km2": 41.15,
+      "predecessors": [
+        {
+          "name_vi": "Xã Nam Hà",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09724"
+        },
+        {
+          "name_vi": "Xã Sen Phương",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09733"
+        },
+        {
+          "name_vi": "Xã Vân Hà",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Vân Nam",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Vân Phúc",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09721"
+        },
+        {
+          "name_vi": "Xã Võng Xuyên",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09739"
+        },
+        {
+          "name_vi": "Xã Xuân Đình",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09727"
+        }
+      ]
+    },
+    {
+      "code": "09772",
+      "name_vi": "Xã Hát Môn",
+      "type": "xa",
+      "lat": 21.089179,
+      "lng": 105.620074,
+      "centroid_lat": 21.089621,
+      "centroid_lng": 105.622803,
+      "area_km2": 37.67,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hiệp Thuận",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09778"
+        },
+        {
+          "name_vi": "Xã Hát Môn",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09751"
+        },
+        {
+          "name_vi": "Xã Liên Hiệp",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09781"
+        },
+        {
+          "name_vi": "Xã Ngọc Tảo",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09766"
+        },
+        {
+          "name_vi": "Xã Tam Hiệp",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09775"
+        },
+        {
+          "name_vi": "Xã Tam Thuấn",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09772"
+        },
+        {
+          "name_vi": "Xã Thanh Đa",
+          "district_vi": "Huyện Phúc Thọ",
+          "code": "09757"
+        }
+      ]
+    },
+    {
+      "code": "09784",
+      "name_vi": "Xã Đan Phượng",
+      "type": "xa",
+      "lat": 21.094568,
+      "lng": 105.668468,
+      "centroid_lat": 21.091221,
+      "centroid_lng": 105.666008,
+      "area_km2": 15.3,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Phùng",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09784"
+        },
+        {
+          "name_vi": "Xã Song Phượng",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09829"
+        },
+        {
+          "name_vi": "Xã Thượng Mỗ",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09814"
+        },
+        {
+          "name_vi": "Xã Đan Phượng",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09823"
+        },
+        {
+          "name_vi": "Xã Đồng Tháp",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09826"
+        }
+      ]
+    },
+    {
+      "code": "09787",
+      "name_vi": "Xã Liên Minh",
+      "type": "xa",
+      "lat": 21.131069,
+      "lng": 105.650446,
+      "centroid_lat": 21.127928,
+      "centroid_lng": 105.645895,
+      "area_km2": 23.57,
+      "predecessors": [
+        {
+          "name_vi": "Xã Phương Đình",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09811"
+        },
+        {
+          "name_vi": "Xã Thọ An",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09790"
+        },
+        {
+          "name_vi": "Xã Thọ Xuân",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09793"
+        },
+        {
+          "name_vi": "Xã Trung Châu",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09787"
+        }
+      ]
+    },
+    {
+      "code": "09817",
+      "name_vi": "Xã Ô Diên",
+      "type": "xa",
+      "lat": 21.106262,
+      "lng": 105.709706,
+      "centroid_lat": 21.109411,
+      "centroid_lng": 105.704109,
+      "area_km2": 32.06,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hạ Mỗ",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09805"
+        },
+        {
+          "name_vi": "Xã Hồng Hà",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09796"
+        },
+        {
+          "name_vi": "Xã Liên Hà",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09802"
+        },
+        {
+          "name_vi": "Xã Liên Hồng",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09799"
+        },
+        {
+          "name_vi": "Xã Liên Trung",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09808"
+        },
+        {
+          "name_vi": "Xã Tân Hội",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09817"
+        },
+        {
+          "name_vi": "Xã Tân Lập",
+          "district_vi": "Huyện Đan Phượng",
+          "code": "09820"
+        }
+      ]
+    },
+    {
+      "code": "09832",
+      "name_vi": "Xã Hoài Đức",
+      "type": "xa",
+      "lat": 21.061339,
+      "lng": 105.706427,
+      "centroid_lat": 21.062018,
+      "centroid_lng": 105.704867,
+      "area_km2": 16.73,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Trạm Trôi",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09832"
+        },
+        {
+          "name_vi": "Xã Di Trạch",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09844"
+        },
+        {
+          "name_vi": "Xã Kim Chung",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09853"
+        },
+        {
+          "name_vi": "Xã Đức Giang",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09847"
+        },
+        {
+          "name_vi": "Xã Đức Thượng",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09835"
+        }
+      ]
+    },
+    {
+      "code": "09856",
+      "name_vi": "Xã Dương Hoà",
+      "type": "xa",
+      "lat": 21.049216,
+      "lng": 105.671185,
+      "centroid_lat": 21.048906,
+      "centroid_lng": 105.67264,
+      "area_km2": 17.41,
+      "predecessors": [
+        {
+          "name_vi": "Xã Cát Quế",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09850"
+        },
+        {
+          "name_vi": "Xã Dương Liễu",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09841"
+        },
+        {
+          "name_vi": "Xã Minh Khai",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09838"
+        },
+        {
+          "name_vi": "Xã Yên Sở",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09856"
+        },
+        {
+          "name_vi": "Xã Đắc Sở",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09865"
+        }
+      ]
+    },
+    {
+      "code": "09871",
+      "name_vi": "Xã Sơn Đồng",
+      "type": "xa",
+      "lat": 21.027424,
+      "lng": 105.709357,
+      "centroid_lat": 21.024178,
+      "centroid_lng": 105.704743,
+      "area_km2": 21.57,
+      "predecessors": [
+        {
+          "name_vi": "Xã Lại Yên",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09868"
+        },
+        {
+          "name_vi": "Xã Song Phương",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09874"
+        },
+        {
+          "name_vi": "Xã Sơn Đồng",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09859"
+        },
+        {
+          "name_vi": "Xã Tiền Yên",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09871"
+        },
+        {
+          "name_vi": "Xã Vân Canh",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09862"
+        }
+      ]
+    },
+    {
+      "code": "09877",
+      "name_vi": "Xã An Khánh",
+      "type": "xa",
+      "lat": 20.983249,
+      "lng": 105.708326,
+      "centroid_lat": 20.987788,
+      "centroid_lng": 105.707888,
+      "area_km2": 28.69,
+      "predecessors": [
+        {
+          "name_vi": "Xã An Khánh",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09877"
+        },
+        {
+          "name_vi": "Xã An Thượng",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09880"
+        },
+        {
+          "name_vi": "Xã La Phù",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09889"
+        },
+        {
+          "name_vi": "Xã Vân Côn",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09883"
+        },
+        {
+          "name_vi": "Xã Đông La",
+          "district_vi": "Huyện Hoài Đức",
+          "code": "09892"
+        }
+      ]
+    },
+    {
+      "code": "09886",
+      "name_vi": "Phường Dương Nội",
+      "type": "phuong",
+      "lat": 20.974752,
+      "lng": 105.750303,
+      "centroid_lat": 20.975166,
+      "centroid_lng": 105.74863,
+      "area_km2": 7.9,
+      "predecessors": [
+        {
+          "name_vi": "Phường Dương Nội",
+          "district_vi": "Quận Hà Đông",
+          "code": "09886"
+        }
+      ]
+    },
+    {
+      "code": "09895",
+      "name_vi": "Xã Quốc Oai",
+      "type": "xa",
+      "lat": 21.008449,
+      "lng": 105.652427,
+      "centroid_lat": 21.011603,
+      "centroid_lng": 105.649711,
+      "area_km2": 24,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Quốc Oai",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09895"
+        },
+        {
+          "name_vi": "Xã Phượng Cách",
+          "district_vi": "Huyện Quốc Oai",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Phượng Sơn",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09904"
+        },
+        {
+          "name_vi": "Xã Sài Sơn",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09898"
+        },
+        {
+          "name_vi": "Xã Thạch Thán",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09916"
+        },
+        {
+          "name_vi": "Xã Yên Sơn",
+          "district_vi": "Huyện Quốc Oai",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "09910",
+      "name_vi": "Xã Kiều Phú",
+      "type": "xa",
+      "lat": 20.974549,
+      "lng": 105.602375,
+      "centroid_lat": 20.975417,
+      "centroid_lng": 105.607101,
+      "area_km2": 34.49,
+      "predecessors": [
+        {
+          "name_vi": "Xã Cấn Hữu",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09943"
+        },
+        {
+          "name_vi": "Xã Liệp Nghĩa",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09928"
+        },
+        {
+          "name_vi": "Xã Liệp Tuyết",
+          "district_vi": "Huyện Quốc Oai",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Nghĩa Hương",
+          "district_vi": "Huyện Quốc Oai",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Ngọc Liệp",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09907"
+        },
+        {
+          "name_vi": "Xã Ngọc Mỹ",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09910"
+        },
+        {
+          "name_vi": "Xã Tuyết Nghĩa",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09925"
+        }
+      ]
+    },
+    {
+      "code": "09931",
+      "name_vi": "Xã Hưng Đạo",
+      "type": "xa",
+      "lat": 20.969721,
+      "lng": 105.657839,
+      "centroid_lat": 20.96737,
+      "centroid_lng": 105.670284,
+      "area_km2": 24.9,
+      "predecessors": [
+        {
+          "name_vi": "Xã Cộng Hòa",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09931"
+        },
+        {
+          "name_vi": "Xã Hưng Đạo",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09934"
+        },
+        {
+          "name_vi": "Xã Tân Hòa",
+          "district_vi": "Huyện Quốc Oai",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Tân Phú",
+          "district_vi": "Huyện Quốc Oai",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Đại Thành",
+          "district_vi": "Huyện Quốc Oai",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Đồng Quang",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09919"
+        }
+      ]
+    },
+    {
+      "code": "09952",
+      "name_vi": "Xã Phú Cát",
+      "type": "xa",
+      "lat": 20.949566,
+      "lng": 105.55683,
+      "centroid_lat": 20.946065,
+      "centroid_lng": 105.560557,
+      "area_km2": 51.21,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hòa Thạch",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09949"
+        },
+        {
+          "name_vi": "Xã Phú Cát",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09922"
+        },
+        {
+          "name_vi": "Xã Phú Mãn",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09940"
+        },
+        {
+          "name_vi": "Xã Đông Yên",
+          "district_vi": "Huyện Quốc Oai",
+          "code": "09952"
+        }
+      ]
+    },
+    {
+      "code": "09955",
+      "name_vi": "Xã Thạch Thất",
+      "type": "xa",
+      "lat": 21.066387,
+      "lng": 105.562011,
+      "centroid_lat": 21.069175,
+      "centroid_lng": 105.56215,
+      "area_km2": 31.93,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Liên Quan",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09955"
+        },
+        {
+          "name_vi": "Xã Cẩm Yên",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09961"
+        },
+        {
+          "name_vi": "Xã Kim Quan",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09976"
+        },
+        {
+          "name_vi": "Xã Lại Thượng",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09964"
+        },
+        {
+          "name_vi": "Xã Phú Kim",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09967"
+        },
+        {
+          "name_vi": "Xã Đại Đồng",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09958"
+        }
+      ]
+    },
+    {
+      "code": "09982",
+      "name_vi": "Xã Hạ Bằng",
+      "type": "xa",
+      "lat": 21.016603,
+      "lng": 105.571047,
+      "centroid_lat": 21.020257,
+      "centroid_lng": 105.561103,
+      "area_km2": 32.14,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bình Yên",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09982"
+        },
+        {
+          "name_vi": "Xã Cần Kiệm",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09991"
+        },
+        {
+          "name_vi": "Xã Hạ Bằng",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "10009"
+        },
+        {
+          "name_vi": "Xã Đồng Trúc",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "10012"
+        }
+      ]
+    },
+    {
+      "code": "09988",
+      "name_vi": "Xã Hoà Lạc",
+      "type": "xa",
+      "lat": 21.013472,
+      "lng": 105.506372,
+      "centroid_lat": 21.01221,
+      "centroid_lng": 105.513082,
+      "area_km2": 35.37,
+      "predecessors": [
+        {
+          "name_vi": "Xã Thạch Hoà",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09988"
+        },
+        {
+          "name_vi": "Xã Tân Xã",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "10000"
+        }
+      ]
+    },
+    {
+      "code": "10003",
+      "name_vi": "Xã Tây Phương",
+      "type": "xa",
+      "lat": 21.039598,
+      "lng": 105.611831,
+      "centroid_lat": 21.036528,
+      "centroid_lng": 105.611545,
+      "area_km2": 31.1,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bình Phú",
+          "district_vi": "Huyện Thạch Thất",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Canh Nậu",
+          "district_vi": "Huyện Thạch Thất",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Chàng Sơn",
+          "district_vi": "Huyện Thạch Thất",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Dị Nậu",
+          "district_vi": "Huyện Thạch Thất",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Hương Ngải",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09970"
+        },
+        {
+          "name_vi": "Xã Hữu Bằng",
+          "district_vi": "Huyện Thạch Thất",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Lam Sơn",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09973"
+        },
+        {
+          "name_vi": "Xã Phùng Xá",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "09997"
+        },
+        {
+          "name_vi": "Xã Quang Trung",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "10006"
+        },
+        {
+          "name_vi": "Xã Thạch Xá",
+          "district_vi": "Huyện Thạch Thất",
+          "code": "10003"
+        }
+      ]
+    },
+    {
+      "code": "10015",
+      "name_vi": "Phường Chương Mỹ",
+      "type": "phuong",
+      "lat": 20.925152,
+      "lng": 105.702647,
+      "centroid_lat": 20.924878,
+      "centroid_lng": 105.698546,
+      "area_km2": 38.9,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Chúc Sơn",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10015"
+        },
+        {
+          "name_vi": "Xã Ngọc Hòa",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10042"
+        },
+        {
+          "name_vi": "Xã Phụng Châu",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10021"
+        },
+        {
+          "name_vi": "Xã Thụy Hương",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10057"
+        },
+        {
+          "name_vi": "Xã Tiên Phương",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10024"
+        },
+        {
+          "name_vi": "Xã Đại Yên",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10054"
+        },
+        {
+          "name_vi": "Phường Biên Giang",
+          "district_vi": "Quận Hà Đông",
+          "code": "10123"
+        }
+      ]
+    },
+    {
+      "code": "10030",
+      "name_vi": "Xã Phú Nghĩa",
+      "type": "xa",
+      "lat": 20.918229,
+      "lng": 105.639628,
+      "centroid_lat": 20.918207,
+      "centroid_lng": 105.641872,
+      "area_km2": 40.25,
+      "predecessors": [
+        {
+          "name_vi": "Xã Phú Nghĩa",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10033"
+        },
+        {
+          "name_vi": "Xã Thanh Bình",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10048"
+        },
+        {
+          "name_vi": "Xã Trung Hòa",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10051"
+        },
+        {
+          "name_vi": "Xã Trường Yên",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10039"
+        },
+        {
+          "name_vi": "Xã Đông Phương Yên",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10030"
+        },
+        {
+          "name_vi": "Xã Đông Sơn",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10027"
+        }
+      ]
+    },
+    {
+      "code": "10045",
+      "name_vi": "Xã Xuân Mai",
+      "type": "xa",
+      "lat": 20.860779,
+      "lng": 105.602607,
+      "centroid_lat": 20.8728,
+      "centroid_lng": 105.593265,
+      "area_km2": 50.72,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Xuân Mai",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10018"
+        },
+        {
+          "name_vi": "Xã Nam Phương Tiến",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10069"
+        },
+        {
+          "name_vi": "Xã Thủy Xuân Tiên",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10045"
+        },
+        {
+          "name_vi": "Xã Tân Tiến",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10066"
+        }
+      ]
+    },
+    {
+      "code": "10072",
+      "name_vi": "Xã Quảng Bị",
+      "type": "xa",
+      "lat": 20.871725,
+      "lng": 105.699163,
+      "centroid_lat": 20.873084,
+      "centroid_lng": 105.702767,
+      "area_km2": 37.14,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hoàng Diệu",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10078"
+        },
+        {
+          "name_vi": "Xã Hợp Đồng",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10072"
+        },
+        {
+          "name_vi": "Xã Lam Điền",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10063"
+        },
+        {
+          "name_vi": "Xã Quảng Bị",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10084"
+        },
+        {
+          "name_vi": "Xã Tốt Động",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10060"
+        }
+      ]
+    },
+    {
+      "code": "10081",
+      "name_vi": "Xã Trần Phú",
+      "type": "xa",
+      "lat": 20.836936,
+      "lng": 105.662681,
+      "centroid_lat": 20.842393,
+      "centroid_lng": 105.650184,
+      "area_km2": 44.36,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hoàng Văn Thụ",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10075"
+        },
+        {
+          "name_vi": "Xã Hữu Văn",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10081"
+        },
+        {
+          "name_vi": "Xã Mỹ Lương",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10087"
+        },
+        {
+          "name_vi": "Xã Trần Phú",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10099"
+        }
+      ]
+    },
+    {
+      "code": "10096",
+      "name_vi": "Xã Hoà Phú",
+      "type": "xa",
+      "lat": 20.832087,
+      "lng": 105.72501,
+      "centroid_lat": 20.828616,
+      "centroid_lng": 105.716822,
+      "area_km2": 29.87,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hòa Chính",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Hòa Phú",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10108"
+        },
+        {
+          "name_vi": "Xã Hồng Phong",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Hồng Phú",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10096"
+        },
+        {
+          "name_vi": "Xã Phú Nam An",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Thượng Vực",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10090"
+        },
+        {
+          "name_vi": "Xã Văn Võ",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10102"
+        },
+        {
+          "name_vi": "Xã Đồng Lạc",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": "10105"
+        },
+        {
+          "name_vi": "Xã Đồng Phú",
+          "district_vi": "Huyện Chương Mỹ",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "10114",
+      "name_vi": "Xã Thanh Oai",
+      "type": "xa",
+      "lat": 20.844537,
+      "lng": 105.767682,
+      "centroid_lat": 20.84666,
+      "centroid_lng": 105.766558,
+      "area_km2": 26.86,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Kim Bài",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10114"
+        },
+        {
+          "name_vi": "Xã Kim An",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10156"
+        },
+        {
+          "name_vi": "Xã Kim Thư",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10159"
+        },
+        {
+          "name_vi": "Xã Phương Trung",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10162"
+        },
+        {
+          "name_vi": "Xã Thanh Mai",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10147"
+        },
+        {
+          "name_vi": "Xã Đỗ Động",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10153"
+        }
+      ]
+    },
+    {
+      "code": "10126",
+      "name_vi": "Xã Bình Minh",
+      "type": "xa",
+      "lat": 20.904826,
+      "lng": 105.757668,
+      "centroid_lat": 20.904172,
+      "centroid_lng": 105.761842,
+      "area_km2": 29.86,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bình Minh",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10135"
+        },
+        {
+          "name_vi": "Xã Bích Hòa",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10126"
+        },
+        {
+          "name_vi": "Xã Cao Viên",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10132"
+        },
+        {
+          "name_vi": "Xã Cự Khê",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10120"
+        },
+        {
+          "name_vi": "Xã Thanh Cao",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10141"
+        }
+      ]
+    },
+    {
+      "code": "10144",
+      "name_vi": "Xã Tam Hưng",
+      "type": "xa",
+      "lat": 20.878464,
+      "lng": 105.793346,
+      "centroid_lat": 20.875806,
+      "centroid_lng": 105.798474,
+      "area_km2": 29.45,
+      "predecessors": [
+        {
+          "name_vi": "Xã Mỹ Hưng",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10129"
+        },
+        {
+          "name_vi": "Xã Tam Hưng",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10138"
+        },
+        {
+          "name_vi": "Xã Thanh Thùy",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10144"
+        },
+        {
+          "name_vi": "Xã Thanh Văn",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10150"
+        }
+      ]
+    },
+    {
+      "code": "10180",
+      "name_vi": "Xã Dân Hoà",
+      "type": "xa",
+      "lat": 20.810673,
+      "lng": 105.794576,
+      "centroid_lat": 20.809595,
+      "centroid_lng": 105.792122,
+      "area_km2": 38.43,
+      "predecessors": [
+        {
+          "name_vi": "Xã Cao Dương",
+          "district_vi": "Huyện Thanh Oai",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Cao Xuân Dương",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10174"
+        },
+        {
+          "name_vi": "Xã Dân Hòa",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10168"
+        },
+        {
+          "name_vi": "Xã Hồng Dương",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10180"
+        },
+        {
+          "name_vi": "Xã Liên Châu",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10171"
+        },
+        {
+          "name_vi": "Xã Tân Ước",
+          "district_vi": "Huyện Thanh Oai",
+          "code": "10165"
+        },
+        {
+          "name_vi": "Xã Xuân Dương",
+          "district_vi": "Huyện Thanh Oai",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "10183",
+      "name_vi": "Xã Thường Tín",
+      "type": "xa",
+      "lat": 20.870018,
+      "lng": 105.844579,
+      "centroid_lat": 20.876972,
+      "centroid_lng": 105.8413,
+      "area_km2": 28.29,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Thường Tín",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10183"
+        },
+        {
+          "name_vi": "Xã Hiền Giang",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10204"
+        },
+        {
+          "name_vi": "Xã Hòa Bình",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10198"
+        },
+        {
+          "name_vi": "Xã Khánh Hà",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10195"
+        },
+        {
+          "name_vi": "Xã Nhị Khê",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10189"
+        },
+        {
+          "name_vi": "Xã Tiền Phong",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10222"
+        },
+        {
+          "name_vi": "Xã Văn Bình",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10201"
+        },
+        {
+          "name_vi": "Xã Văn Phú",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10216"
+        }
+      ]
+    },
+    {
+      "code": "10210",
+      "name_vi": "Xã Hồng Vân",
+      "type": "xa",
+      "lat": 20.879877,
+      "lng": 105.898443,
+      "centroid_lat": 20.879834,
+      "centroid_lng": 105.887811,
+      "area_km2": 24.53,
+      "predecessors": [
+        {
+          "name_vi": "Xã Duyên Thái",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10192"
+        },
+        {
+          "name_vi": "Xã Hà Hồi",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10225"
+        },
+        {
+          "name_vi": "Xã Hồng Vân",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10207"
+        },
+        {
+          "name_vi": "Xã Liên Phương",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10213"
+        },
+        {
+          "name_vi": "Xã Ninh Sở",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10186"
+        },
+        {
+          "name_vi": "Xã Vân Tảo",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10210"
+        }
+      ]
+    },
+    {
+      "code": "10231",
+      "name_vi": "Xã Thượng Phúc",
+      "type": "xa",
+      "lat": 20.829831,
+      "lng": 105.847823,
+      "centroid_lat": 20.829869,
+      "centroid_lng": 105.85545,
+      "area_km2": 28.91,
+      "predecessors": [
+        {
+          "name_vi": "Xã Dũng Tiến",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10249"
+        },
+        {
+          "name_vi": "Xã Nghiêm Xuyên",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10255"
+        },
+        {
+          "name_vi": "Xã Nguyễn Trãi",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10231"
+        },
+        {
+          "name_vi": "Xã Quất Động",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10234"
+        },
+        {
+          "name_vi": "Xã Tân Minh",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10240"
+        }
+      ]
+    },
+    {
+      "code": "10237",
+      "name_vi": "Xã Chương Dương",
+      "type": "xa",
+      "lat": 20.835654,
+      "lng": 105.89812,
+      "centroid_lat": 20.835352,
+      "centroid_lng": 105.900796,
+      "area_km2": 28.89,
+      "predecessors": [
+        {
+          "name_vi": "Xã Chương Dương",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10237"
+        },
+        {
+          "name_vi": "Xã Lê Lợi",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10243"
+        },
+        {
+          "name_vi": "Xã Thư Phú",
+          "district_vi": "Huyện Thường Tín",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Thắng Lợi",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10246"
+        },
+        {
+          "name_vi": "Xã Tô Hiệu",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10258"
+        },
+        {
+          "name_vi": "Xã Tự Nhiên",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10219"
+        }
+      ]
+    },
+    {
+      "code": "10273",
+      "name_vi": "Xã Phú Xuyên",
+      "type": "xa",
+      "lat": 20.763812,
+      "lng": 105.922922,
+      "centroid_lat": 20.764167,
+      "centroid_lng": 105.917464,
+      "area_km2": 60.02,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Phú Minh",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10270"
+        },
+        {
+          "name_vi": "Thị trấn Phú Xuyên",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10273"
+        },
+        {
+          "name_vi": "Xã Hồng Thái",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10300"
+        },
+        {
+          "name_vi": "Xã Nam Phong",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10312"
+        },
+        {
+          "name_vi": "Xã Nam Tiến",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10282"
+        },
+        {
+          "name_vi": "Xã Nam Triều",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Quang Hà",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10318"
+        },
+        {
+          "name_vi": "Xã Quang Trung",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Sơn Hà",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Minh Cường",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10267"
+        },
+        {
+          "name_vi": "Xã Thống Nhất",
+          "district_vi": "Huyện Thường Tín",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Văn Tự",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10261"
+        },
+        {
+          "name_vi": "Xã Vạn Nhất",
+          "district_vi": "Huyện Thường Tín",
+          "code": "10264"
+        },
+        {
+          "name_vi": "Xã Vạn Điểm",
+          "district_vi": "Huyện Thường Tín",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "10279",
+      "name_vi": "Xã Phượng Dực",
+      "type": "xa",
+      "lat": 20.771898,
+      "lng": 105.842087,
+      "centroid_lat": 20.772139,
+      "centroid_lng": 105.836852,
+      "area_km2": 44.69,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hoàng Long",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10303"
+        },
+        {
+          "name_vi": "Xã Hồng Minh",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10276"
+        },
+        {
+          "name_vi": "Xã Phú Túc",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10294"
+        },
+        {
+          "name_vi": "Xã Phượng Dực",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10279"
+        },
+        {
+          "name_vi": "Xã Tri Trung",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Văn Hoàng",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10291"
+        },
+        {
+          "name_vi": "Xã Đại Thắng",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "10330",
+      "name_vi": "Xã Chuyên Mỹ",
+      "type": "xa",
+      "lat": 20.715583,
+      "lng": 105.881226,
+      "centroid_lat": 20.716266,
+      "centroid_lng": 105.883662,
+      "area_km2": 35.54,
+      "predecessors": [
+        {
+          "name_vi": "Xã Chuyên Mỹ",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10321"
+        },
+        {
+          "name_vi": "Xã Châu Can",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10348"
+        },
+        {
+          "name_vi": "Xã Phú Yên",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10339"
+        },
+        {
+          "name_vi": "Xã Tân Dân",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10315"
+        },
+        {
+          "name_vi": "Xã Vân Từ",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10330"
+        }
+      ]
+    },
+    {
+      "code": "10342",
+      "name_vi": "Xã Đại Xuyên",
+      "type": "xa",
+      "lat": 20.697205,
+      "lng": 105.953318,
+      "centroid_lat": 20.700623,
+      "centroid_lng": 105.94936,
+      "area_km2": 51.66,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bạch Hạ",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10342"
+        },
+        {
+          "name_vi": "Xã Khai Thái",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10324"
+        },
+        {
+          "name_vi": "Xã Minh Tân",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10351"
+        },
+        {
+          "name_vi": "Xã Phúc Tiến",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10327"
+        },
+        {
+          "name_vi": "Xã Quang Lãng",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10345"
+        },
+        {
+          "name_vi": "Xã Tri Thủy",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10333"
+        },
+        {
+          "name_vi": "Xã Đại Xuyên",
+          "district_vi": "Huyện Phú Xuyên",
+          "code": "10336"
+        }
+      ]
+    },
+    {
+      "code": "10354",
+      "name_vi": "Xã Vân Đình",
+      "type": "xa",
+      "lat": 20.736204,
+      "lng": 105.774979,
+      "centroid_lat": 20.735098,
+      "centroid_lng": 105.766406,
+      "area_km2": 41.6,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Vân Đình",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10354"
+        },
+        {
+          "name_vi": "Xã Cao Sơn Tiến",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10378"
+        },
+        {
+          "name_vi": "Xã Cao Thành",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Phương Tú",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10384"
+        },
+        {
+          "name_vi": "Xã Sơn Công",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Tảo Dương Văn",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10393"
+        },
+        {
+          "name_vi": "Xã Đồng Tiến",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "10369",
+      "name_vi": "Xã Ứng Thiên",
+      "type": "xa",
+      "lat": 20.773477,
+      "lng": 105.770718,
+      "centroid_lat": 20.774072,
+      "centroid_lng": 105.758576,
+      "area_km2": 38.4,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hoa Sơn",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Hoa Viên",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10363"
+        },
+        {
+          "name_vi": "Xã Liên Bạt",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10375"
+        },
+        {
+          "name_vi": "Xã Quảng Phú Cầu",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10366"
+        },
+        {
+          "name_vi": "Xã Trường Thịnh",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10369"
+        },
+        {
+          "name_vi": "Xã Viên An",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Viên Nội",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "10402",
+      "name_vi": "Xã Ứng Hoà",
+      "type": "xa",
+      "lat": 20.692428,
+      "lng": 105.84047,
+      "centroid_lat": 20.688834,
+      "centroid_lng": 105.848095,
+      "area_km2": 67.8,
+      "predecessors": [
+        {
+          "name_vi": "Xã Hòa Lâm",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Kim Đường",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10411"
+        },
+        {
+          "name_vi": "Xã Minh Đức",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10399"
+        },
+        {
+          "name_vi": "Xã Trung Tú",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10387"
+        },
+        {
+          "name_vi": "Xã Trầm Lộng",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10402"
+        },
+        {
+          "name_vi": "Xã Đông Lỗ",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10426"
+        },
+        {
+          "name_vi": "Xã Đại Cường",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10432"
+        },
+        {
+          "name_vi": "Xã Đại Hùng",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10423"
+        },
+        {
+          "name_vi": "Xã Đồng Tân",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10390"
+        }
+      ]
+    },
+    {
+      "code": "10417",
+      "name_vi": "Xã Hoà Xá",
+      "type": "xa",
+      "lat": 20.667175,
+      "lng": 105.799746,
+      "centroid_lat": 20.667373,
+      "centroid_lng": 105.790338,
+      "area_km2": 40.42,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bình Lưu Quang",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10435"
+        },
+        {
+          "name_vi": "Xã Hòa Nam",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Hòa Phú",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10417"
+        },
+        {
+          "name_vi": "Xã Hòa Xá",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Hồng Quang",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Lưu Hoàng",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Phù Lưu",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10429"
+        },
+        {
+          "name_vi": "Xã Thái Hòa",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": "10396"
+        },
+        {
+          "name_vi": "Xã Vạn Thái",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Đội Bình",
+          "district_vi": "Huyện Ứng Hòa",
+          "code": null
+        }
+      ]
+    },
+    {
+      "code": "10441",
+      "name_vi": "Xã Mỹ Đức",
+      "type": "xa",
+      "lat": 20.654488,
+      "lng": 105.697443,
+      "centroid_lat": 20.65564,
+      "centroid_lng": 105.717562,
+      "area_km2": 52.73,
+      "predecessors": [
+        {
+          "name_vi": "Thị trấn Đại Nghĩa",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10441"
+        },
+        {
+          "name_vi": "Xã An Phú",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10504"
+        },
+        {
+          "name_vi": "Xã Hợp Thanh",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10501"
+        },
+        {
+          "name_vi": "Xã Phù Lưu Tế",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10477"
+        },
+        {
+          "name_vi": "Xã Đại Hưng",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10480"
+        }
+      ]
+    },
+    {
+      "code": "10459",
+      "name_vi": "Xã Phúc Sơn",
+      "type": "xa",
+      "lat": 20.781371,
+      "lng": 105.683977,
+      "centroid_lat": 20.781075,
+      "centroid_lng": 105.681198,
+      "area_km2": 49.31,
+      "predecessors": [
+        {
+          "name_vi": "Xã Bột Xuyên",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Mỹ Thành",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Mỹ Xuyên",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10459"
+        },
+        {
+          "name_vi": "Xã Phúc Lâm",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10453"
+        },
+        {
+          "name_vi": "Xã Thượng Lâm",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10447"
+        },
+        {
+          "name_vi": "Xã Tuy Lai",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10450"
+        },
+        {
+          "name_vi": "Xã Đồng Tâm",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10444"
+        }
+      ]
+    },
+    {
+      "code": "10465",
+      "name_vi": "Xã Hồng Sơn",
+      "type": "xa",
+      "lat": 20.715911,
+      "lng": 105.714999,
+      "centroid_lat": 20.715875,
+      "centroid_lng": 105.705603,
+      "area_km2": 54.38,
+      "predecessors": [
+        {
+          "name_vi": "Xã An Mỹ",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10462"
+        },
+        {
+          "name_vi": "Xã Hồng Sơn",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10465"
+        },
+        {
+          "name_vi": "Xã Hợp Tiến",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10498"
+        },
+        {
+          "name_vi": "Xã Lê Thanh",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10468"
+        },
+        {
+          "name_vi": "Xã Phùng Xá",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10474"
+        },
+        {
+          "name_vi": "Xã Xuy Xá",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10471"
+        }
+      ]
+    },
+    {
+      "code": "10489",
+      "name_vi": "Xã Hương Sơn",
+      "type": "xa",
+      "lat": 20.619903,
+      "lng": 105.753444,
+      "centroid_lat": 20.61925,
+      "centroid_lng": 105.762944,
+      "area_km2": 69.11,
+      "predecessors": [
+        {
+          "name_vi": "Xã An Tiến",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10495"
+        },
+        {
+          "name_vi": "Xã Hùng Tiến",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10492"
+        },
+        {
+          "name_vi": "Xã Hương Sơn",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10489"
+        },
+        {
+          "name_vi": "Xã Vạn Kim",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": null
+        },
+        {
+          "name_vi": "Xã Vạn Tín",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": "10483"
+        },
+        {
+          "name_vi": "Xã Đốc Tín",
+          "district_vi": "Huyện Mỹ Đức",
+          "code": null
+        }
+      ]
+    }
+  ]
+}

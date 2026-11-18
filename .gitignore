@@ -20,4 +20,42 @@ node_modules/
 scripts/seed_errors.log
 scripts/seed_results.json
 scripts/spike_nlp_extraction.md
+scripts/audit_2025_wards.csv
 .gstack/
+
+# Crawl/seed output & temp data
+crawl_output.txt
+crawl_payload.json
+curl_body.json
+dedup_test_out.json
+fb_extract_result.json
+fixed_js_out.json
+guideline.txt
+scripts/_fb_analysis/
+test_fb_extract.py
+clean_fb.py
+clear_fb_staging.py
+delete_posts.py
+
+# API logs
+uvicorn.log
+uvicorn.err
+
+# IDE temp
+web/.env.local
+
+# Playwright output
+web/playwright-report/
+web/test-results/
+
+# Local scratch files (not part of the app)
+/hello.py
+/hello_world.py
+/opencode.json
+/plan.md
+/~/
+
+# Local dev logs / generated build cache
+web-dev.log
+web-dev.err
+web/tsconfig.tsbuildinfo

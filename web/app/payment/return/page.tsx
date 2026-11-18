@@ -14,7 +14,7 @@
  *   4. If failed / timeout → show error with retry option
  */
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { checkPaymentStatus, devConfirmPayment } from "@/lib/payment";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,23 @@ const POLL_INTERVAL_MS = 1000;
 const POLL_MAX_ATTEMPTS = 10;
 
 export default function PaymentReturnPage() {
+  return (
+    <Suspense fallback={<PaymentReturnFallback />}>
+      <PaymentReturnContent />
+    </Suspense>
+  );
+}
+
+function PaymentReturnFallback() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-4">
+      <div className="h-10 w-10 rounded-full border-4 border-blue-500 border-t-transparent animate-spin" />
+      <p className="text-lg font-medium">Đang tải...</p>
+    </div>
+  );
+}
+
+function PaymentReturnContent() {
   const params = useSearchParams();
   const router = useRouter();
   const orderId = params.get("order_id");
